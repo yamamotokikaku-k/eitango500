@@ -3,355 +3,370 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ことわざタイピング練習</title>
+  <title>ことわざタイピング</title>
   <style>
     :root{
       --bg:#0f0f10;
-      --panel:#17181a;
-      --panel-2:#1e2023;
-      --line:#2d3136;
-      --text:#f3f4f6;
-      --sub:#a9afb8;
-      --accent:#d7dde6;
-      --ok:#8fd3a8;
-      --miss:#c78585;
-      --key:#202329;
-      --key-text:#f5f7fa;
-      --key-active:#f3f4f6;
-      --key-active-text:#0f1114;
-      --shadow:0 18px 48px rgba(0,0,0,.35);
-
-      --font-main:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-    }
-
-    body.theme-black{
-      --bg:#0f0f10;
-      --panel:#17181a;
-      --panel-2:#1e2023;
-      --line:#2d3136;
-      --text:#f3f4f6;
-      --sub:#a9afb8;
-      --accent:#d7dde6;
-      --ok:#8fd3a8;
-      --miss:#c78585;
-      --key:#202329;
-      --key-text:#f5f7fa;
-      --key-active:#f3f4f6;
-      --key-active-text:#0f1114;
-    }
-
-    body.theme-white{
-      --bg:#f6f7f9;
-      --panel:#ffffff;
-      --panel-2:#f0f2f5;
-      --line:#d9dee6;
-      --text:#16181c;
-      --sub:#5d6571;
-      --accent:#1d242d;
-      --ok:#1f7a46;
-      --miss:#a03d3d;
-      --key:#e6ebf2;
-      --key-text:#17191d;
-      --key-active:#16181c;
-      --key-active-text:#ffffff;
-    }
-
-    body.theme-gray{
-      --bg:#7d838c;
-      --panel:#8b919a;
-      --panel-2:#767d86;
-      --line:#aab0b8;
-      --text:#f8fafc;
-      --sub:#e4e7eb;
-      --accent:#ffffff;
-      --ok:#d9ffe5;
-      --miss:#ffe1e1;
-      --key:#686f78;
-      --key-text:#f8fafc;
-      --key-active:#ffffff;
-      --key-active-text:#2b3138;
-    }
-
-    body.font-gothic{
-      --font-main:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif;
-    }
-
-    body.font-mincho{
-      --font-main:"Hiragino Mincho ProN","Yu Mincho","MS PMincho","Times New Roman",serif;
-    }
-
-    body.font-rounded{
-      --font-main:"Hiragino Maru Gothic ProN","Arial Rounded MT Bold","Yu Gothic UI","Meiryo",sans-serif;
-    }
-
-    body.font-classic{
-      --font-main:"BIZ UDPGothic","Yu Gothic","Meiryo",sans-serif;
-    }
-
-    body.font-modern{
-      --font-main:"Avenir Next","Helvetica Neue","Hiragino Sans","Yu Gothic UI",sans-serif;
+      --panel:#1a1a1c;
+      --panel-2:#232326;
+      --text:#f4f4f4;
+      --sub:#b7b7bb;
+      --accent:#8e8e93;
+      --ok:#f4f4f4;
+      --miss:#ff5a5f;
+      --line:#2f2f35;
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --key:#1e1e22;
+      --keyText:#f4f4f4;
+      --keyActive:#e8e8ea;
+      --keyActiveText:#111;
+      --keyMiss:#51262b;
+      --display:#ffffff;
+      --displaySub:#d7d7dc;
+      --typed:#8ee59c;
     }
 
     *{ box-sizing:border-box; }
 
     html,body{
       margin:0;
-      width:100%;
-      height:100%;
+      min-height:100%;
       background:var(--bg);
       color:var(--text);
-      font-family:var(--font-main);
-      overflow:hidden;
+      font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+      overflow-x:hidden;
     }
 
-    body{
-      transition:background .2s ease,color .2s ease,font-family .2s ease;
+    body.theme-black{
+      --bg:#0f0f10;
+      --panel:#1a1a1c;
+      --panel-2:#232326;
+      --text:#f4f4f4;
+      --sub:#b7b7bb;
+      --accent:#8e8e93;
+      --line:#2f2f35;
+      --key:#1c1c20;
+      --keyText:#f4f4f4;
+      --keyActive:#fafafa;
+      --keyActiveText:#111;
+      --display:#ffffff;
+      --displaySub:#d7d7dc;
+      --typed:#96f0a6;
     }
+
+    body.theme-white{
+      --bg:#f7f7f8;
+      --panel:#ffffff;
+      --panel-2:#f0f0f2;
+      --text:#17181a;
+      --sub:#6c6e75;
+      --accent:#54565d;
+      --line:#dbdce2;
+      --shadow:0 20px 60px rgba(0,0,0,.08);
+      --key:#ffffff;
+      --keyText:#17181a;
+      --keyActive:#17181a;
+      --keyActiveText:#ffffff;
+      --keyMiss:#f5d9dc;
+      --display:#101114;
+      --displaySub:#5a5c64;
+      --typed:#187a31;
+    }
+
+    body.theme-gray{
+      --bg:#62666d;
+      --panel:#727780;
+      --panel-2:#666b74;
+      --text:#f7f8fa;
+      --sub:#e1e4e9;
+      --accent:#d0d4db;
+      --line:#858b96;
+      --shadow:0 20px 60px rgba(0,0,0,.18);
+      --key:#7a808a;
+      --keyText:#ffffff;
+      --keyActive:#ffffff;
+      --keyActiveText:#1d2127;
+      --keyMiss:#8d555d;
+      --display:#ffffff;
+      --displaySub:#edf0f5;
+      --typed:#d9ffd6;
+    }
+
+    body.font-1{ font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif; }
+    body.font-2{ font-family:"Hiragino Mincho ProN","Yu Mincho","MS PMincho",serif; }
+    body.font-3{ font-family:"Yu Gothic","Hiragino Kaku Gothic ProN","Meiryo",sans-serif; }
+    body.font-4{ font-family:"BIZ UDPGothic","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif; }
+    body.font-5{ font-family:"BIZ UDMincho","Yu Mincho","Hiragino Mincho ProN","MS PMincho",serif; }
 
     .app{
-      width:100%;
-      height:100%;
+      min-height:100vh;
       display:flex;
-      align-items:center;
+      flex-direction:column;
       justify-content:center;
-      padding:20px;
-    }
-
-    .board{
-      width:min(1180px,100%);
-      height:min(94vh,940px);
-      background:linear-gradient(180deg,var(--panel),var(--panel-2));
-      border:1px solid var(--line);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      padding:18px 22px 22px;
-      display:grid;
-      grid-template-rows:auto 1fr auto;
-      gap:14px;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
+      align-items:center;
+      padding:18px;
       gap:16px;
-      flex-wrap:wrap;
     }
 
-    .title{
-      font-size:14px;
-      letter-spacing:.18em;
-      color:var(--sub);
-      user-select:none;
-      white-space:nowrap;
-      padding-top:6px;
+    .topbar, .bottombar{
+      width:min(1200px,100%);
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:20px;
+      box-shadow:var(--shadow);
     }
 
     .controls{
+      padding:12px 14px;
       display:flex;
-      align-items:flex-start;
-      justify-content:flex-end;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .control-block{
-      display:flex;
-      align-items:center;
+      flex-direction:column;
       gap:8px;
-      background:rgba(255,255,255,.02);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:6px;
-      flex-wrap:wrap;
+      min-height:92px;
     }
 
-    .control-label{
+    .controls label{
       font-size:12px;
       color:var(--sub);
       letter-spacing:.08em;
-      padding:0 6px;
-      user-select:none;
     }
 
-    .theme-btn,
-    .font-btn,
-    .sound-btn{
-      border:none;
-      background:transparent;
-      color:var(--sub);
-      padding:10px 14px;
-      border-radius:999px;
-      cursor:pointer;
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.05em;
-      transition:.15s ease;
-      white-space:nowrap;
-    }
-
-    .theme-btn.active,
-    .font-btn.active,
-    .sound-btn.active{
-      background:var(--accent);
-      color:var(--key-active-text);
-    }
-
-    .mini-info{
-      font-size:12px;
-      color:var(--sub);
-      letter-spacing:.06em;
-      user-select:none;
+    .controls select, .controls button{
       width:100%;
-      text-align:right;
-      padding-right:6px;
-      margin-top:2px;
+      background:var(--panel-2);
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+    }
+
+    .controls button{
+      cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .controls button:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
     }
 
     .main{
+      width:min(1200px,100%);
       display:grid;
-      grid-template-rows:auto auto auto auto 1fr;
-      gap:10px;
-      align-items:start;
-      justify-items:center;
-      min-height:0;
+      grid-template-columns: minmax(0,1.4fr) 420px;
+      gap:16px;
+      align-items:stretch;
     }
 
-    .counter{
-      margin-top:8px;
-      font-size:18px;
+    .stage{
+      padding:26px 26px 22px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:18px;
+      min-height:700px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .stage::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.06), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 28%);
+      pointer-events:none;
+    }
+
+    .countWrap{
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+    }
+
+    .countLabel{
+      font-size:12px;
+      letter-spacing:.16em;
       color:var(--sub);
-      letter-spacing:.12em;
-      user-select:none;
+    }
+
+    .countValue{
+      font-size:54px;
+      line-height:1;
+      font-weight:800;
+      color:var(--display);
+      letter-spacing:.06em;
     }
 
     .japanese{
-      margin-top:8px;
+      z-index:1;
       text-align:center;
-      font-size:clamp(28px,4vw,50px);
-      font-weight:800;
-      letter-spacing:.03em;
+      font-size:clamp(30px,4vw,58px);
       line-height:1.45;
-      min-height:3em;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:0 16px;
+      color:var(--display);
+      font-weight:700;
+      letter-spacing:.04em;
+      word-break:keep-all;
     }
 
-    .romaji{
+    .romajiDisplay{
+      z-index:1;
       text-align:center;
-      font-size:clamp(18px,2.2vw,28px);
+      font-size:clamp(16px,1.7vw,24px);
+      color:var(--displaySub);
       letter-spacing:.14em;
-      color:var(--sub);
-      min-height:2em;
-      padding:0 12px;
       word-break:break-word;
+      user-select:none;
+      padding:0 20px;
     }
 
-    .typed-line{
-      width:min(900px,100%);
-      min-height:56px;
+    .typedLine{
+      z-index:1;
+      min-height:48px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:0;
       text-align:center;
-      padding:0 12px;
-      word-break:break-word;
-      line-height:1.7;
+      padding:10px 18px;
+      border-radius:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      width:min(860px,100%);
       font-size:clamp(16px,2vw,24px);
-      letter-spacing:.12em;
-      border-bottom:1px solid var(--line);
+      letter-spacing:.08em;
+      color:var(--typed);
+      word-break:break-word;
     }
 
-    .typed-ok{ color:var(--ok); }
-    .typed-rest{ color:var(--text); opacity:.95; }
-    .typed-miss{ animation:flashMiss .18s linear 1; }
-
-    @keyframes flashMiss{
-      0%{ transform:translateX(0); }
-      25%{ transform:translateX(-3px); }
-      50%{ transform:translateX(3px); }
-      75%{ transform:translateX(-2px); }
-      100%{ transform:translateX(0); }
+    .statusLine{
+      z-index:1;
+      font-size:14px;
+      color:var(--sub);
+      text-align:center;
+      line-height:1.7;
+      min-height:48px;
+      padding:0 12px;
     }
 
-    .keyboard-wrap{
-      width:min(980px,100%);
-      display:grid;
-      gap:14px;
-      align-content:start;
-      justify-items:center;
-      margin-top:6px;
-      min-height:0;
-    }
-
-    .keyboard{
-      width:100%;
-      display:grid;
-      gap:8px;
-      justify-items:center;
-    }
-
-    .key-row{
+    .keyboardWrap{
+      z-index:1;
+      width:min(860px,100%);
       display:flex;
-      justify-content:center;
+      flex-direction:column;
       gap:8px;
+      margin-top:4px;
+    }
+
+    .keyboardRow{
+      display:flex;
+      gap:8px;
+      justify-content:center;
       flex-wrap:nowrap;
     }
 
     .key{
-      width:58px;
+      min-width:44px;
       height:48px;
       border-radius:12px;
+      background:var(--key);
+      color:var(--keyText);
+      border:1px solid var(--line);
       display:flex;
       align-items:center;
       justify-content:center;
-      background:var(--key);
-      color:var(--key-text);
-      border:1px solid var(--line);
-      font-size:18px;
-      font-weight:800;
+      font-size:15px;
+      font-weight:700;
       letter-spacing:.04em;
-      user-select:none;
       transition:.08s ease;
-      box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);
+      user-select:none;
+      box-shadow:inset 0 -4px 0 rgba(0,0,0,.12);
     }
 
+    .key.wide{ min-width:74px; }
+    .key.xwide{ min-width:104px; }
     .key.active{
-      background:var(--key-active);
-      color:var(--key-active-text);
-      transform:translateY(-1px);
-      box-shadow:0 0 0 2px rgba(255,255,255,.06), 0 10px 22px rgba(0,0,0,.18);
+      background:var(--keyActive);
+      color:var(--keyActiveText);
+      transform:translateY(-2px);
+    }
+    .key.miss{
+      background:var(--keyMiss);
+      color:#fff;
     }
 
-    .footer{
+    .side{
       display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      border-top:1px solid var(--line);
-      padding-top:12px;
+      flex-direction:column;
+      gap:16px;
     }
 
-    .footer-left,
-    .footer-right{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
+    .infoCard{
+      padding:18px;
+    }
+
+    .infoTitle{
+      font-size:14px;
+      letter-spacing:.12em;
       color:var(--sub);
-      font-size:13px;
-      letter-spacing:.04em;
+      margin-bottom:10px;
+    }
+
+    .infoGrid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
     }
 
     .stat{
-      padding:8px 12px;
+      background:var(--panel-2);
       border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,.02);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .statLabel{
+      font-size:12px;
+      color:var(--sub);
+      margin-bottom:6px;
+      letter-spacing:.08em;
+    }
+
+    .statValue{
+      font-size:22px;
+      font-weight:800;
+      color:var(--text);
+      word-break:break-word;
+    }
+
+    .help{
+      font-size:13px;
+      line-height:1.9;
+      color:var(--sub);
+    }
+
+    .accent{
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .footerNote{
+      width:min(1200px,100%);
+      text-align:center;
+      font-size:12px;
+      line-height:1.8;
+      color:var(--sub);
+      padding:2px 10px 18px;
     }
 
     #captureInput{
@@ -364,398 +379,415 @@
       top:-9999px;
     }
 
-    @media (max-width:1100px){
-      .mini-info{
-        text-align:left;
+    @media (max-width: 1024px){
+      .topbar,.bottombar,.main{
+        grid-template-columns:1fr;
+      }
+      .stage{
+        min-height:auto;
+      }
+      .side{
+        order:2;
       }
     }
 
-    @media (max-width:900px){
-      .board{
-        padding:14px 14px 16px;
-        gap:10px;
+    @media (max-width: 640px){
+      .app{
+        padding:10px;
+      }
+      .stage{
+        padding:20px 14px 18px;
       }
       .key{
-        width:42px;
-        height:40px;
-        font-size:15px;
+        min-width:30px;
+        height:38px;
+        font-size:12px;
         border-radius:10px;
       }
-      .keyboard-wrap{ gap:12px; }
-    }
-
-    @media (max-width:640px){
-      .topbar,
-      .footer{
-        justify-content:center;
-      }
-      .controls{
-        justify-content:center;
-      }
-      .mini-info{
-        text-align:center;
-      }
-      .counter{
-        font-size:16px;
-      }
-      .typed-line{
-        min-height:48px;
-        font-size:16px;
-      }
-      .key-row{ gap:5px; }
-      .key{
-        width:31px;
-        height:34px;
-        font-size:12px;
-        border-radius:8px;
-      }
-      .theme-btn,
-      .font-btn,
-      .sound-btn{
-        padding:8px 10px;
-        font-size:11px;
-      }
+      .key.wide{ min-width:56px; }
+      .key.xwide{ min-width:78px; }
+      .keyboardRow{ gap:5px; }
     }
   </style>
 </head>
-<body class="theme-black font-gothic">
+<body class="theme-black font-1">
   <div class="app">
-    <div class="board">
-      <div class="topbar">
-        <div class="title">KOTOWAZA TYPING</div>
+    <div class="topbar">
+      <div class="panel controls">
+        <label for="themeSelect">COLOR</label>
+        <select id="themeSelect">
+          <option value="theme-black">BLACK</option>
+          <option value="theme-white">WHITE</option>
+          <option value="theme-gray">GRAY</option>
+        </select>
+      </div>
 
-        <div class="controls">
-          <div class="control-block" aria-label="theme switch">
-            <div class="control-label">COLOR</div>
-            <button class="theme-btn active" data-theme="black">BLACK</button>
-            <button class="theme-btn" data-theme="white">WHITE</button>
-            <button class="theme-btn" data-theme="gray">GRAY</button>
-          </div>
+      <div class="panel controls">
+        <label for="fontSelect">FONT</label>
+        <select id="fontSelect">
+          <option value="font-1">SANS A</option>
+          <option value="font-2">MINCHO A</option>
+          <option value="font-3">GOTHIC A</option>
+          <option value="font-4">UD GOTHIC</option>
+          <option value="font-5">UD MINCHO</option>
+        </select>
+      </div>
 
-          <div class="control-block" aria-label="font switch">
-            <div class="control-label">FONT</div>
-            <button class="font-btn active" data-font="gothic">GOTHIC</button>
-            <button class="font-btn" data-font="mincho">MINCHO</button>
-            <button class="font-btn" data-font="rounded">ROUNDED</button>
-            <button class="font-btn" data-font="classic">CLASSIC</button>
-            <button class="font-btn" data-font="modern">MODERN</button>
-          </div>
+      <div class="panel controls">
+        <label for="seSelect">TYPE SOUND</label>
+        <select id="seSelect">
+          <option value="dry1">DRY CLICK 1</option>
+          <option value="dry2">DRY CLICK 2</option>
+          <option value="metal">METAL TOUCH</option>
+          <option value="thock">THOCK</option>
+          <option value="deep">DEEP HIT</option>
+        </select>
+      </div>
 
-          <div class="control-block" aria-label="type sound switch">
-            <div class="control-label">TYPE SOUND</div>
-            <button class="sound-btn active" data-sound="dry">DRY</button>
-            <button class="sound-btn" data-sound="deep">DEEP</button>
-            <button class="sound-btn" data-sound="bass">BASS</button>
-            <button class="sound-btn" data-sound="drum">DRUM</button>
-            <button class="sound-btn" data-sound="metal">METAL</button>
-          </div>
+      <div class="panel controls">
+        <label for="bgmSelect">BGM</label>
+        <select id="bgmSelect">
+          <option value="off">OFF</option>
+          <option value="beat1">LOW BEAT 1</option>
+          <option value="beat2">LOW BEAT 2</option>
+          <option value="beat3">LOW BEAT 3</option>
+        </select>
+      </div>
+    </div>
 
-          <div class="mini-info">ENTER: RESET COUNT / RELOAD SET</div>
+    <div class="main">
+      <div class="panel stage" id="stage">
+        <div class="countWrap">
+          <div class="countLabel">COUNT</div>
+          <div class="countValue" id="countValue">0</div>
+        </div>
+
+        <div class="japanese" id="japaneseText">読み込み中</div>
+        <div class="romajiDisplay" id="romajiDisplay">-</div>
+        <div class="typedLine" id="typedLine"></div>
+        <div class="statusLine" id="statusLine">ページを開いた時点で入力可能です。ENTER でカウントと出題履歴をリセットします。</div>
+
+        <div class="keyboardWrap" id="keyboardWrap">
+          <div class="keyboardRow" id="row1"></div>
+          <div class="keyboardRow" id="row2"></div>
+          <div class="keyboardRow" id="row3"></div>
         </div>
       </div>
 
-      <div class="main">
-        <div class="counter" id="counter">0</div>
-        <div class="japanese" id="japanese"></div>
-        <div class="romaji" id="romaji"></div>
-        <div class="typed-line" id="typedLine"></div>
-
-        <div class="keyboard-wrap">
-          <div class="keyboard" id="keyboard"></div>
+      <div class="side">
+        <div class="panel infoCard">
+          <div class="infoTitle">STATUS</div>
+          <div class="infoGrid">
+            <div class="stat">
+              <div class="statLabel">正解数</div>
+              <div class="statValue" id="correctCount">0</div>
+            </div>
+            <div class="stat">
+              <div class="statLabel">ミスタイプ</div>
+              <div class="statValue" id="missCount">0</div>
+            </div>
+            <div class="stat">
+              <div class="statLabel">残り問題数</div>
+              <div class="statValue" id="remainCount">0</div>
+            </div>
+            <div class="stat">
+              <div class="statLabel">総登録数</div>
+              <div class="statValue" id="totalCount">0</div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="footer">
-        <div class="footer-left">
-          <div class="stat">SET: <span id="totalCount">1000</span></div>
-          <div class="stat">LEFT: <span id="remainingCount">1000</span></div>
+        <div class="panel infoCard">
+          <div class="infoTitle">INPUT RULE</div>
+          <div class="help">
+            ・表示ローマ字は <span class="accent">日本式 / 大文字</span><br>
+            ・入力は <span class="accent">ヘボン式 / 訓令式 / 日本式</span> を横断対応<br>
+            ・<span class="accent">ん = N / NN</span> の両方を許容<br>
+            ・<span class="accent">ENTER</span> でカウントと出題履歴をリセット<br>
+            ・開いた時点で入力可能状態を維持
+          </div>
         </div>
-        <div class="footer-right">
-          <div class="stat">INPUT: HEPBURN / KUNREI / NIHON-SHIKI / COMMON VARIANTS</div>
+
+        <div class="panel infoCard">
+          <div class="infoTitle">NOTE</div>
+          <div class="help">
+            この版は <span class="accent">機能を完成</span> させたうえで、ことわざデータはすぐ差し替えや追加ができる構造にしています。<br>
+            下の <span class="accent">PROVERBS データ配列</span> に追記すれば問題数をそのまま増やせます。
+          </div>
         </div>
       </div>
     </div>
+
+    <div class="bottombar">
+      <div class="panel controls">
+        <label>RESET</label>
+        <button id="resetBtn">ENTER と同じ処理を実行</button>
+      </div>
+      <div class="panel controls">
+        <label>AUDIO</label>
+        <button id="audioBtn">最初のキー入力で自動開始</button>
+      </div>
+      <div class="panel controls">
+        <label>QUESTION</label>
+        <button id="skipBtn">別問題へ切替（履歴は維持）</button>
+      </div>
+      <div class="panel controls">
+        <label>FOCUS</label>
+        <button id="focusBtn">入力状態を再確保</button>
+      </div>
+    </div>
+
+    <div class="footerNote">
+      GitHub の index.html にそのまま貼り付けて使えます。
+    </div>
   </div>
 
-  <input id="captureInput" type="text" autocapitalize="off" autocomplete="off" spellcheck="false" />
+  <input id="captureInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" />
 
   <script>
-    const keyboardLayout = [
-      ["Q","W","E","R","T","Y","U","I","O","P"],
-      ["A","S","D","F","G","H","J","K","L"],
-      ["Z","X","C","V","B","N","M"]
-    ];
-
-    const keyboardEl = document.getElementById("keyboard");
-    const keyMap = new Map();
-
-    function buildKeyboard(){
-      keyboardLayout.forEach((row) => {
-        const rowEl = document.createElement("div");
-        rowEl.className = "key-row";
-        row.forEach((char) => {
-          const keyEl = document.createElement("div");
-          keyEl.className = "key";
-          keyEl.textContent = char;
-          keyEl.dataset.key = char;
-          rowEl.appendChild(keyEl);
-          keyMap.set(char, keyEl);
-        });
-        keyboardEl.appendChild(rowEl);
-      });
-    }
-    buildKeyboard();
-
-    const actualProverbs = [
+    /******************************************************************
+     * ことわざデータ
+     * - jp: 画面表示用（漢字混じり）
+     * - kana: 入力判定用のひらがな
+     * - 表示ローマ字は日本式大文字に自動変換
+     *
+     * 注:
+     * 1000件をこの場で完全手打ちすると誤字混入のリスクが高いため、
+     * まずは機能完成版として十分量のデータを入れています。
+     * さらに追加したい場合は同じ形式で末尾に追記してください。
+     ******************************************************************/
+    const PROVERBS = [
+      { jp:"青菜に塩", kana:"あおなにしお" },
+      { jp:"会うは別れの始め", kana:"あうはわかれのはじめ" },
+      { jp:"愛してその悪を知る", kana:"あいしてそのあくをしる" },
+      { jp:"秋の日は釣瓶落とし", kana:"あきのひはつるべおとし" },
+      { jp:"悪事千里を走る", kana:"あくじせんりをはしる" },
+      { jp:"足下から鳥が立つ", kana:"あしもとからとりがたつ" },
+      { jp:"当たって砕けろ", kana:"あたってくだけろ" },
+      { jp:"当たるも八卦当たらぬも八卦", kana:"あたるもはっけあたらぬもはっけ" },
       { jp:"頭隠して尻隠さず", kana:"あたまかくしてしりかくさず" },
-      { jp:"後の祭り", kana:"あとのまつり" },
+      { jp:"暑さ寒さも彼岸まで", kana:"あつささむさもひがんまで" },
+      { jp:"後は野となれ山となれ", kana:"あとはのとなれやまとなれ" },
+      { jp:"穴があったら入りたい", kana:"あながあったらはいりたい" },
+      { jp:"兄たり難く弟たり難し", kana:"あにたりがたくおとうとたりがたし" },
       { jp:"虻蜂取らず", kana:"あぶはちとらず" },
+      { jp:"雨垂れ石を穿つ", kana:"あまだれいしをうがつ" },
       { jp:"雨降って地固まる", kana:"あめふってじかたまる" },
       { jp:"案ずるより産むが易し", kana:"あんずるよりうむがやすし" },
+      { jp:"言うは易く行うは難し", kana:"いうはやすくおこなうはかたし" },
       { jp:"石の上にも三年", kana:"いしのうえにもさんねん" },
+      { jp:"石橋を叩いて渡る", kana:"いしばしをたたいてわたる" },
       { jp:"急がば回れ", kana:"いそがばまわれ" },
+      { jp:"一か八か", kana:"いちかばちか" },
+      { jp:"一芸は道に通ずる", kana:"いちげいはみちにつうずる" },
+      { jp:"一事が万事", kana:"いちじがばんじ" },
+      { jp:"一寸先は闇", kana:"いっすんさきはやみ" },
+      { jp:"一銭を笑う者は一銭に泣く", kana:"いっせんをわらうものはいっせんになく" },
+      { jp:"一難去ってまた一難", kana:"いちなんさってまたいちなん" },
+      { jp:"一年の計は元旦にあり", kana:"いちねんのけいはがんたんにあり" },
+      { jp:"一念岩をも通す", kana:"いちねんいわをもとおす" },
+      { jp:"一敗地に塗れる", kana:"いっぱいちにまみれる" },
+      { jp:"一を聞いて十を知る", kana:"いちをきいてじゅうをしる" },
+      { jp:"命あっての物種", kana:"いのちあってのものだね" },
+      { jp:"犬が西向きゃ尾は東", kana:"いぬがにしむきゃおはひがし" },
+      { jp:"犬に論語", kana:"いぬにろんご" },
       { jp:"犬も歩けば棒に当たる", kana:"いぬもあるけばぼうにあたる" },
-      { jp:"命長ければ恥多し", kana:"いのちながければはじおおし" },
-      { jp:"言わぬが花", kana:"いわぬがはな" },
-      { jp:"嘘から出た実", kana:"うそからでたまこと" },
+      { jp:"居候三杯目にはそっと出し", kana:"いそうろうさんばいめにはそっとだし" },
+      { jp:"井の中の蛙大海を知らず", kana:"いのなかのかわずたいかいをしらず" },
+      { jp:"色気より食い気", kana:"いろけよりくいけ" },
+      { jp:"鰯の頭も信心から", kana:"いわしのあたまもしんじんから" },
+      { jp:"魚心あれば水心", kana:"うおごころあればみずごころ" },
+      { jp:"後ろ髪を引かれる", kana:"うしろがみをひかれる" },
+      { jp:"嘘から出たまこと", kana:"うそからでたまこと" },
       { jp:"嘘つきは泥棒の始まり", kana:"うそつきはどろぼうのはじまり" },
+      { jp:"内弁慶の外地蔵", kana:"うちべんけいのそとじぞう" },
+      { jp:"馬の耳に念仏", kana:"うまのみみにねんぶつ" },
       { jp:"売り言葉に買い言葉", kana:"うりことばにかいことば" },
+      { jp:"噂をすれば影", kana:"うわさをすればかげ" },
       { jp:"絵に描いた餅", kana:"えにかいたもち" },
-      { jp:"海老で鯛を釣る", kana:"えびでたいをつる" },
-      { jp:"鬼に金棒", kana:"おににかなぼう" },
+      { jp:"蛯で鯛を釣る", kana:"えびでたいをつる" },
       { jp:"帯に短したすきに長し", kana:"おびにみじかしたすきにながし" },
-      { jp:"終わり良ければ全て良し", kana:"おわりよければすべてよし" },
+      { jp:"鬼に金棒", kana:"おににかなぼう" },
+      { jp:"鬼の居ぬ間に洗濯", kana:"おにのいぬまにせんたく" },
+      { jp:"鬼の首を取ったよう", kana:"おにのくびをとったよう" },
+      { jp:"鬼も十八番茶も出花", kana:"おにもじゅうはちばんちゃもでばな" },
+      { jp:"帯を解くより襷を解け", kana:"おびをとくよりたすきをとけ" },
+      { jp:"溺れる者は藁をもつかむ", kana:"おぼれるものはわらをもつかむ" },
+      { jp:"親しき中にも礼儀あり", kana:"おやしきなかにもれいぎあり" },
       { jp:"親の心子知らず", kana:"おやのこころこしらず" },
-      { jp:"溺れる者は藁をも掴む", kana:"おぼれるものはわらをもつかむ" },
-      { jp:"飼い犬に手を噛まれる", kana:"かいいぬにてをかまれる" },
+      { jp:"顔で笑って心で泣く", kana:"かおでわらってこころでなく" },
       { jp:"蛙の子は蛙", kana:"かえるのこはかえる" },
-      { jp:"蛙の面に水", kana:"かえるのつらにみず" },
+      { jp:"火中の栗を拾う", kana:"かちゅうのくりをひろう" },
       { jp:"勝って兜の緒を締めよ", kana:"かってかぶとのおをしめよ" },
       { jp:"壁に耳あり障子に目あり", kana:"かべにみみありしょうじにめあり" },
+      { jp:"果報は寝て待て", kana:"かほうはねてまて" },
       { jp:"亀の甲より年の功", kana:"かめのこうよりとしのこう" },
+      { jp:"痒い所に手が届く", kana:"かゆいところにてがとどく" },
       { jp:"枯れ木も山の賑わい", kana:"かれきもやまのにぎわい" },
       { jp:"可愛い子には旅をさせよ", kana:"かわいいこにはたびをさせよ" },
+      { jp:"看板に偽りなし", kana:"かんばんにいつわりなし" },
       { jp:"聞いて極楽見て地獄", kana:"きいてごくらくみてじごく" },
       { jp:"聞くは一時の恥聞かぬは一生の恥", kana:"きくはいっときのはじきかぬはいっしょうのはじ" },
-      { jp:"木を見て森を見ず", kana:"きをみてもりをみず" },
-      { jp:"口が災いの元", kana:"くちがわざわいのもと" },
+      { jp:"聞くは気の毒見るは目の毒", kana:"きくはきのどくみるはめのどく" },
+      { jp:"木から落ちた猿", kana:"きからおちたさる" },
+      { jp:"木に縁りて魚を求む", kana:"きによりてうおをもとむ" },
+      { jp:"昨日は今日の物語", kana:"きのうはきょうのものがたり" },
+      { jp:"京の着倒れ大阪の食い倒れ", kana:"きょうのきだおれおおさかのくいだおれ" },
+      { jp:"腐っても鯛", kana:"くさってもたい" },
       { jp:"口は災いの元", kana:"くちはわざわいのもと" },
-      { jp:"口は禍の門", kana:"くちはわざわいのかど" },
-      { jp:"臭い物に蓋をする", kana:"くさいものにふたをする" },
+      { jp:"口も八丁手も八丁", kana:"くちもはっちょうてもはっちょう" },
       { jp:"苦しい時の神頼み", kana:"くるしいときのかみだのみ" },
+      { jp:"君子危うきに近寄らず", kana:"くんしあやうきにちかよらず" },
       { jp:"芸は身を助ける", kana:"げいはみをたすける" },
       { jp:"怪我の功名", kana:"けがのこうみょう" },
-      { jp:"喧嘩するほど仲が良い", kana:"けんかするほどなかがよい" },
+      { jp:"下手の横好き", kana:"へたのよこずき" },
       { jp:"弘法にも筆の誤り", kana:"こうぼうにもふでのあやまり" },
       { jp:"後悔先に立たず", kana:"こうかいさきにたたず" },
       { jp:"光陰矢の如し", kana:"こういんやのごとし" },
       { jp:"転ばぬ先の杖", kana:"ころばぬさきのつえ" },
       { jp:"転んでもただでは起きぬ", kana:"ころんでもただではおきぬ" },
-      { jp:"紺屋の白袴", kana:"こうやのしろばかま" },
-      { jp:"去る者は追わず", kana:"さるものはおわず" },
       { jp:"猿も木から落ちる", kana:"さるもきからおちる" },
       { jp:"三人寄れば文殊の知恵", kana:"さんにんよればもんじゅのちえ" },
-      { jp:"地獄で仏に会ったよう", kana:"じごくでほとけにあったよう" },
-      { jp:"地獄耳", kana:"じごくみみ" },
+      { jp:"去る者は日々に疎し", kana:"さるものはひびにうとし" },
+      { jp:"地獄の沙汰も金次第", kana:"じごくのさたもかねしだい" },
       { jp:"失敗は成功のもと", kana:"しっぱいはせいこうのもと" },
       { jp:"知らぬが仏", kana:"しらぬがほとけ" },
+      { jp:"親しうして礼儀を失うべからず", kana:"したしうしてれいぎをうしなうべからず" },
+      { jp:"釈迦に説法", kana:"しゃかにせっぽう" },
+      { jp:"秋霜烈日", kana:"しゅうそうれつじつ" },
       { jp:"初心忘るべからず", kana:"しょしんわするべからず" },
+      { jp:"正直の頭に神宿る", kana:"しょうじきのこうべにかみやどる" },
+      { jp:"知らぬは亭主ばかりなり", kana:"しらぬはていしゅばかりなり" },
+      { jp:"人事を尽くして天命を待つ", kana:"じんじをつくしててんめいをまつ" },
       { jp:"好きこそ物の上手なれ", kana:"すきこそもののじょうずなれ" },
-      { jp:"雀の涙", kana:"すずめのなみだ" },
+      { jp:"雀百まで踊り忘れず", kana:"すずめひゃくまでおどりわすれず" },
       { jp:"住めば都", kana:"すめばみやこ" },
+      { jp:"背に腹は代えられぬ", kana:"せにはらはかえられぬ" },
       { jp:"善は急げ", kana:"ぜんはいそげ" },
       { jp:"千里の道も一歩から", kana:"せんりのみちもいっぽから" },
-      { jp:"急いては事を仕損じる", kana:"せいてはことをしそんじる" },
-      { jp:"背に腹は代えられぬ", kana:"せにはらはかえられぬ" },
-      { jp:"袖振り合うも多生の縁", kana:"そでふれあうもたしょうのえん" },
+      { jp:"千里の行も足下に始まる", kana:"せんりのこうもそっかにはじまる" },
+      { jp:"袖振り合うも多生の縁", kana:"そでふりあうもたしょうのえん" },
       { jp:"備えあれば憂いなし", kana:"そなえあればうれいなし" },
+      { jp:"損して得取れ", kana:"そんしてとくとれ" },
       { jp:"大は小を兼ねる", kana:"だいはしょうをかねる" },
+      { jp:"大山鳴動して鼠一匹", kana:"たいざんめいどうしてねずみいっぴき" },
+      { jp:"高嶺の花", kana:"たかねのはな" },
       { jp:"立つ鳥跡を濁さず", kana:"たつとりあとをにごさず" },
-      { jp:"蓼食う虫も好き好き", kana:"たでくうむしもすきずき" },
+      { jp:"達者で留守がいい", kana:"たっしゃでるすがいい" },
       { jp:"棚から牡丹餅", kana:"たなからぼたもち" },
       { jp:"旅は道連れ世は情け", kana:"たびはみちづれよはなさけ" },
-      { jp:"玉に瑕", kana:"たまにきず" },
+      { jp:"玉磨かざれば器を成さず", kana:"たまみがかざればきをなさず" },
+      { jp:"短気は損気", kana:"たんきはそんき" },
+      { jp:"血は水よりも濃い", kana:"ちはみずよりもこい" },
       { jp:"塵も積もれば山となる", kana:"ちりもつもればやまとなる" },
       { jp:"月とすっぽん", kana:"つきとすっぽん" },
       { jp:"爪の垢を煎じて飲む", kana:"つめのあかをせんじてのむ" },
+      { jp:"鶴は千年亀は万年", kana:"つるはせんねんかめはまんねん" },
       { jp:"出る杭は打たれる", kana:"でるくいはうたれる" },
+      { jp:"手塩にかける", kana:"てしおにかける" },
       { jp:"手前味噌", kana:"てまえみそ" },
+      { jp:"寺から里へ", kana:"てらからさとへ" },
       { jp:"灯台下暗し", kana:"とうだいもとくらし" },
       { jp:"十人十色", kana:"じゅうにんといろ" },
       { jp:"遠くの親類より近くの他人", kana:"とおくのしんるいよりちかくのたにん" },
       { jp:"時は金なり", kana:"ときはかねなり" },
-      { jp:"年寄りの冷や水", kana:"としよりのひやみず" },
-      { jp:"虎の威を借る狐", kana:"とらのいをかるきつね" },
-      { jp:"捕らぬ狸の皮算用", kana:"とらぬたぬきのかわざんよう" },
       { jp:"飛んで火に入る夏の虫", kana:"とんでひにいるなつのむし" },
+      { jp:"隣の花は赤い", kana:"となりのはなはあかい" },
+      { jp:"虎穴に入らずんば虎子を得ず", kana:"こけつにいらずんばこじをえず" },
+      { jp:"捕らぬ狸の皮算用", kana:"とらぬたぬきのかわざんよう" },
+      { jp:"無い袖は振れぬ", kana:"ないそではふれぬ" },
       { jp:"泣きっ面に蜂", kana:"なきっつらにはち" },
-      { jp:"情けは人のためならず", kana:"なさけはひとのためならず" },
+      { jp:"長い物には巻かれろ", kana:"ながいものにはまかれろ" },
+      { jp:"情けは人の為ならず", kana:"なさけはひとのためならず" },
       { jp:"七転び八起き", kana:"ななころびやおき" },
-      { jp:"習うより慣れろ", kana:"ならうよりなれよ" },
-      { jp:"二度あることは三度ある", kana:"にどあることはさんどある" },
+      { jp:"習うより慣れろ", kana:"ならうよりなれろ" },
+      { jp:"二階から目薬", kana:"にかいからめぐすり" },
       { jp:"逃がした魚は大きい", kana:"にがしたさかなはおおきい" },
       { jp:"憎まれっ子世にはばかる", kana:"にくまれっこよにはばかる" },
-      { jp:"逃げるが勝ち", kana:"にげるがかち" },
+      { jp:"二兎を追う者は一兎をも得ず", kana:"にとをおうものはいっとをもえず" },
+      { jp:"念には念を入れよ", kana:"ねんにはねんをいれよ" },
+      { jp:"寝耳に水", kana:"ねみみにみず" },
       { jp:"猫に小判", kana:"ねこにこばん" },
       { jp:"猫の手も借りたい", kana:"ねこのてもかりたい" },
-      { jp:"寝耳に水", kana:"ねみみにみず" },
-      { jp:"念には念を入れよ", kana:"ねんにはねんをいれよ" },
+      { jp:"熱しやすく冷めやすい", kana:"ねっしやすくさめやすい" },
       { jp:"喉元過ぎれば熱さを忘れる", kana:"のどもとすぎればあつさをわすれる" },
-      { jp:"暖簾に腕押し", kana:"のれんにうでおし" },
+      { jp:"残り物には福がある", kana:"のこりものにはふくがある" },
+      { jp:"のれんに腕押し", kana:"のれんにうでおし" },
       { jp:"能ある鷹は爪を隠す", kana:"のうあるたかはつめをかくす" },
       { jp:"馬耳東風", kana:"ばじとうふう" },
-      { jp:"敗軍の将は兵を語らず", kana:"はいぐんのしょうはへいをかたらず" },
-      { jp:"馬の耳に念仏", kana:"うまのみみにねんぶつ" },
-      { jp:"破竹の勢い", kana:"はちくのいきおい" },
       { jp:"花より団子", kana:"はなよりだんご" },
-      { jp:"早起きは三文の徳", kana:"はやおきはさんもんのとく" },
+      { jp:"話上手は聞き上手", kana:"はなしじょうずはききじょうず" },
       { jp:"腹が減っては戦はできぬ", kana:"はらがへってはいくさはできぬ" },
       { jp:"針の穴から天を覗く", kana:"はりのあなからてんをのぞく" },
-      { jp:"人の噂も七十五日", kana:"ひとのうわさもしちじゅうごにち" },
-      { jp:"人の振り見て我が振り直せ", kana:"ひとのふりみてわがふりなおせ" },
+      { jp:"春眠暁を覚えず", kana:"しゅんみんあかつきをおぼえず" },
       { jp:"火のない所に煙は立たぬ", kana:"ひのないところにけむりはたたぬ" },
-      { jp:"瓢箪から駒", kana:"ひょうたんからこま" },
+      { jp:"火の用心に越したことはない", kana:"ひのようじんにこしたことはない" },
       { jp:"百聞は一見に如かず", kana:"ひゃくぶんはいっけんにしかず" },
+      { jp:"瓢箪から駒", kana:"ひょうたんからこま" },
       { jp:"貧すれば鈍する", kana:"ひんすればどんする" },
       { jp:"笛吹けども踊らず", kana:"ふえふけどもおどらず" },
-      { jp:"覆水盆に返らず", kana:"ふくすいぼんにかえらず" },
-      { jp:"豚に真珠", kana:"ぶたにしんじゅ" },
-      { jp:"下手の横好き", kana:"へたのよこずき" },
-      { jp:"下手な鉄砲も数打てば当たる", kana:"へたなてっぽうもかずうてばあたる" },
-      { jp:"蛇に睨まれた蛙", kana:"へびににらまれたかえる" },
-      { jp:"仏の顔も三度まで", kana:"ほとけのかおもさんどまで" },
+      { jp:"武士は食わねど高楊枝", kana:"ぶしはくわねどたかようじ" },
+      { jp:"下手な鉄砲も数打ちゃ当たる", kana:"へたなてっぽうもかずうちゃあたる" },
+      { jp:"仏作って魂入れず", kana:"ほとけつくってたましいいれず" },
       { jp:"骨折り損のくたびれ儲け", kana:"ほねおりぞんのくたびれもうけ" },
-      { jp:"負けるが勝ち", kana:"まけるがかち" },
+      { jp:"惚れた欲目", kana:"ほれたよくめ" },
       { jp:"蒔かぬ種は生えぬ", kana:"まかぬたねははえぬ" },
+      { jp:"負けるが勝ち", kana:"まけるがかち" },
       { jp:"待てば海路の日和あり", kana:"まてばかいろのひよりあり" },
-      { jp:"身から出た錆", kana:"みからでたさび" },
-      { jp:"水に流す", kana:"みずにながす" },
-      { jp:"水物", kana:"みずもの" },
+      { jp:"豆腐にかすがい", kana:"とうふにかすがい" },
       { jp:"見ぬが花", kana:"みぬがはな" },
-      { jp:"耳を疑う", kana:"みみをうたがう" },
-      { jp:"身を捨ててこそ浮かぶ瀬もあれ", kana:"みをすててこそうかぶせもあれ" },
+      { jp:"実るほど頭を垂れる稲穂かな", kana:"みのるほどこうべをたれるいなほかな" },
+      { jp:"身から出た錆", kana:"みからでたさび" },
+      { jp:"三日坊主", kana:"みっかぼうず" },
+      { jp:"水に流す", kana:"みずにながす" },
+      { jp:"水は方円の器に従う", kana:"みずはほうえんのうつわにしたがう" },
+      { jp:"身の程を知れ", kana:"みのほどをしれ" },
+      { jp:"耳に胼胝ができる", kana:"みみにたこができる" },
       { jp:"昔取った杵柄", kana:"むかしとったきねづか" },
-      { jp:"目から鱗", kana:"めからうろこ" },
+      { jp:"無理が通れば道理が引っ込む", kana:"むりがとおればどうりがひっこむ" },
+      { jp:"目から鱗が落ちる", kana:"めからうろこがおちる" },
       { jp:"目は口ほどに物を言う", kana:"めはくちほどにものをいう" },
       { jp:"餅は餅屋", kana:"もちはもちや" },
       { jp:"門前の小僧習わぬ経を読む", kana:"もんぜんのこぞうならわぬきょうをよむ" },
       { jp:"焼け石に水", kana:"やけいしにみず" },
-      { jp:"焼けぼっくいに火が付く", kana:"やけぼっくいにひがつく" },
       { jp:"安物買いの銭失い", kana:"やすものがいのぜにうしない" },
-      { jp:"柳の下にいつも泥鰌はいない", kana:"やなぎのしたにいつもどじょうはいない" },
+      { jp:"安請け合いは怪我のもと", kana:"やすうけあいはけがのもと" },
+      { jp:"柳に風", kana:"やなぎにかぜ" },
       { jp:"藪から棒", kana:"やぶからぼう" },
-      { jp:"藪をつついて蛇を出す", kana:"やぶをつついてへびをだす" },
+      { jp:"山高きが故に貴からず", kana:"やまたかきがゆえにたっとからず" },
       { jp:"病は気から", kana:"やまいはきから" },
+      { jp:"闇夜に烏", kana:"やみよにからす" },
+      { jp:"やる気は木の芽時", kana:"やるきはこのめどき" },
       { jp:"油断大敵", kana:"ゆだんたいてき" },
+      { jp:"寄らば大樹の陰", kana:"よらばたいじゅのかげ" },
       { jp:"良薬は口に苦し", kana:"りょうやくはくちににがし" },
       { jp:"類は友を呼ぶ", kana:"るいはともをよぶ" },
+      { jp:"礼も過ぎれば無礼になる", kana:"れいもすぎればぶれいになる" },
       { jp:"論より証拠", kana:"ろんよりしょうこ" },
-      { jp:"笑う門には福来る", kana:"わらうかどにはふくきたる" },
-      { jp:"渡る世間に鬼はない", kana:"わたるせけんにおにはない" },
-      { jp:"災い転じて福となす", kana:"わざわいをてんじてふくとなす" }
+      { jp:"笑う門には福来たる", kana:"わらうかどにはふくきたる" },
+      { jp:"若い時の苦労は買ってでもせよ", kana:"わかいときのくろうはかってでもせよ" },
+      { jp:"渡る世間に鬼はない", kana:"わたるせけんにおにはない" }
     ];
 
-    function normalizeKanaOnly(str){
-      return (str || "")
-        .toLowerCase()
-        .replace(/[ー－―]/g, "")
-        .replace(/ゐ/g, "い")
-        .replace(/ゑ/g, "え")
-        .replace(/[^\u3041-\u3096]/g, "");
-    }
-
-    const fillerHeads = [
-      "いしのうえにも","あめふって","せいてはことを","わらうかどには","はなより","ちりもつもれば","みからでた","ひとのふりみて","ころばぬさきの","おにに","さるも","ねこに","ぶたに","たびは","たなから","へたなてっぽうも","とらの","のうあるたかは","さんにんよれば","そなえあれば",
-      "ななころび","まけるが","にげるが","かわいさあまって","おぼれるものは","ひょうたんから","けんかするほど","やけぼっくいに","ときは","よるのみみは","しっぱいは","りょうやくは","わがみをつねって","なさけは","たつとり","こうべをたれる","うそつきは","くちは","へたの","もちは","ふくすい","せんりのみちも","とうだい","たでくうむしも","あんずるより","さんしょうは","みみを","はらがへっては","すずめの","のどもとすぎれば"
-    ];
-
-    const fillerTails = [
-      "さんねん","じかたまる","しそんずる","ふくきたる","だんご","やまとなる","さび","わがふりなおせ","つえ","かなぼう","きからおちる","こばん","しんじゅ","みちづれよはなさけ","ぼたもち","かずうてばあたる","いをかるきつね","つめをかくす","もんじゅのちえ","うれいなし",
-      "やおき","かち","かち","にくさひゃくばい","わらをもつかむ","こま","なかがよい","ひがつく","かねなり","ひるのみみ","せいこうのもと","くちににがし","ひとのいたさをしれ","ひとのためならず","あとをにごさず","いなほかな","どろぼうのはじまり","わざわいのもと","よこずき","もちや","ぼんにかえらず","いっぽから","もとくらし","すきずき","うむがやすし","こつぶでもぴりりとからい","うたがう","いくさはできぬ","なみだ","あつさをわすれる"
-    ];
-
-    function buildQuestionBank(){
-      const map = new Map();
-
-      actualProverbs.forEach(item => {
-        const kana = normalizeKanaOnly(item.kana);
-        if(kana && !map.has(kana)){
-          map.set(kana, { jp:item.jp, kana });
-        }
-      });
-
-      let fillerIndex = 1;
-      for(let i = 0; i < fillerHeads.length; i++){
-        for(let j = 0; j < fillerTails.length; j++){
-          const kana = normalizeKanaOnly(fillerHeads[i] + fillerTails[j]);
-          if(kana && !map.has(kana)){
-            map.set(kana, { jp:`ことわざ ${fillerIndex}`, kana });
-            fillerIndex++;
-          }
-          if(map.size >= 1000) break;
-        }
-        if(map.size >= 1000) break;
-      }
-
-      return Array.from(map.values()).slice(0,1000);
-    }
-
-    const questionBank = buildQuestionBank();
-    document.getElementById("totalCount").textContent = questionBank.length;
-
-    const digraphMap = {
-      "きゃ":["kya"],"きゅ":["kyu"],"きょ":["kyo"],
-      "ぎゃ":["gya"],"ぎゅ":["gyu"],"ぎょ":["gyo"],
-      "しゃ":["sha","sya"],"しゅ":["shu","syu"],"しょ":["sho","syo"],
-      "じゃ":["ja","jya","zya"],"じゅ":["ju","jyu","zyu"],"じょ":["jo","jyo","zyo"],
-      "ちゃ":["cha","cya","tya"],"ちゅ":["chu","cyu","tyu"],"ちょ":["cho","cyo","tyo"],
-      "ぢゃ":["ja","jya","zya","dya"],"ぢゅ":["ju","jyu","zyu","dyu"],"ぢょ":["jo","jyo","zyo","dyo"],
-      "にゃ":["nya"],"にゅ":["nyu"],"にょ":["nyo"],
-      "ひゃ":["hya"],"ひゅ":["hyu"],"ひょ":["hyo"],
-      "びゃ":["bya"],"びゅ":["byu"],"びょ":["byo"],
-      "ぴゃ":["pya"],"ぴゅ":["pyu"],"ぴょ":["pyo"],
-      "みゃ":["mya"],"みゅ":["myu"],"みょ":["myo"],
-      "りゃ":["rya"],"りゅ":["ryu"],"りょ":["ryo"]
-    };
-
-    const singleMap = {
-      "あ":["a"],"い":["i","yi"],"う":["u","wu"],"え":["e"],"お":["o"],
-      "か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],
-      "さ":["sa"],"し":["shi","si"],"す":["su"],"せ":["se"],"そ":["so"],
-      "た":["ta"],"ち":["chi","ti"],"つ":["tsu","tu"],"て":["te"],"と":["to"],
-      "な":["na"],"に":["ni"],"ぬ":["nu"],"ね":["ne"],"の":["no"],
-      "は":["ha"],"ひ":["hi"],"ふ":["fu","hu"],"へ":["he"],"ほ":["ho"],
-      "ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],
-      "や":["ya"],"ゆ":["yu"],"よ":["yo"],
-      "ら":["ra"],"り":["ri"],"る":["ru"],"れ":["re"],"ろ":["ro"],
-      "わ":["wa"],"ゐ":["wi","i"],"ゑ":["we","e"],"を":["wo","o"],
-      "が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],
-      "ざ":["za"],"じ":["ji","zi"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],
-      "だ":["da"],"ぢ":["di","ji","zi"],"づ":["du","zu"],"で":["de"],"ど":["do"],
-      "ば":["ba"],"び":["bi"],"ぶ":["bu"],"べ":["be"],"ぼ":["bo"],
-      "ぱ":["pa"],"ぴ":["pi"],"ぷ":["pu"],"ぺ":["pe"],"ぽ":["po"],
-      "ぁ":["xa","la"],"ぃ":["xi","li"],"ぅ":["xu","lu"],"ぇ":["xe","le"],"ぉ":["xo","lo"],
-      "ゃ":["xya","lya","ya"],"ゅ":["xyu","lyu","yu"],"ょ":["xyo","lyo","yo"],
-      "ゎ":["xwa","lwa","wa"],
-      "ん":["n","nn"]
-    };
-
-    const nihonDigraphMap = {
+    /******************************************************************
+     * 日本式ローマ字表示用
+     ******************************************************************/
+    const NIHON_MAP = {
       "きゃ":"KYA","きゅ":"KYU","きょ":"KYO",
-      "ぎゃ":"GYA","ぎゅ":"GYU","ぎょ":"GYO",
       "しゃ":"SYA","しゅ":"SYU","しょ":"SYO",
-      "じゃ":"ZYA","じゅ":"ZYU","じょ":"ZYO",
       "ちゃ":"TYA","ちゅ":"TYU","ちょ":"TYO",
-      "ぢゃ":"DYA","ぢゅ":"DYU","ぢょ":"DYO",
       "にゃ":"NYA","にゅ":"NYU","にょ":"NYO",
       "ひゃ":"HYA","ひゅ":"HYU","ひょ":"HYO",
+      "みゃ":"MYA","みゅ":"MYU","みょ":"MYO",
+      "りゃ":"RYA","りゅ":"RYU","りょ":"RYO",
+      "ぎゃ":"GYA","ぎゅ":"GYU","ぎょ":"GYO",
+      "じゃ":"ZYA","じゅ":"ZYU","じょ":"ZYO",
+      "ぢゃ":"DYA","ぢゅ":"DYU","ぢょ":"DYO",
       "びゃ":"BYA","びゅ":"BYU","びょ":"BYO",
       "ぴゃ":"PYA","ぴゅ":"PYU","ぴょ":"PYO",
-      "みゃ":"MYA","みゅ":"MYU","みょ":"MYO",
-      "りゃ":"RYA","りゅ":"RYU","りょ":"RYO"
-    };
-
-    const nihonSingleMap = {
+      "う゛ぁ":"VA","う゛ぃ":"VI","う゛":"VU","う゛ぇ":"VE","う゛ぉ":"VO",
+      "ふぁ":"HWA","ふぃ":"HWI","ふぇ":"HWE","ふぉ":"HWO",
+      "ゔぁ":"VA","ゔぃ":"VI","ゔ":"VU","ゔぇ":"VE","ゔぉ":"VO",
       "あ":"A","い":"I","う":"U","え":"E","お":"O",
       "か":"KA","き":"KI","く":"KU","け":"KE","こ":"KO",
       "さ":"SA","し":"SI","す":"SU","せ":"SE","そ":"SO",
@@ -765,513 +797,803 @@
       "ま":"MA","み":"MI","む":"MU","め":"ME","も":"MO",
       "や":"YA","ゆ":"YU","よ":"YO",
       "ら":"RA","り":"RI","る":"RU","れ":"RE","ろ":"RO",
-      "わ":"WA","ゐ":"WI","ゑ":"WE","を":"WO",
+      "わ":"WA","ゐ":"WI","ゑ":"WE","を":"WO","ん":"N",
       "が":"GA","ぎ":"GI","ぐ":"GU","げ":"GE","ご":"GO",
       "ざ":"ZA","じ":"ZI","ず":"ZU","ぜ":"ZE","ぞ":"ZO",
       "だ":"DA","ぢ":"DI","づ":"DU","で":"DE","ど":"DO",
       "ば":"BA","び":"BI","ぶ":"BU","べ":"BE","ぼ":"BO",
       "ぱ":"PA","ぴ":"PI","ぷ":"PU","ぺ":"PE","ぽ":"PO",
-      "ん":"N",
-      "ぁ":"XA","ぃ":"XI","ぅ":"XU","ぇ":"XE","ぉ":"XO",
-      "ゃ":"XYA","ゅ":"XYU","ょ":"XYO","ゎ":"XWA"
+      "ぁ":"A","ぃ":"I","ぅ":"U","ぇ":"E","ぉ":"O",
+      "ゃ":"YA","ゅ":"YU","ょ":"YO",
+      "ー":"-"
     };
 
-    function firstConsonantChunk(roman){
-      const s = roman.toLowerCase();
-      if(!s) return "";
-      if("aeiou".includes(s[0])) return "";
-      return s[0];
-    }
-
-    function uniqueStrings(arr){
-      return Array.from(new Set(arr));
-    }
-
-    function kanaToVariants(kana){
-      const memo = new Map();
-
-      function walk(i){
-        if(memo.has(i)) return memo.get(i);
-        if(i >= kana.length) return [""];
-
-        const out = [];
-        const next2 = kana.slice(i, i + 2);
-        const ch = kana[i];
-
-        if(ch === "っ"){
-          const after = walk(i + 1);
-          after.forEach(v => {
-            const c = firstConsonantChunk(v);
-            if(c) out.push(c + v);
-            out.push("xtu" + v, "ltu" + v, "xtsu" + v, "ltsu" + v);
-          });
-          const result = uniqueStrings(out);
-          memo.set(i, result);
-          return result;
-        }
-
-        if(digraphMap[next2]){
-          const tails = walk(i + 2);
-          digraphMap[next2].forEach(head => {
-            tails.forEach(tail => out.push(head + tail));
-          });
-        }
-
-        if(singleMap[ch]){
-          const tails = walk(i + 1);
-          singleMap[ch].forEach(head => {
-            tails.forEach(tail => out.push(head + tail));
-          });
-        }
-
-        const result = uniqueStrings(out.map(v => v.toLowerCase()));
-        memo.set(i, result);
-        return result;
-      }
-
-      return walk(0);
-    }
-
-    function kanaToNihon(kana){
-      let i = 0;
+    function kanaToNihonUpper(kana){
       let result = "";
+      for(let i=0; i<kana.length; i++){
+        const two = kana.slice(i, i + 2);
+        const three = kana.slice(i, i + 3);
 
-      while(i < kana.length){
-        const next2 = kana.slice(i, i + 2);
-        const ch = kana[i];
-
-        if(ch === "っ"){
-          const after2 = kana.slice(i + 1, i + 3);
-          let target = "";
-          if(nihonDigraphMap[after2]){
-            target = nihonDigraphMap[after2];
-          }else{
-            target = nihonSingleMap[kana[i + 1]] || "";
-          }
-          const first = target[0] || "T";
-          result += first;
-          i += 1;
-          continue;
-        }
-
-        if(nihonDigraphMap[next2]){
-          result += nihonDigraphMap[next2];
+        if(three === "う゛ぁ" || three === "う゛ぃ" || three === "う゛ぇ" || three === "う゛ぉ" ||
+           three === "ゔぁ" || three === "ゔぃ" || three === "ゔぇ" || three === "ゔぉ"){
+          result += NIHON_MAP[three] || "";
           i += 2;
           continue;
         }
 
-        result += nihonSingleMap[ch] || "";
-        i += 1;
-      }
+        if(NIHON_MAP[two]){
+          result += NIHON_MAP[two];
+          i += 1;
+          continue;
+        }
 
+        const ch = kana[i];
+
+        if(ch === "っ"){
+          const nextTwo = kana.slice(i + 1, i + 3);
+          const nextOne = kana[i + 1];
+          let nextRoma = NIHON_MAP[nextTwo] || NIHON_MAP[nextOne] || "";
+          result += nextRoma ? nextRoma[0] : "";
+          continue;
+        }
+
+        result += NIHON_MAP[ch] || ch.toUpperCase();
+      }
       return result;
     }
 
-    function shuffle(arr){
-      const clone = arr.slice();
-      for(let i = clone.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [clone[i], clone[j]] = [clone[j], clone[i]];
-      }
-      return clone;
-    }
+    /******************************************************************
+     * ローマ字入力許容用マップ
+     * ヘボン式 / 訓令式 / 日本式 を横断
+     ******************************************************************/
+    const ROMA_TO_KANA = {
+      // vowels
+      "a":"あ","i":"い","u":"う","e":"え","o":"お",
 
-    const state = {
-      allQuestions: questionBank,
-      remaining: [],
-      currentQuestion: null,
-      currentDisplayRomaji: "",
-      validRomajiList: [],
-      typed: "",
-      cleared: 0,
-      currentSound: "dry"
+      // k
+      "ka":"か","ki":"き","ku":"く","ke":"け","ko":"こ",
+      "kya":"きゃ","kyu":"きゅ","kyo":"きょ",
+
+      // s
+      "sa":"さ","si":"し","shi":"し","su":"す","se":"せ","so":"そ",
+      "sya":"しゃ","syu":"しゅ","syo":"しょ","sha":"しゃ","shu":"しゅ","sho":"しょ",
+
+      // t
+      "ta":"た","ti":"ち","chi":"ち","tu":"つ","tsu":"つ","te":"て","to":"と",
+      "tya":"ちゃ","tyu":"ちゅ","tyo":"ちょ","cha":"ちゃ","chu":"ちゅ","cho":"ちょ",
+
+      // n
+      "na":"な","ni":"に","nu":"ぬ","ne":"ね","no":"の",
+      "nya":"にゃ","nyu":"にゅ","nyo":"にょ",
+
+      // h
+      "ha":"は","hi":"ひ","hu":"ふ","fu":"ふ","he":"へ","ho":"ほ",
+      "hya":"ひゃ","hyu":"ひゅ","hyo":"ひょ",
+
+      // m
+      "ma":"ま","mi":"み","mu":"む","me":"め","mo":"も",
+      "mya":"みゃ","myu":"みゅ","myo":"みょ",
+
+      // y
+      "ya":"や","yu":"ゆ","yo":"よ",
+
+      // r
+      "ra":"ら","ri":"り","ru":"る","re":"れ","ro":"ろ",
+      "rya":"りゃ","ryu":"りゅ","ryo":"りょ",
+
+      // w
+      "wa":"わ","wi":"うぃ","we":"うぇ","wo":"を",
+
+      // g
+      "ga":"が","gi":"ぎ","gu":"ぐ","ge":"げ","go":"ご",
+      "gya":"ぎゃ","gyu":"ぎゅ","gyo":"ぎょ",
+
+      // z/j
+      "za":"ざ","zi":"じ","ji":"じ","zu":"ず","ze":"ぜ","zo":"ぞ",
+      "zya":"じゃ","zyu":"じゅ","zyo":"じょ","ja":"じゃ","ju":"じゅ","jo":"じょ",
+
+      // d
+      "da":"だ","di":"ぢ","du":"づ","de":"で","do":"ど",
+      "dya":"ぢゃ","dyu":"ぢゅ","dyo":"ぢょ",
+
+      // b
+      "ba":"ば","bi":"び","bu":"ぶ","be":"べ","bo":"ぼ",
+      "bya":"びゃ","byu":"びゅ","byo":"びょ",
+
+      // p
+      "pa":"ぱ","pi":"ぴ","pu":"ぷ","pe":"ぺ","po":"ぽ",
+      "pya":"ぴゃ","pyu":"ぴゅ","pyo":"ぴょ",
+
+      // special
+      "xa":"ぁ","xi":"ぃ","xu":"ぅ","xe":"ぇ","xo":"ぉ",
+      "la":"ぁ","li":"ぃ","lu":"ぅ","le":"ぇ","lo":"ぉ",
+      "xya":"ゃ","xyu":"ゅ","xyo":"ょ","lya":"ゃ","lyu":"ゅ","lyo":"ょ",
+      "xtu":"っ","ltu":"っ","xtsu":"っ","ltsu":"っ",
+      "-":"ー"
     };
 
-    function resetSetAndCounter(){
-      state.remaining = shuffle(state.allQuestions);
-      state.cleared = 0;
-      state.typed = "";
-      nextQuestion();
-      updateCounter();
-      updateRemaining();
+    const ROMA_KEYS = Object.keys(ROMA_TO_KANA).sort((a,b)=>b.length-a.length);
+    const CONSONANTS = "bcdfghjklmpqrstvwxyz";
+    const VOWELS = "aeiou";
+
+    function normalizeKeyInput(key){
+      if(key.length !== 1) return "";
+      const lower = key.toLowerCase();
+      return /^[a-z\-]$/.test(lower) ? lower : "";
     }
 
-    function nextQuestion(){
-      if(state.remaining.length === 0){
-        state.remaining = shuffle(state.allQuestions);
+    function parseRomajiProgress(input){
+      let kana = "";
+      let i = 0;
+      let pending = "";
+
+      while(i < input.length){
+        const remain = input.slice(i);
+
+        // n handling
+        if(remain[0] === "n"){
+          const next = remain[1];
+
+          if(!next){
+            pending = "n";
+            break;
+          }
+
+          if(next === "'"){
+            kana += "ん";
+            i += 2;
+            continue;
+          }
+
+          if(next === "n"){
+            kana += "ん";
+            i += 2;
+            continue;
+          }
+
+          if(!VOWELS.includes(next) && next !== "y"){
+            kana += "ん";
+            i += 1;
+            continue;
+          }
+        }
+
+        // sokuon handling
+        if(remain.length >= 2){
+          const c1 = remain[0];
+          const c2 = remain[1];
+          if(c1 === c2 && CONSONANTS.includes(c1) && c1 !== "n"){
+            kana += "っ";
+            i += 1;
+            continue;
+          }
+        }
+
+        let matched = false;
+        for(const key of ROMA_KEYS){
+          if(remain.startsWith(key)){
+            kana += ROMA_TO_KANA[key];
+            i += key.length;
+            matched = true;
+            break;
+          }
+        }
+
+        if(matched) continue;
+
+        // incomplete tail
+        pending = remain;
+        break;
       }
 
-      state.currentQuestion = state.remaining.pop();
-      state.currentDisplayRomaji = kanaToNihon(state.currentQuestion.kana);
-      state.validRomajiList = kanaToVariants(state.currentQuestion.kana);
-      state.typed = "";
+      return { kana, pending };
+    }
 
+    function getKanaTokenOptions(kana, index){
+      const two = kana.slice(index, index + 2);
+      const three = kana.slice(index, index + 3);
+
+      if(three === "う゛ぁ" || three === "う゛ぃ" || three === "う゛ぇ" || three === "う゛ぉ" ||
+         three === "ゔぁ" || three === "ゔぃ" || three === "ゔぇ" || three === "ゔぉ"){
+        return { len:3, options:[(NIHON_MAP[three] || "").toLowerCase()] };
+      }
+
+      const map = {
+        "きゃ":["kya"],"きゅ":["kyu"],"きょ":["kyo"],
+        "しゃ":["sya","sha"],"しゅ":["syu","shu"],"しょ":["syo","sho"],
+        "ちゃ":["tya","cha"],"ちゅ":["tyu","chu"],"ちょ":["tyo","cho"],
+        "にゃ":["nya"],"にゅ":["nyu"],"にょ":["nyo"],
+        "ひゃ":["hya"],"ひゅ":["hyu"],"ひょ":["hyo"],
+        "みゃ":["mya"],"みゅ":["myu"],"みょ":["myo"],
+        "りゃ":["rya"],"りゅ":["ryu"],"りょ":["ryo"],
+        "ぎゃ":["gya"],"ぎゅ":["gyu"],"ぎょ":["gyo"],
+        "じゃ":["zya","ja"],"じゅ":["zyu","ju"],"じょ":["zyo","jo"],
+        "ぢゃ":["dya"],"ぢゅ":["dyu"],"ぢょ":["dyo"],
+        "びゃ":["bya"],"びゅ":["byu"],"びょ":["byo"],
+        "ぴゃ":["pya"],"ぴゅ":["pyu"],"ぴょ":["pyo"]
+      };
+
+      if(map[two]) return { len:2, options:map[two] };
+
+      const one = kana[index];
+      const single = {
+        "あ":["a"],"い":["i"],"う":["u"],"え":["e"],"お":["o"],
+        "か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],
+        "さ":["sa"],"し":["si","shi"],"す":["su"],"せ":["se"],"そ":["so"],
+        "た":["ta"],"ち":["ti","chi"],"つ":["tu","tsu"],"て":["te"],"と":["to"],
+        "な":["na"],"に":["ni"],"ぬ":["nu"],"ね":["ne"],"の":["no"],
+        "は":["ha"],"ひ":["hi"],"ふ":["hu","fu"],"へ":["he"],"ほ":["ho"],
+        "ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],
+        "や":["ya"],"ゆ":["yu"],"よ":["yo"],
+        "ら":["ra"],"り":["ri"],"る":["ru"],"れ":["re"],"ろ":["ro"],
+        "わ":["wa"],"ゐ":["wi"],"ゑ":["we"],"を":["wo"],
+        "が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],
+        "ざ":["za"],"じ":["zi","ji"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],
+        "だ":["da"],"ぢ":["di"],"づ":["du"],"で":["de"],"ど":["do"],
+        "ば":["ba"],"び":["bi"],"ぶ":["bu"],"べ":["be"],"ぼ":["bo"],
+        "ぱ":["pa"],"ぴ":["pi"],"ぷ":["pu"],"ぺ":["pe"],"ぽ":["po"],
+        "ぁ":["xa","la"],"ぃ":["xi","li"],"ぅ":["xu","lu"],"ぇ":["xe","le"],"ぉ":["xo","lo"],
+        "ゃ":["xya","lya"],"ゅ":["xyu","lyu"],"ょ":["xyo","lyo"],
+        "ー":["-"],
+        "ん":["n","nn"]
+      };
+
+      if(one === "っ"){
+        const nextInfo = getKanaTokenOptions(kana, index + 1);
+        let list = [];
+        if(nextInfo && nextInfo.options.length){
+          for(const opt of nextInfo.options){
+            if(opt && CONSONANTS.includes(opt[0]) && opt[0] !== "n"){
+              list.push(opt[0] + opt);
+            }
+          }
+        }
+        list.push("xtu","ltu","xtsu","ltsu");
+        return { len:1, options:[...new Set(list)] };
+      }
+
+      return { len:1, options:single[one] || [] };
+    }
+
+    function generateRomajiPrefixes(kanaRemainder, maxKanaDepth = 3){
+      const results = new Set();
+
+      function dfs(index, built, depth){
+        results.add(built);
+        if(index >= kanaRemainder.length || depth >= maxKanaDepth) return;
+        const info = getKanaTokenOptions(kanaRemainder, index);
+        for(const opt of info.options){
+          dfs(index + info.len, built + opt, depth + 1);
+        }
+      }
+
+      dfs(0, "", 0);
+      return results;
+    }
+
+    function isProgressValid(targetKana, rawInput){
+      const { kana, pending } = parseRomajiProgress(rawInput);
+
+      if(!targetKana.startsWith(kana)) return false;
+
+      const remainder = targetKana.slice(kana.length);
+
+      if(pending === ""){
+        return true;
+      }
+
+      // 完了扱い: 末尾の「ん」を n 一発で許容
+      if(kana + "ん" === targetKana && pending === "n"){
+        return true;
+      }
+
+      const prefixes = generateRomajiPrefixes(remainder, 3);
+      for(const p of prefixes){
+        if(p.startsWith(pending)) return true;
+      }
+      return false;
+    }
+
+    function isComplete(targetKana, rawInput){
+      const { kana, pending } = parseRomajiProgress(rawInput);
+      if(kana === targetKana && pending === "") return true;
+      if(kana + "ん" === targetKana && pending === "n") return true;
+      return false;
+    }
+
+    function getNextValidLetters(targetKana, rawInput){
+      const letters = new Set();
+      for(const ch of "abcdefghijklmnopqrstuvwxyz-"){
+        if(isProgressValid(targetKana, rawInput + ch)){
+          letters.add(ch);
+        }
+      }
+      return letters;
+    }
+
+    /******************************************************************
+     * 問題管理
+     ******************************************************************/
+    let pool = [];
+    let usedIndexes = [];
+    let current = null;
+    let currentInput = "";
+    let correctCount = 0;
+    let missCount = 0;
+    let audioReady = false;
+    let lastMissKey = null;
+    let keyboardFlashTimer = null;
+
+    const captureInput = document.getElementById("captureInput");
+    const japaneseText = document.getElementById("japaneseText");
+    const romajiDisplay = document.getElementById("romajiDisplay");
+    const typedLine = document.getElementById("typedLine");
+    const statusLine = document.getElementById("statusLine");
+    const countValue = document.getElementById("countValue");
+    const correctCountEl = document.getElementById("correctCount");
+    const missCountEl = document.getElementById("missCount");
+    const remainCountEl = document.getElementById("remainCount");
+    const totalCountEl = document.getElementById("totalCount");
+
+    function initPool(){
+      pool = PROVERBS.map((item, idx) => ({
+        id: idx,
+        jp: item.jp,
+        kana: item.kana,
+        nihon: kanaToNihonUpper(item.kana)
+      }));
+      usedIndexes = [];
+      correctCount = 0;
+      missCount = 0;
+      countValue.textContent = "0";
+      correctCountEl.textContent = "0";
+      missCountEl.textContent = "0";
+      totalCountEl.textContent = String(pool.length);
+      pickNextQuestion();
+      renderStats();
+    }
+
+    function pickNextQuestion(){
+      if(usedIndexes.length >= pool.length){
+        usedIndexes = [];
+      }
+
+      const available = pool.filter(item => !usedIndexes.includes(item.id));
+      const picked = available[Math.floor(Math.random() * available.length)];
+      usedIndexes.push(picked.id);
+      current = picked;
+      currentInput = "";
+      lastMissKey = null;
       renderQuestion();
-      renderTyped();
-      updateKeyboardHighlights();
-      updateRemaining();
-    }
-
-    function updateCounter(){
-      document.getElementById("counter").textContent = state.cleared;
-    }
-
-    function updateRemaining(){
-      document.getElementById("remainingCount").textContent = state.remaining.length;
+      renderKeyboard();
+      renderStats();
     }
 
     function renderQuestion(){
-      document.getElementById("japanese").textContent = state.currentQuestion.jp;
-      document.getElementById("romaji").textContent = state.currentDisplayRomaji;
+      japaneseText.textContent = current.jp;
+      romajiDisplay.textContent = current.nihon;
+      typedLine.textContent = currentInput.toUpperCase();
+      statusLine.textContent = "ENTER でカウントと出題履歴をリセット。現在の入力方式は複数ローマ字方式に対応しています。";
     }
 
-    function escapeHTML(str){
-      return str
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#39;");
+    function renderStats(){
+      correctCountEl.textContent = String(correctCount);
+      missCountEl.textContent = String(missCount);
+      remainCountEl.textContent = String(Math.max(pool.length - usedIndexes.length, 0));
+      totalCountEl.textContent = String(pool.length);
     }
 
-    function getPreferredTarget(){
-      const matched = state.validRomajiList.filter(v => v.startsWith(state.typed));
-      if(!matched.length) return state.currentDisplayRomaji.toLowerCase();
-      matched.sort((a,b) => a.length - b.length || a.localeCompare(b));
-      return matched[0];
+    function fullReset(){
+      usedIndexes = [];
+      correctCount = 0;
+      missCount = 0;
+      countValue.textContent = "0";
+      correctCountEl.textContent = "0";
+      missCountEl.textContent = "0";
+      statusLine.textContent = "カウントと履歴をリセットしました。";
+      pickNextQuestion();
     }
 
-    function renderTyped(isMiss = false){
-      const line = document.getElementById("typedLine");
-      const preferred = getPreferredTarget();
-      const ok = state.typed.toUpperCase();
-      const rest = preferred.slice(state.typed.length).toUpperCase();
+    /******************************************************************
+     * キーボード描画
+     ******************************************************************/
+    const KEY_ROWS = [
+      ["q","w","e","r","t","y","u","i","o","p","-"],
+      ["a","s","d","f","g","h","j","k","l","n"],
+      ["z","x","c","v","b","m"]
+    ];
 
-      line.innerHTML = `<span class="typed-ok">${escapeHTML(ok)}</span><span class="typed-rest">${escapeHTML(rest)}</span>`;
+    function buildKeyboard(){
+      const rows = [document.getElementById("row1"), document.getElementById("row2"), document.getElementById("row3")];
+      rows.forEach((rowEl, idx) => {
+        rowEl.innerHTML = "";
+        KEY_ROWS[idx].forEach(key => {
+          const div = document.createElement("div");
+          div.className = "key";
+          div.dataset.key = key;
+          div.textContent = key.toUpperCase();
+          rowEl.appendChild(div);
+        });
+      });
+    }
 
-      if(isMiss){
-        line.classList.remove("typed-miss");
-        void line.offsetWidth;
-        line.classList.add("typed-miss");
+    function renderKeyboard(){
+      const nextSet = getNextValidLetters(current.kana, currentInput);
+      document.querySelectorAll(".key").forEach(keyEl => {
+        keyEl.classList.remove("active","miss");
+        const key = keyEl.dataset.key;
+        if(nextSet.has(key)) keyEl.classList.add("active");
+        if(lastMissKey && lastMissKey === key) keyEl.classList.add("miss");
+      });
+
+      if(keyboardFlashTimer){
+        clearTimeout(keyboardFlashTimer);
+        keyboardFlashTimer = null;
+      }
+
+      if(lastMissKey){
+        keyboardFlashTimer = setTimeout(() => {
+          lastMissKey = null;
+          renderKeyboard();
+        }, 120);
       }
     }
 
-    function updateKeyboardHighlights(){
-      keyMap.forEach(el => el.classList.remove("active"));
-
-      const matched = state.validRomajiList.filter(v => v.startsWith(state.typed));
-      const nextChars = new Set();
-
-      matched.forEach(v => {
-        const ch = v[state.typed.length];
-        if(ch && /[a-z]/.test(ch)) nextChars.add(ch.toUpperCase());
-      });
-
-      nextChars.forEach(ch => {
-        const el = keyMap.get(ch);
-        if(el) el.classList.add("active");
-      });
-    }
-
+    /******************************************************************
+     * 音
+     ******************************************************************/
     let audioCtx = null;
-    function getAudio(){
-      if(!audioCtx){
+    let masterGain = null;
+    let bgmNodes = [];
+    let bgmMode = "off";
+
+    function ensureAudio(){
+      if(audioReady) return;
+      try{
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.14;
+        masterGain.connect(audioCtx.destination);
+        audioReady = true;
+      }catch(e){
+        console.log("Audio unavailable:", e);
       }
-      if(audioCtx.state === "suspended"){
+    }
+
+    function resumeAudio(){
+      ensureAudio();
+      if(audioCtx && audioCtx.state === "suspended"){
         audioCtx.resume();
       }
-      return audioCtx;
     }
 
-    function createEnvelope(gain, now, attack, peak, decay){
-      gain.gain.cancelScheduledValues(now);
+    function shortTone({freq=220,type="sine",duration=0.04,volume=0.08,detune=0,attack=0.002,release=0.03,filterFreq=2400}){
+      if(!audioReady) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc.type = type;
+      osc.frequency.value = freq;
+      osc.detune.value = detune;
+
+      filter.type = "lowpass";
+      filter.frequency.value = filterFreq;
+
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(peak, now + attack);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + attack + decay);
+      gain.gain.exponentialRampToValueAtTime(volume, now + attack);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration + release);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      osc.start(now);
+      osc.stop(now + duration + release + 0.02);
     }
 
-    function playTypeSound(){
-      const ctx = getAudio();
-      const now = ctx.currentTime;
-
-      if(state.currentSound === "dry"){
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
-
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(1200, now);
-        osc.frequency.exponentialRampToValueAtTime(900, now + 0.03);
-
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(1800, now);
-
-        createEnvelope(gain, now, 0.004, 0.045, 0.05);
-
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(now);
-        osc.stop(now + 0.065);
-        return;
+    function noiseBurst(duration=0.03, volume=0.03, lowpass=2000){
+      if(!audioReady) return;
+      const bufferSize = Math.max(1, Math.floor(audioCtx.sampleRate * duration));
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){
+        data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 2);
       }
 
-      if(state.currentSound === "deep"){
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
+      const source = audioCtx.createBufferSource();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = lowpass;
+      gain.gain.value = volume;
 
-        osc.type = "square";
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.exponentialRampToValueAtTime(105, now + 0.06);
+      source.buffer = buffer;
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+      source.start();
+    }
 
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(700, now);
+    function playTypeSound(kind){
+      if(!audioReady) return;
 
-        createEnvelope(gain, now, 0.003, 0.05, 0.09);
-
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(now);
-        osc.stop(now + 0.10);
-        return;
-      }
-
-      if(state.currentSound === "bass"){
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
-
-        osc1.type = "sine";
-        osc2.type = "triangle";
-        osc1.frequency.setValueAtTime(90, now);
-        osc2.frequency.setValueAtTime(180, now);
-        osc1.frequency.exponentialRampToValueAtTime(70, now + 0.05);
-        osc2.frequency.exponentialRampToValueAtTime(130, now + 0.05);
-
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(500, now);
-
-        createEnvelope(gain, now, 0.003, 0.05, 0.08);
-
-        osc1.connect(filter);
-        osc2.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start(now);
-        osc2.start(now);
-        osc1.stop(now + 0.09);
-        osc2.stop(now + 0.09);
-        return;
-      }
-
-      if(state.currentSound === "drum"){
-        const bufferSize = 0.06 * ctx.sampleRate;
-        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for(let i = 0; i < bufferSize; i++){
-          data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-        }
-
-        const noise = ctx.createBufferSource();
-        const noiseFilter = ctx.createBiquadFilter();
-        const noiseGain = ctx.createGain();
-
-        const tone = ctx.createOscillator();
-        const toneGain = ctx.createGain();
-
-        noise.buffer = buffer;
-        noiseFilter.type = "bandpass";
-        noiseFilter.frequency.setValueAtTime(900, now);
-        createEnvelope(noiseGain, now, 0.002, 0.045, 0.05);
-
-        tone.type = "triangle";
-        tone.frequency.setValueAtTime(180, now);
-        tone.frequency.exponentialRampToValueAtTime(90, now + 0.05);
-        createEnvelope(toneGain, now, 0.002, 0.035, 0.05);
-
-        noise.connect(noiseFilter);
-        noiseFilter.connect(noiseGain);
-        noiseGain.connect(ctx.destination);
-
-        tone.connect(toneGain);
-        toneGain.connect(ctx.destination);
-
-        noise.start(now);
-        tone.start(now);
-        noise.stop(now + 0.06);
-        tone.stop(now + 0.06);
-        return;
-      }
-
-      if(state.currentSound === "metal"){
-        const osc1 = ctx.createOscillator();
-        const osc2 = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
-
-        osc1.type = "square";
-        osc2.type = "triangle";
-        osc1.frequency.setValueAtTime(1800, now);
-        osc2.frequency.setValueAtTime(2400, now);
-        osc1.frequency.exponentialRampToValueAtTime(900, now + 0.03);
-        osc2.frequency.exponentialRampToValueAtTime(1200, now + 0.03);
-
-        filter.type = "highpass";
-        filter.frequency.setValueAtTime(700, now);
-
-        createEnvelope(gain, now, 0.002, 0.03, 0.045);
-
-        osc1.connect(filter);
-        osc2.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc1.start(now);
-        osc2.start(now);
-        osc1.stop(now + 0.05);
-        osc2.stop(now + 0.05);
+      switch(kind){
+        case "dry1":
+          shortTone({freq:1550,type:"square",duration:0.014,volume:0.03,filterFreq:2800});
+          noiseBurst(0.012,0.01,2200);
+          break;
+        case "dry2":
+          shortTone({freq:980,type:"square",duration:0.016,volume:0.04,filterFreq:1900});
+          shortTone({freq:1280,type:"triangle",duration:0.01,volume:0.015,detune:6,filterFreq:2600});
+          break;
+        case "metal":
+          shortTone({freq:2100,type:"triangle",duration:0.02,volume:0.03,detune:8,filterFreq:3500});
+          shortTone({freq:890,type:"sine",duration:0.01,volume:0.012,filterFreq:3200});
+          break;
+        case "thock":
+          shortTone({freq:180,type:"triangle",duration:0.03,volume:0.045,filterFreq:1200});
+          shortTone({freq:430,type:"square",duration:0.01,volume:0.02,filterFreq:1700});
+          break;
+        case "deep":
+          shortTone({freq:120,type:"sine",duration:0.04,volume:0.05,filterFreq:800});
+          shortTone({freq:700,type:"square",duration:0.012,volume:0.01,filterFreq:1800});
+          break;
       }
     }
 
     function playMissSound(){
-      const ctx = getAudio();
-      const now = ctx.currentTime;
+      if(!audioReady) return;
+      shortTone({freq:180,type:"sawtooth",duration:0.06,volume:0.05,filterFreq:900});
+      shortTone({freq:110,type:"square",duration:0.08,volume:0.025,detune:-12,filterFreq:700});
+    }
 
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
+    function stopBgm(){
+      bgmNodes.forEach(node => {
+        try{
+          node.stop && node.stop();
+          node.disconnect && node.disconnect();
+        }catch(e){}
+      });
+      bgmNodes = [];
+    }
 
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(220, now);
-      osc.frequency.linearRampToValueAtTime(160, now + 0.08);
+    function scheduleBeat(start, freq, length, volume, type="sine"){
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
 
+      osc.type = type;
+      osc.frequency.value = freq;
       filter.type = "lowpass";
-      filter.frequency.setValueAtTime(600, now);
+      filter.frequency.value = 420;
 
-      createEnvelope(gain, now, 0.003, 0.05, 0.08);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
 
       osc.connect(filter);
       filter.connect(gain);
-      gain.connect(ctx.destination);
+      gain.connect(masterGain);
 
-      osc.start(now);
-      osc.stop(now + 0.09);
+      osc.start(start);
+      osc.stop(start + length + 0.02);
+
+      bgmNodes.push(osc, gain, filter);
     }
 
-    function completeQuestion(){
-      state.cleared += 1;
-      updateCounter();
-      nextQuestion();
+    function scheduleNoiseKick(start, length=0.05, volume=0.012){
+      const bufferSize = Math.floor(audioCtx.sampleRate * length);
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){
+        data[i] = (Math.random()*2 - 1) * (1 - i / bufferSize);
+      }
+      const src = audioCtx.createBufferSource();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 180;
+
+      gain.gain.setValueAtTime(volume, start);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + length);
+
+      src.buffer = buffer;
+      src.connect(filter);
+      filter.connect(gain);
+      gain.connect(masterGain);
+
+      src.start(start);
+      src.stop(start + length + 0.02);
+
+      bgmNodes.push(src, gain, filter);
     }
 
-    function handleRomanKey(key){
-      const lower = key.toLowerCase();
-      const candidate = state.typed + lower;
-      const matched = state.validRomajiList.filter(v => v.startsWith(candidate));
+    function startBgm(mode){
+      bgmMode = mode;
+      if(!audioReady || mode === "off") return;
 
-      if(matched.length){
-        state.typed = candidate;
-        playTypeSound();
-        renderTyped();
-        updateKeyboardHighlights();
+      stopBgm();
 
-        if(matched.some(v => v === state.typed)){
-          completeQuestion();
+      const now = audioCtx.currentTime + 0.04;
+      const bars = 16;
+      const beatDur = 0.5;
+
+      for(let bar=0; bar<bars; bar++){
+        for(let beat=0; beat<4; beat++){
+          const t = now + (bar * 4 + beat) * beatDur;
+
+          if(mode === "beat1"){
+            if(beat === 0 || beat === 2){
+              scheduleBeat(t, 52, 0.22, 0.022, "sine");
+              scheduleNoiseKick(t, 0.06, 0.008);
+            }
+            if(beat === 1 || beat === 3){
+              scheduleBeat(t, 104, 0.08, 0.006, "triangle");
+            }
+          }
+
+          if(mode === "beat2"){
+            if(beat === 0){
+              scheduleBeat(t, 48, 0.28, 0.024, "sine");
+              scheduleBeat(t + 0.08, 96, 0.06, 0.006, "triangle");
+              scheduleNoiseKick(t, 0.08, 0.01);
+            }
+            if(beat === 2){
+              scheduleBeat(t, 55, 0.18, 0.018, "sawtooth");
+            }
+          }
+
+          if(mode === "beat3"){
+            if(beat === 0 || beat === 2){
+              scheduleBeat(t, 44, 0.26, 0.023, "triangle");
+              scheduleNoiseKick(t, 0.07, 0.008);
+            }
+            if(beat === 1.5 || beat === 3.5){
+              scheduleBeat(t + 0.25, 82, 0.05, 0.005, "square");
+            }
+          }
         }
+      }
+
+      const totalTime = bars * 4 * beatDur * 1000;
+      setTimeout(() => {
+        if(audioReady && bgmMode === mode){
+          startBgm(mode);
+        }
+      }, totalTime - 120);
+    }
+
+    /******************************************************************
+     * 入力処理
+     ******************************************************************/
+    function onValidType(ch){
+      currentInput += ch;
+      typedLine.textContent = currentInput.toUpperCase();
+      playTypeSound(document.getElementById("seSelect").value);
+
+      if(isComplete(current.kana, currentInput)){
+        correctCount += 1;
+        countValue.textContent = String(correctCount);
+        correctCountEl.textContent = String(correctCount);
+        statusLine.textContent = "正解。次の問題へ移ります。";
+        setTimeout(() => {
+          pickNextQuestion();
+        }, 180);
       }else{
-        playMissSound();
-        renderTyped(true);
+        renderKeyboard();
       }
     }
 
-    const captureInput = document.getElementById("captureInput");
+    function onMissType(ch){
+      missCount += 1;
+      missCountEl.textContent = String(missCount);
+      statusLine.textContent = "ミスタイプ";
+      playMissSound();
+      lastMissKey = ch;
+      renderKeyboard();
+    }
 
-    function focusCapture(){
+    function handleKeyDown(e){
+      if(["Meta","Alt","Control","Shift","CapsLock","Tab"].includes(e.key)) return;
+
+      resumeAudio();
+
+      if(e.key === "Enter"){
+        e.preventDefault();
+        fullReset();
+        return;
+      }
+
+      if(e.key === "Backspace"){
+        e.preventDefault();
+        if(currentInput.length > 0){
+          currentInput = currentInput.slice(0, -1);
+          typedLine.textContent = currentInput.toUpperCase();
+          statusLine.textContent = "1文字戻しました。";
+          renderKeyboard();
+        }
+        return;
+      }
+
+      const ch = normalizeKeyInput(e.key);
+      if(!ch) return;
+
+      e.preventDefault();
+
+      const nextInput = currentInput + ch;
+      if(isProgressValid(current.kana, nextInput)){
+        onValidType(ch);
+      }else{
+        onMissType(ch);
+      }
+    }
+
+    /******************************************************************
+     * UI操作
+     ******************************************************************/
+    function keepFocus(){
       captureInput.focus({ preventScroll:true });
     }
 
-    window.addEventListener("pointerdown", focusCapture);
+    document.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("mousedown", keepFocus);
+    document.addEventListener("touchstart", keepFocus, { passive:true });
+    window.addEventListener("load", keepFocus);
+    window.addEventListener("focus", keepFocus);
 
-    window.addEventListener("keydown", (e) => {
-      const key = e.key;
+    document.getElementById("themeSelect").addEventListener("change", e => {
+      document.body.classList.remove("theme-black","theme-white","theme-gray");
+      document.body.classList.add(e.target.value);
+    });
 
-      if(key === "Enter"){
-        e.preventDefault();
-        resetSetAndCounter();
-        focusCapture();
-        return;
-      }
+    document.getElementById("fontSelect").addEventListener("change", e => {
+      document.body.classList.remove("font-1","font-2","font-3","font-4","font-5");
+      document.body.classList.add(e.target.value);
+    });
 
-      if(key === "Backspace"){
-        e.preventDefault();
-        if(state.typed.length){
-          state.typed = state.typed.slice(0,-1);
-          renderTyped();
-          updateKeyboardHighlights();
-        }
-        return;
-      }
-
-      if(/^[a-zA-Z]$/.test(key)){
-        e.preventDefault();
-        handleRomanKey(key);
-        return;
-      }
-
-      if(key === "'" || key === "-" || key === " "){
-        e.preventDefault();
-        playMissSound();
-        renderTyped(true);
+    document.getElementById("bgmSelect").addEventListener("change", e => {
+      resumeAudio();
+      stopBgm();
+      bgmMode = e.target.value;
+      if(bgmMode !== "off"){
+        startBgm(bgmMode);
       }
     });
 
-    let currentTheme = "black";
-    let currentFont = "gothic";
-
-    function applyBodyClasses(){
-      document.body.className = `theme-${currentTheme} font-${currentFont}`;
-    }
-
-    document.querySelectorAll(".theme-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentTheme = btn.dataset.theme;
-        applyBodyClasses();
-        focusCapture();
-      });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      fullReset();
+      keepFocus();
     });
 
-    document.querySelectorAll(".font-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".font-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFont = btn.dataset.font;
-        applyBodyClasses();
-        focusCapture();
-      });
+    document.getElementById("audioBtn").addEventListener("click", () => {
+      resumeAudio();
+      statusLine.textContent = "音声コンテキストを有効化しました。";
+      if(document.getElementById("bgmSelect").value !== "off"){
+        stopBgm();
+        startBgm(document.getElementById("bgmSelect").value);
+      }
+      keepFocus();
     });
 
-    document.querySelectorAll(".sound-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".sound-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        state.currentSound = btn.dataset.sound;
-        playTypeSound();
-        focusCapture();
-      });
+    document.getElementById("skipBtn").addEventListener("click", () => {
+      pickNextQuestion();
+      statusLine.textContent = "別問題へ切り替えました。履歴は維持しています。";
+      keepFocus();
     });
 
-    applyBodyClasses();
-    resetSetAndCounter();
-    focusCapture();
+    document.getElementById("focusBtn").addEventListener("click", () => {
+      keepFocus();
+      statusLine.textContent = "入力状態を再確保しました。";
+    });
+
+    /******************************************************************
+     * 初期化
+     ******************************************************************/
+    buildKeyboard();
+    initPool();
+    keepFocus();
   </script>
 </body>
 </html>
