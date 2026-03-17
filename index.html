@@ -340,13 +340,19 @@
           <option value="calm">CALM</option>
         </select>
       </div>
+
+      <div class="control">
+        <label for="groupSelect">GROUP</label>
+        <select id="groupSelect"></select>
+      </div>
     </div>
 
     <div class="stage">
       <div class="status-row">
         <div class="badge">問題数 <span id="counter" class="counter">1</span></div>
+        <div class="badge">グループ <span id="groupLabel" class="counter">1 / 50</span></div>
         <div class="badge">残り <span id="remainingCount">0</span></div>
-        <div class="badge">ENTERでカウントを0にして最初から</div>
+        <div class="badge">ENTERでこのグループを最初から / SPACEで再読み上げ</div>
       </div>
 
       <div class="main-display">
@@ -413,7 +419,7 @@
     </div>
 
     <div class="bottom-bar">
-      <div class="mini-panel">英単語表示 / 日本語訳表示 / 出題時に自動読み上げ</div>
+      <div class="mini-panel">英単語表示 / 日本語訳表示 / 出題時自動読み上げ / SPACEで再読み上げ</div>
       <div class="mini-panel warning" id="statusText">初回の打鍵で音声が有効になります</div>
     </div>
   </div>
@@ -421,7 +427,6 @@
   <script>
     /****************************************************************
      * 英単語データ
-     * seedを500問まで拡張し、出題順はランダム
      * 形式: { en: "english", ja: "日本語訳" }
      ****************************************************************/
     const wordSeeds = [
@@ -940,6 +945,16 @@
 
     const wordBank = buildQuestionBankTo500(wordSeeds);
 
+    function chunkArray(array, size) {
+      const groups = [];
+      for (let i = 0; i < array.length; i += size) {
+        groups.push(array.slice(i, i + size));
+      }
+      return groups;
+    }
+
+    const groupedWordBank = chunkArray(wordBank, 10);
+
     function shuffle(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -968,6 +983,8 @@
     const themeSelect = document.getElementById("themeSelect");
     const fontSelect = document.getElementById("fontSelect");
     const soundSelect = document.getElementById("soundSelect");
+    const groupSelect = document.getElementById("groupSelect");
+    const groupLabel = document.getElementById("groupLabel");
     const keyEls = [...document.querySelectorAll(".key")];
 
     let audioCtx = null;
@@ -980,6 +997,24 @@
     let justLoaded = true;
     let solveTimer = null;
     let speechEnabled = true;
+    let currentGroupIndex = 0;
+
+    /****************************************************************
+     * グループ初期化
+     ****************************************************************/
+    function populateGroupSelect() {
+      groupSelect.innerHTML = "";
+      groupedWordBank.forEach((_, index) => {
+        const option = document.createElement("option");
+        option.value = String(index);
+        option.textContent = `${index + 1}`;
+        groupSelect.appendChild(option);
+      });
+    }
+
+    function getCurrentGroupWords() {
+      return groupedWordBank[currentGroupIndex] || [];
+    }
 
     /****************************************************************
      * 出題管理
@@ -989,7 +1024,7 @@
         clearTimeout(solveTimer);
         solveTimer = null;
       }
-      remainingQuestions = shuffle([...wordBank]);
+      remainingQuestions = shuffle(getCurrentGroupWords());
       if (resetCounter) solvedCount = 0;
       pickNextQuestion();
     }
@@ -1001,14 +1036,14 @@
       }
 
       if (remainingQuestions.length === 0) {
-        remainingQuestions = shuffle([...wordBank]);
+        remainingQuestions = shuffle(getCurrentGroupWords());
       }
 
       currentQuestion = remainingQuestions.pop();
       currentTarget = currentQuestion.en.toLowerCase();
       typed = "";
 
-      jpText.textContent = currentQuestion.en.toUpperCase();
+      jpText.textContent = currentQuestion.en.toLowerCase();
       romaText.textContent = currentQuestion.ja;
       updateTypedView();
       updateCounter();
@@ -1025,11 +1060,12 @@
     function updateCounter() {
       counterEl.textContent = String(solvedCount);
       remainingCountEl.textContent = String(remainingQuestions.length);
+      groupLabel.textContent = `${currentGroupIndex + 1} / ${groupedWordBank.length}`;
     }
 
     function updateTypedView() {
-      const done = escapeHtml(typed.toUpperCase());
-      const rest = escapeHtml(currentTarget.slice(typed.length).toUpperCase());
+      const done = escapeHtml(typed);
+      const rest = escapeHtml(currentTarget.slice(typed.length));
       typedText.innerHTML = `<span class="done">${done}</span><span class="rest">${rest}</span>`;
     }
 
@@ -1082,16 +1118,22 @@
      * 読み上げ
      ****************************************************************/
     function speakCurrentWord() {
-      if (!speechEnabled || !("speechSynthesis" in window)) return;
+      if (!speechEnabled || !("speechSynthesis" in window) || !currentQuestion) return;
 
       try {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(currentQuestion.en);
+        const utterance = new SpeechSynthesisUtterance(currentQuestion.en.toLowerCase());
         utterance.lang = "en-US";
         utterance.rate = 0.92;
         utterance.pitch = 1.0;
         utterance.volume = 0.9;
         window.speechSynthesis.speak(utterance);
+        statusText.textContent = "読み上げ中";
+        setTimeout(() => {
+          if (statusText.textContent === "読み上げ中") {
+            statusText.textContent = "入力受付中";
+          }
+        }, 250);
       } catch (e) {
         // 読み上げ不可環境では何もしない
       }
@@ -1110,7 +1152,6 @@
 
     /****************************************************************
      * サウンド
-     * 落ち着いたシンプルな1パターンのみ
      ****************************************************************/
     function ensureAudio() {
       if (!audioCtx) {
@@ -1171,9 +1212,17 @@
       statusText.textContent = "入力受付中";
     }
 
+    function applyGroup(groupIndex, resetCounter = true) {
+      currentGroupIndex = Number(groupIndex);
+      groupSelect.value = String(currentGroupIndex);
+      localStorage.setItem("typing_group", String(currentGroupIndex));
+      resetQuestionCycle(resetCounter);
+    }
+
     themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
     fontSelect.addEventListener("change", () => applyFont(fontSelect.value));
     soundSelect.addEventListener("change", () => applySound(soundSelect.value));
+    groupSelect.addEventListener("change", () => applyGroup(groupSelect.value, true));
 
     /****************************************************************
      * キーボード入力
@@ -1193,6 +1242,7 @@
 
       if (key === " ") {
         e.preventDefault();
+        speakCurrentWord();
         return;
       }
 
@@ -1212,6 +1262,9 @@
     function init() {
       const savedTheme = localStorage.getItem("typing_theme") || "theme-black";
       const savedFont = localStorage.getItem("typing_font") || "font-gothic";
+      const savedGroup = Number(localStorage.getItem("typing_group") || "0");
+
+      populateGroupSelect();
 
       themeSelect.value = savedTheme;
       fontSelect.value = savedFont;
@@ -1221,7 +1274,10 @@
       applyFont(savedFont);
       applySound("calm");
 
-      resetQuestionCycle(false);
+      applyGroup(
+        Math.max(0, Math.min(savedGroup, groupedWordBank.length - 1)),
+        false
+      );
     }
 
     init();
