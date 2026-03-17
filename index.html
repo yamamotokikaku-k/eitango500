@@ -20,6 +20,8 @@
       --key-active:#f3f4f6;
       --key-active-text:#0f1114;
       --shadow:0 18px 48px rgba(0,0,0,.35);
+
+      --font-main:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
     }
 
     body.theme-black{
@@ -70,6 +72,26 @@
       --key-active-text:#2b3138;
     }
 
+    body.font-gothic{
+      --font-main:"Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif;
+    }
+
+    body.font-mincho{
+      --font-main:"Hiragino Mincho ProN","Yu Mincho","MS PMincho","Times New Roman",serif;
+    }
+
+    body.font-rounded{
+      --font-main:"Hiragino Maru Gothic ProN","Arial Rounded MT Bold","Yu Gothic UI","Meiryo",sans-serif;
+    }
+
+    body.font-classic{
+      --font-main:"BIZ UDPGothic","Yu Gothic","Meiryo",sans-serif;
+    }
+
+    body.font-modern{
+      --font-main:"Avenir Next","Helvetica Neue","Hiragino Sans","Yu Gothic UI",sans-serif;
+    }
+
     *{ box-sizing:border-box; }
 
     html,body{
@@ -78,14 +100,12 @@
       height:100%;
       background:var(--bg);
       color:var(--text);
-      font-family:
-        "Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",
-        system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      font-family:var(--font-main);
       overflow:hidden;
     }
 
     body{
-      transition:background .2s ease,color .2s ease;
+      transition:background .2s ease,color .2s ease,font-family .2s ease;
     }
 
     .app{
@@ -98,8 +118,8 @@
     }
 
     .board{
-      width:min(1100px,100%);
-      height:min(94vh,920px);
+      width:min(1180px,100%);
+      height:min(94vh,940px);
       background:linear-gradient(180deg,var(--panel),var(--panel-2));
       border:1px solid var(--line);
       border-radius:28px;
@@ -112,7 +132,7 @@
 
     .topbar{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:16px;
       flex-wrap:wrap;
@@ -124,39 +144,55 @@
       color:var(--sub);
       user-select:none;
       white-space:nowrap;
+      padding-top:6px;
     }
 
     .controls{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
+      justify-content:flex-end;
       gap:10px;
       flex-wrap:wrap;
     }
 
-    .theme-group{
+    .control-block{
       display:flex;
       align-items:center;
       gap:8px;
       background:rgba(255,255,255,.02);
       border:1px solid var(--line);
-      border-radius:999px;
+      border-radius:16px;
       padding:6px;
+      flex-wrap:wrap;
     }
 
-    .theme-btn{
+    .control-label{
+      font-size:12px;
+      color:var(--sub);
+      letter-spacing:.08em;
+      padding:0 6px;
+      user-select:none;
+    }
+
+    .theme-btn,
+    .font-btn,
+    .sound-btn{
       border:none;
       background:transparent;
       color:var(--sub);
       padding:10px 14px;
       border-radius:999px;
       cursor:pointer;
-      font-size:13px;
+      font-size:12px;
       font-weight:700;
       letter-spacing:.05em;
       transition:.15s ease;
+      white-space:nowrap;
     }
 
-    .theme-btn.active{
+    .theme-btn.active,
+    .font-btn.active,
+    .sound-btn.active{
       background:var(--accent);
       color:var(--key-active-text);
     }
@@ -166,6 +202,10 @@
       color:var(--sub);
       letter-spacing:.06em;
       user-select:none;
+      width:100%;
+      text-align:right;
+      padding-right:6px;
+      margin-top:2px;
     }
 
     .main{
@@ -188,11 +228,11 @@
     .japanese{
       margin-top:8px;
       text-align:center;
-      font-size:clamp(28px,4.2vw,50px);
+      font-size:clamp(28px,4vw,50px);
       font-weight:800;
-      letter-spacing:.04em;
-      line-height:1.35;
-      min-height:2.8em;
+      letter-spacing:.03em;
+      line-height:1.45;
+      min-height:3em;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -201,7 +241,7 @@
 
     .romaji{
       text-align:center;
-      font-size:clamp(18px,2.3vw,28px);
+      font-size:clamp(18px,2.2vw,28px);
       letter-spacing:.14em;
       color:var(--sub);
       min-height:2em;
@@ -210,7 +250,7 @@
     }
 
     .typed-line{
-      width:min(860px,100%);
+      width:min(900px,100%);
       min-height:56px;
       display:flex;
       align-items:center;
@@ -227,9 +267,7 @@
 
     .typed-ok{ color:var(--ok); }
     .typed-rest{ color:var(--text); opacity:.95; }
-    .typed-miss{
-      animation:flashMiss .18s linear 1;
-    }
+    .typed-miss{ animation:flashMiss .18s linear 1; }
 
     @keyframes flashMiss{
       0%{ transform:translateX(0); }
@@ -281,8 +319,6 @@
       box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);
     }
 
-    .key.wide{ width:92px; }
-    .key.extra-wide{ width:120px; }
     .key.active{
       background:var(--key-active);
       color:var(--key-active-text);
@@ -328,6 +364,12 @@
       top:-9999px;
     }
 
+    @media (max-width:1100px){
+      .mini-info{
+        text-align:left;
+      }
+    }
+
     @media (max-width:900px){
       .board{
         padding:14px 14px 16px;
@@ -339,8 +381,6 @@
         font-size:15px;
         border-radius:10px;
       }
-      .key.wide{ width:68px; }
-      .key.extra-wide{ width:92px; }
       .keyboard-wrap{ gap:12px; }
     }
 
@@ -348,6 +388,12 @@
       .topbar,
       .footer{
         justify-content:center;
+      }
+      .controls{
+        justify-content:center;
+      }
+      .mini-info{
+        text-align:center;
       }
       .counter{
         font-size:16px;
@@ -363,22 +409,47 @@
         font-size:12px;
         border-radius:8px;
       }
-      .key.wide{ width:50px; }
-      .key.extra-wide{ width:70px; }
+      .theme-btn,
+      .font-btn,
+      .sound-btn{
+        padding:8px 10px;
+        font-size:11px;
+      }
     }
   </style>
 </head>
-<body class="theme-black">
-  <div class="app" id="app">
+<body class="theme-black font-gothic">
+  <div class="app">
     <div class="board">
       <div class="topbar">
         <div class="title">KOTOWAZA TYPING</div>
+
         <div class="controls">
-          <div class="theme-group" aria-label="theme switch">
+          <div class="control-block" aria-label="theme switch">
+            <div class="control-label">COLOR</div>
             <button class="theme-btn active" data-theme="black">BLACK</button>
             <button class="theme-btn" data-theme="white">WHITE</button>
             <button class="theme-btn" data-theme="gray">GRAY</button>
           </div>
+
+          <div class="control-block" aria-label="font switch">
+            <div class="control-label">FONT</div>
+            <button class="font-btn active" data-font="gothic">GOTHIC</button>
+            <button class="font-btn" data-font="mincho">MINCHO</button>
+            <button class="font-btn" data-font="rounded">ROUNDED</button>
+            <button class="font-btn" data-font="classic">CLASSIC</button>
+            <button class="font-btn" data-font="modern">MODERN</button>
+          </div>
+
+          <div class="control-block" aria-label="type sound switch">
+            <div class="control-label">TYPE SOUND</div>
+            <button class="sound-btn active" data-sound="dry">DRY</button>
+            <button class="sound-btn" data-sound="deep">DEEP</button>
+            <button class="sound-btn" data-sound="bass">BASS</button>
+            <button class="sound-btn" data-sound="drum">DRUM</button>
+            <button class="sound-btn" data-sound="metal">METAL</button>
+          </div>
+
           <div class="mini-info">ENTER: RESET COUNT / RELOAD SET</div>
         </div>
       </div>
@@ -436,423 +507,162 @@
     buildKeyboard();
 
     const actualProverbs = [
-      "あたまかくしてしりかくさず",
-      "あとのまつり",
-      "あぶはちとらず",
-      "あまいことばにゃうらがある",
-      "あめふってじかたまる",
-      "ありのあなからつつみもくずれる",
-      "あんずるよりうむがやすし",
-      "いしのうえにもさんねん",
-      "いそがばまわれ",
-      "いたいのいたいのとんでいけ",
-      "いぬもあるけばぼうにあたる",
-      "いのちながければはじおおし",
-      "いわぬがはな",
-      "うそからでたまこと",
-      "うそつきはどろぼうのはじまり",
-      "うりのつるになすびはならぬ",
-      "えにかいたもち",
-      "えびでたいをつる",
-      "おににかなぼう",
-      "おびにみじかしたすきにながし",
-      "おわりよければすべてよし",
-      "おやのこころこしらず",
-      "おぼれるものはわらをもつかむ",
-      "おんにきる",
-      "かえるのこはかえる",
-      "かえるのつらにみず",
-      "かえてそうじていをえず",
-      "かきねからつばき",
-      "かごにのるひともかつぐひともそのまたくつをはくひとも",
-      "かってかぶとのおをしめよ",
-      "かどをためてうしをころす",
-      "かなしいときのかみだのみ",
-      "かわいさあまってにくさひゃくばい",
-      "かわずのこはかわず",
-      "きいてごくらくみてじごく",
-      "きじもなかずばうたれまい",
-      "きゅうばをえる",
-      "くうねるところにすむところ",
-      "くさいものにふた",
-      "くちからでまかせ",
-      "くちはわざわいのもと",
-      "くまなくさがせばごみのなかにもたから",
-      "けんかするほどなかがよい",
-      "こういんやのごとし",
-      "こうべをたれるいなほかな",
-      "こおりみずよりなおつめたし",
-      "こけつにいらずんばこじをえず",
-      "こどもはかすがい",
-      "ころばぬさきのつえ",
-      "ころんでもただではおきぬ",
-      "さいげつひとをまたず",
-      "さかなごころあればみずごころ",
-      "さるもきからおちる",
-      "さんにんよればもんじゅのちえ",
-      "しかばねにくちなし",
-      "しぬきではたらく",
-      "しっぱいはせいこうのもと",
-      "しらぬがほとけ",
-      "しらぬはぬしばかりなり",
-      "しらぬがほとけきかぬがごくらく",
-      "じごうじとく",
-      "しりにほがい",
-      "すきこそもののじょうずなれ",
-      "すずめのなみだ",
-      "すてるかみあればひろうかみあり",
-      "すなをかむよう",
-      "せいてはことをしそんずる",
-      "せいてはことをしそんじる",
-      "せけんしらず",
-      "せんりのみちもいっぽから",
-      "そうだんあいてなくしてちえわかず",
-      "そなえあればうれいなし",
-      "たけうまのとも",
-      "たけにきず",
-      "たちつてと",
-      "たでくうむしもすきずき",
-      "たなからぼたもち",
-      "たびはみちづれよはなさけ",
-      "たましいをうる",
-      "たらればはなし",
-      "ちいさなことからこつこつと",
-      "ちりもつもればやまとなる",
-      "ついたちのうそ",
-      "つきとすっぽん",
-      "つのかくしてしりかくさず",
-      "つりおとしたさかなはおおきい",
-      "てまえみそ",
-      "てをかえしなをかえし",
-      "てをやく",
-      "てもあしもでない",
-      "とうだいもとくらし",
-      "とおくのしんるいよりちかくのたにん",
-      "ときはかねなり",
-      "としよりのひやみず",
-      "とどのつまり",
-      "とらぬたぬきのかわざんよう",
-      "とらのいをかるきつね",
-      "とんでひにいるなつのむし",
-      "なかぬならなくまでまとうほととぎす",
-      "なくこもだまる",
-      "なさけはひとのためならず",
-      "ななころびやおき",
-      "なにはともあれ",
-      "ならうよりなれよ",
-      "にがしおうおはおおきい",
-      "にがていしき",
-      "にくまれっこよにはばかる",
-      "にげるがかち",
-      "にどあることはさんどある",
-      "ぬかにくぎ",
-      "ぬれぬさきのつゆ",
-      "ねこのてもかりたい",
-      "ねこにこばん",
-      "ねみみにみず",
-      "のどもとすぎればあつさをわすれる",
-      "のれんにうでおし",
-      "はいしゃふっかつ",
-      "はじをしのぶ",
-      "はじもがいぶん",
-      "はなよりだんご",
-      "はらがへってはいくさはできぬ",
-      "はりのあなからてんをのぞく",
-      "ひとのうわさもしちじゅうごにち",
-      "ひとのふりみてわがふりなおせ",
-      "ひまをもてあます",
-      "ひょうたんからこま",
-      "ひるあんどん",
-      "ふくすいぼんにかえらず",
-      "ぶたにしんじゅ",
-      "ふねにのったつもり",
-      "へたのよこずき",
-      "へたなてっぽうもかずうてばあたる",
-      "へびににらまれたかえる",
-      "ほとけのかおもさんど",
-      "ほねおりぞんのくたびれもうけ",
-      "まけるがかち",
-      "まるたはういてもいしはしずむ",
-      "みからでたさび",
-      "みずにながす",
-      "みずもの",
-      "みぬがはな",
-      "みみにはいってこころにのこる",
-      "みみをうたがう",
-      "みをすててこそうかぶせもあれ",
-      "むかしとったきねづか",
-      "むしかえす",
-      "めくそはなくそをわらう",
-      "めからうろこ",
-      "めはくちほどにものをいう",
-      "もちつもたれつ",
-      "もちはもちや",
-      "もってけどろぼう",
-      "もんぜんのこぞうならわぬきょうをよむ",
-      "やけいしにみず",
-      "やけぼっくいにひがつく",
-      "やすものがいのぜにうしない",
-      "やなぎのしたにどじょうはいない",
-      "やぶへび",
-      "やまいはきから",
-      "ゆだんたいてき",
-      "よいくすりはにがい",
-      "よいはなしにはうらがある",
-      "よるのみみはひるのみみ",
-      "らくあればくあり",
-      "りょうやくはくちににがし",
-      "わがみをつねってひとのいたさをしれ",
-      "わざわいをてんじてふくとなす",
-      "わたるせけんにおにはない",
-      "わらうかどにはふくきたる",
-      "をんなごころとあきのそら",
-      "あきなわにかかる",
-      "あくじせんりをはしる",
-      "あさめしまえ",
-      "あしもとをみる",
-      "あたってくだけろ",
-      "あとあしでさげん",
-      "あとひく",
-      "あぶくぜに",
-      "あまくだり",
-      "あやふや",
-      "いがみあう",
-      "いきをのむ",
-      "いそいでまわる",
-      "いっすんさきはやみ",
-      "いっちがんとなる",
-      "いてもたってもいられない",
-      "いとをひく",
-      "いぬのとおぼえ",
-      "いばらのみち",
-      "いみしんちょう",
-      "いわしのあたまもなんとやら",
-      "うきしずみ",
-      "うしにひかれてぜんこうじまいり",
-      "うしのみみになんとか",
-      "うたたね",
-      "うりことばにかいことば",
-      "えりをただす",
-      "おうおうにして",
-      "おおふねにのったつもり",
-      "おかねはてんかのまわりもの",
-      "おくびにもださない",
-      "おごるへいけはひさしからず",
-      "おさきまっくら",
-      "おちゃをにごす",
-      "おにのいぬまにせんたく",
-      "おのれをしる",
-      "おもいたったがきちじつ",
-      "おもいこしをあげる",
-      "おやゆびをかくす",
-      "かいがいしい",
-      "かいこういちばん",
-      "かえすがえす",
-      "かくがちがう",
-      "かけがえのない",
-      "かごのとり",
-      "かぜがふけばおけやがもうかる",
-      "かたやぶり",
-      "かていえんまん",
-      "がまんくらべ",
-      "からてがた",
-      "かわるがわる",
-      "かんがえもの",
-      "きがきでない",
-      "きがすすまない",
-      "きがとがめる",
-      "きがひける",
-      "きがおけない",
-      "ききをいつにする",
-      "きじつがくる",
-      "きまじめ",
-      "きをもむ",
-      "きをよくする",
-      "くさってもたい",
-      "くちがうまい",
-      "くちさがない",
-      "くちはさむ",
-      "くびをながくする",
-      "けがのこうみょう",
-      "けっしてない",
-      "げたをあずける",
-      "こうえんあらたならず",
-      "こうえんにこたえる",
-      "こうかいさきにたたず",
-      "こけんにかかわる",
-      "こころをくだく",
-      "こころをひらく",
-      "こしがかるい",
-      "こしをおる",
-      "こっけいむけい",
-      "ことあるごとに",
-      "ことをこうする",
-      "ことわざはせいかつのちえ",
-      "このみこのまれ",
-      "こまったときのかみだのみ",
-      "ころんでただではおきない",
-      "さいごによわる",
-      "さばをよむ",
-      "さんしょうはこつぶでもぴりりとからい",
-      "しおどき",
-      "しかたがない",
-      "しきりなおし",
-      "しごのせかい",
-      "しこんたましい",
-      "したでにでる",
-      "したをまく",
-      "しったかぶり",
-      "しっぽをだす",
-      "しどろもどろ",
-      "しのごのいう",
-      "しのびあし",
-      "しらをきる",
-      "しわよせ",
-      "じきしょうそう",
-      "じごくのみやげ",
-      "じじつむこん",
-      "じしんかじおやじ",
-      "じたばたする",
-      "じつるいそうとう",
-      "しゃくしじょうぎ",
-      "しゅしゃせんたく",
-      "しょうじきものがばかをみる",
-      "しょうねんよたいしをいだけ",
-      "しりうまにのる",
-      "すいぎょのまじわり",
-      "すきにする",
-      "すこしずつ",
-      "すったもんだ",
-      "すべったころんだ",
-      "せっさたくま",
-      "せまいもん",
-      "せわをやく",
-      "そうはとんやがおろさない",
-      "そつなくこなす",
-      "そでふれあうもたしょうのえん",
-      "そのひぐらし",
-      "たいきばんせい",
-      "たいこもち",
-      "たいこばん",
-      "たいざんめいどうしてねずみいっぴき",
-      "たからのもちぐされ",
-      "たつとりあとをにごさず",
-      "だてじゃない",
-      "たにんのそらにねたみなし",
-      "たねもしかけもない",
-      "たべもののうらみはおそろしい",
-      "たまのこし",
-      "ためつすがめつ",
-      "だんどりはちぶ",
-      "ちょうしにのる",
-      "ちりあくたもやくにたつ",
-      "ちりつも",
-      "ついてる",
-      "つくづくと",
-      "つじつまあわせ",
-      "つまるところ",
-      "つめがあまい",
-      "つるかめさんねん",
-      "ていたらく",
-      "てきざいてきしょ",
-      "てにあまる",
-      "てもとなれる",
-      "てんてこまい",
-      "とうぼえ",
-      "ときをうつす",
-      "ときすでにおそし",
-      "としよりのちえぶくろ",
-      "とっておき",
-      "とどめをさす",
-      "となりのしばふはあおい",
-      "とほうにくれる",
-      "とぼける",
-      "とらのこ",
-      "とんびにあぶらあげをさらわれる",
-      "ないないづくし",
-      "ないものねだり",
-      "なきっつらにはち",
-      "なきめをみる",
-      "なみだぐましい",
-      "ならぬものはならぬ",
-      "なんとかはかぜをひかない",
-      "にえきらない",
-      "にのまいをえんじる",
-      "にもつになる",
-      "にらみをきかす",
-      "ぬけめがない",
-      "ねつぞうする",
-      "ねぼけまなこ",
-      "のうあるたかはつめをかくす",
-      "のってくる",
-      "はきだめにつる",
-      "はちのいっさし",
-      "はなくそほど",
-      "はなもじつもある",
-      "はらにすえかねる",
-      "ひざをまじえる",
-      "ひとあしさきに",
-      "ひとくろう",
-      "ひとごとではない",
-      "ひとすじなわではいかない",
-      "ひとりがち",
-      "ひびがはいる",
-      "ひゃくぶんはいっけんにしかず",
-      "びりけつ",
-      "ふでまめ",
-      "ふりあげたこぶしのおろしどころがない",
-      "ふるいたつ",
-      "へそでちゃをわかす",
-      "べんてんさまでもしらぬ",
-      "ほうたいみたい",
-      "ほおかむり",
-      "ほぞをかむ",
-      "ほねがある",
-      "ほんねをいう",
-      "まがさす",
-      "まくらことば",
-      "まずい",
-      "まつりのあと",
-      "まねる",
-      "みからでたことば",
-      "みずくさい",
-      "みずのあわ",
-      "みにつまされる",
-      "みぶるいする",
-      "みみがいたい",
-      "みをけずる",
-      "むきになる",
-      "むこうみず",
-      "むしのいどころがわるい",
-      "むねをはる",
-      "めいあん",
-      "めくじらをたてる",
-      "めしのたね",
-      "めにものみせる",
-      "もうけもの",
-      "もはやこれまで",
-      "もやもやする",
-      "もんくなし",
-      "やくにたつ",
-      "やまっけがある",
-      "やりくり",
-      "やるせない",
-      "ゆくえしれず",
-      "ゆだんもすきもない",
-      "ようすみ",
-      "よだれがでる",
-      "よくばりはそん",
-      "よらばたいじゅのかげ",
-      "らちがあかない",
-      "りきさく",
-      "るすをあずかる",
-      "れいによって",
-      "ろうしてこうなし",
-      "わたりにふね",
-      "わなにかかる",
-      "わびさび",
-      "わるあがき"
+      { jp:"頭隠して尻隠さず", kana:"あたまかくしてしりかくさず" },
+      { jp:"後の祭り", kana:"あとのまつり" },
+      { jp:"虻蜂取らず", kana:"あぶはちとらず" },
+      { jp:"雨降って地固まる", kana:"あめふってじかたまる" },
+      { jp:"案ずるより産むが易し", kana:"あんずるよりうむがやすし" },
+      { jp:"石の上にも三年", kana:"いしのうえにもさんねん" },
+      { jp:"急がば回れ", kana:"いそがばまわれ" },
+      { jp:"犬も歩けば棒に当たる", kana:"いぬもあるけばぼうにあたる" },
+      { jp:"命長ければ恥多し", kana:"いのちながければはじおおし" },
+      { jp:"言わぬが花", kana:"いわぬがはな" },
+      { jp:"嘘から出た実", kana:"うそからでたまこと" },
+      { jp:"嘘つきは泥棒の始まり", kana:"うそつきはどろぼうのはじまり" },
+      { jp:"売り言葉に買い言葉", kana:"うりことばにかいことば" },
+      { jp:"絵に描いた餅", kana:"えにかいたもち" },
+      { jp:"海老で鯛を釣る", kana:"えびでたいをつる" },
+      { jp:"鬼に金棒", kana:"おににかなぼう" },
+      { jp:"帯に短したすきに長し", kana:"おびにみじかしたすきにながし" },
+      { jp:"終わり良ければ全て良し", kana:"おわりよければすべてよし" },
+      { jp:"親の心子知らず", kana:"おやのこころこしらず" },
+      { jp:"溺れる者は藁をも掴む", kana:"おぼれるものはわらをもつかむ" },
+      { jp:"飼い犬に手を噛まれる", kana:"かいいぬにてをかまれる" },
+      { jp:"蛙の子は蛙", kana:"かえるのこはかえる" },
+      { jp:"蛙の面に水", kana:"かえるのつらにみず" },
+      { jp:"勝って兜の緒を締めよ", kana:"かってかぶとのおをしめよ" },
+      { jp:"壁に耳あり障子に目あり", kana:"かべにみみありしょうじにめあり" },
+      { jp:"亀の甲より年の功", kana:"かめのこうよりとしのこう" },
+      { jp:"枯れ木も山の賑わい", kana:"かれきもやまのにぎわい" },
+      { jp:"可愛い子には旅をさせよ", kana:"かわいいこにはたびをさせよ" },
+      { jp:"聞いて極楽見て地獄", kana:"きいてごくらくみてじごく" },
+      { jp:"聞くは一時の恥聞かぬは一生の恥", kana:"きくはいっときのはじきかぬはいっしょうのはじ" },
+      { jp:"木を見て森を見ず", kana:"きをみてもりをみず" },
+      { jp:"口が災いの元", kana:"くちがわざわいのもと" },
+      { jp:"口は災いの元", kana:"くちはわざわいのもと" },
+      { jp:"口は禍の門", kana:"くちはわざわいのかど" },
+      { jp:"臭い物に蓋をする", kana:"くさいものにふたをする" },
+      { jp:"苦しい時の神頼み", kana:"くるしいときのかみだのみ" },
+      { jp:"芸は身を助ける", kana:"げいはみをたすける" },
+      { jp:"怪我の功名", kana:"けがのこうみょう" },
+      { jp:"喧嘩するほど仲が良い", kana:"けんかするほどなかがよい" },
+      { jp:"弘法にも筆の誤り", kana:"こうぼうにもふでのあやまり" },
+      { jp:"後悔先に立たず", kana:"こうかいさきにたたず" },
+      { jp:"光陰矢の如し", kana:"こういんやのごとし" },
+      { jp:"転ばぬ先の杖", kana:"ころばぬさきのつえ" },
+      { jp:"転んでもただでは起きぬ", kana:"ころんでもただではおきぬ" },
+      { jp:"紺屋の白袴", kana:"こうやのしろばかま" },
+      { jp:"去る者は追わず", kana:"さるものはおわず" },
+      { jp:"猿も木から落ちる", kana:"さるもきからおちる" },
+      { jp:"三人寄れば文殊の知恵", kana:"さんにんよればもんじゅのちえ" },
+      { jp:"地獄で仏に会ったよう", kana:"じごくでほとけにあったよう" },
+      { jp:"地獄耳", kana:"じごくみみ" },
+      { jp:"失敗は成功のもと", kana:"しっぱいはせいこうのもと" },
+      { jp:"知らぬが仏", kana:"しらぬがほとけ" },
+      { jp:"初心忘るべからず", kana:"しょしんわするべからず" },
+      { jp:"好きこそ物の上手なれ", kana:"すきこそもののじょうずなれ" },
+      { jp:"雀の涙", kana:"すずめのなみだ" },
+      { jp:"住めば都", kana:"すめばみやこ" },
+      { jp:"善は急げ", kana:"ぜんはいそげ" },
+      { jp:"千里の道も一歩から", kana:"せんりのみちもいっぽから" },
+      { jp:"急いては事を仕損じる", kana:"せいてはことをしそんじる" },
+      { jp:"背に腹は代えられぬ", kana:"せにはらはかえられぬ" },
+      { jp:"袖振り合うも多生の縁", kana:"そでふれあうもたしょうのえん" },
+      { jp:"備えあれば憂いなし", kana:"そなえあればうれいなし" },
+      { jp:"大は小を兼ねる", kana:"だいはしょうをかねる" },
+      { jp:"立つ鳥跡を濁さず", kana:"たつとりあとをにごさず" },
+      { jp:"蓼食う虫も好き好き", kana:"たでくうむしもすきずき" },
+      { jp:"棚から牡丹餅", kana:"たなからぼたもち" },
+      { jp:"旅は道連れ世は情け", kana:"たびはみちづれよはなさけ" },
+      { jp:"玉に瑕", kana:"たまにきず" },
+      { jp:"塵も積もれば山となる", kana:"ちりもつもればやまとなる" },
+      { jp:"月とすっぽん", kana:"つきとすっぽん" },
+      { jp:"爪の垢を煎じて飲む", kana:"つめのあかをせんじてのむ" },
+      { jp:"出る杭は打たれる", kana:"でるくいはうたれる" },
+      { jp:"手前味噌", kana:"てまえみそ" },
+      { jp:"灯台下暗し", kana:"とうだいもとくらし" },
+      { jp:"十人十色", kana:"じゅうにんといろ" },
+      { jp:"遠くの親類より近くの他人", kana:"とおくのしんるいよりちかくのたにん" },
+      { jp:"時は金なり", kana:"ときはかねなり" },
+      { jp:"年寄りの冷や水", kana:"としよりのひやみず" },
+      { jp:"虎の威を借る狐", kana:"とらのいをかるきつね" },
+      { jp:"捕らぬ狸の皮算用", kana:"とらぬたぬきのかわざんよう" },
+      { jp:"飛んで火に入る夏の虫", kana:"とんでひにいるなつのむし" },
+      { jp:"泣きっ面に蜂", kana:"なきっつらにはち" },
+      { jp:"情けは人のためならず", kana:"なさけはひとのためならず" },
+      { jp:"七転び八起き", kana:"ななころびやおき" },
+      { jp:"習うより慣れろ", kana:"ならうよりなれよ" },
+      { jp:"二度あることは三度ある", kana:"にどあることはさんどある" },
+      { jp:"逃がした魚は大きい", kana:"にがしたさかなはおおきい" },
+      { jp:"憎まれっ子世にはばかる", kana:"にくまれっこよにはばかる" },
+      { jp:"逃げるが勝ち", kana:"にげるがかち" },
+      { jp:"猫に小判", kana:"ねこにこばん" },
+      { jp:"猫の手も借りたい", kana:"ねこのてもかりたい" },
+      { jp:"寝耳に水", kana:"ねみみにみず" },
+      { jp:"念には念を入れよ", kana:"ねんにはねんをいれよ" },
+      { jp:"喉元過ぎれば熱さを忘れる", kana:"のどもとすぎればあつさをわすれる" },
+      { jp:"暖簾に腕押し", kana:"のれんにうでおし" },
+      { jp:"能ある鷹は爪を隠す", kana:"のうあるたかはつめをかくす" },
+      { jp:"馬耳東風", kana:"ばじとうふう" },
+      { jp:"敗軍の将は兵を語らず", kana:"はいぐんのしょうはへいをかたらず" },
+      { jp:"馬の耳に念仏", kana:"うまのみみにねんぶつ" },
+      { jp:"破竹の勢い", kana:"はちくのいきおい" },
+      { jp:"花より団子", kana:"はなよりだんご" },
+      { jp:"早起きは三文の徳", kana:"はやおきはさんもんのとく" },
+      { jp:"腹が減っては戦はできぬ", kana:"はらがへってはいくさはできぬ" },
+      { jp:"針の穴から天を覗く", kana:"はりのあなからてんをのぞく" },
+      { jp:"人の噂も七十五日", kana:"ひとのうわさもしちじゅうごにち" },
+      { jp:"人の振り見て我が振り直せ", kana:"ひとのふりみてわがふりなおせ" },
+      { jp:"火のない所に煙は立たぬ", kana:"ひのないところにけむりはたたぬ" },
+      { jp:"瓢箪から駒", kana:"ひょうたんからこま" },
+      { jp:"百聞は一見に如かず", kana:"ひゃくぶんはいっけんにしかず" },
+      { jp:"貧すれば鈍する", kana:"ひんすればどんする" },
+      { jp:"笛吹けども踊らず", kana:"ふえふけどもおどらず" },
+      { jp:"覆水盆に返らず", kana:"ふくすいぼんにかえらず" },
+      { jp:"豚に真珠", kana:"ぶたにしんじゅ" },
+      { jp:"下手の横好き", kana:"へたのよこずき" },
+      { jp:"下手な鉄砲も数打てば当たる", kana:"へたなてっぽうもかずうてばあたる" },
+      { jp:"蛇に睨まれた蛙", kana:"へびににらまれたかえる" },
+      { jp:"仏の顔も三度まで", kana:"ほとけのかおもさんどまで" },
+      { jp:"骨折り損のくたびれ儲け", kana:"ほねおりぞんのくたびれもうけ" },
+      { jp:"負けるが勝ち", kana:"まけるがかち" },
+      { jp:"蒔かぬ種は生えぬ", kana:"まかぬたねははえぬ" },
+      { jp:"待てば海路の日和あり", kana:"まてばかいろのひよりあり" },
+      { jp:"身から出た錆", kana:"みからでたさび" },
+      { jp:"水に流す", kana:"みずにながす" },
+      { jp:"水物", kana:"みずもの" },
+      { jp:"見ぬが花", kana:"みぬがはな" },
+      { jp:"耳を疑う", kana:"みみをうたがう" },
+      { jp:"身を捨ててこそ浮かぶ瀬もあれ", kana:"みをすててこそうかぶせもあれ" },
+      { jp:"昔取った杵柄", kana:"むかしとったきねづか" },
+      { jp:"目から鱗", kana:"めからうろこ" },
+      { jp:"目は口ほどに物を言う", kana:"めはくちほどにものをいう" },
+      { jp:"餅は餅屋", kana:"もちはもちや" },
+      { jp:"門前の小僧習わぬ経を読む", kana:"もんぜんのこぞうならわぬきょうをよむ" },
+      { jp:"焼け石に水", kana:"やけいしにみず" },
+      { jp:"焼けぼっくいに火が付く", kana:"やけぼっくいにひがつく" },
+      { jp:"安物買いの銭失い", kana:"やすものがいのぜにうしない" },
+      { jp:"柳の下にいつも泥鰌はいない", kana:"やなぎのしたにいつもどじょうはいない" },
+      { jp:"藪から棒", kana:"やぶからぼう" },
+      { jp:"藪をつついて蛇を出す", kana:"やぶをつついてへびをだす" },
+      { jp:"病は気から", kana:"やまいはきから" },
+      { jp:"油断大敵", kana:"ゆだんたいてき" },
+      { jp:"良薬は口に苦し", kana:"りょうやくはくちににがし" },
+      { jp:"類は友を呼ぶ", kana:"るいはともをよぶ" },
+      { jp:"論より証拠", kana:"ろんよりしょうこ" },
+      { jp:"笑う門には福来る", kana:"わらうかどにはふくきたる" },
+      { jp:"渡る世間に鬼はない", kana:"わたるせけんにおにはない" },
+      { jp:"災い転じて福となす", kana:"わざわいをてんじてふくとなす" }
     ];
+
+    function normalizeKanaOnly(str){
+      return (str || "")
+        .toLowerCase()
+        .replace(/[ー－―]/g, "")
+        .replace(/ゐ/g, "い")
+        .replace(/ゑ/g, "え")
+        .replace(/[^\u3041-\u3096]/g, "");
+    }
 
     const fillerHeads = [
       "いしのうえにも","あめふって","せいてはことを","わらうかどには","はなより","ちりもつもれば","みからでた","ひとのふりみて","ころばぬさきの","おにに","さるも","ねこに","ぶたに","たびは","たなから","へたなてっぽうも","とらの","のうあるたかは","さんにんよれば","そなえあれば",
@@ -865,93 +675,67 @@
     ];
 
     function buildQuestionBank(){
-      const set = new Set();
+      const map = new Map();
 
-      actualProverbs.forEach(v => set.add(normalizeKanaOnly(v)));
-
-      for(let i=0;i<fillerHeads.length;i++){
-        for(let j=0;j<fillerTails.length;j++){
-          set.add(normalizeKanaOnly(fillerHeads[i] + fillerTails[j]));
-          if(set.size >= 1000) break;
+      actualProverbs.forEach(item => {
+        const kana = normalizeKanaOnly(item.kana);
+        if(kana && !map.has(kana)){
+          map.set(kana, { jp:item.jp, kana });
         }
-        if(set.size >= 1000) break;
+      });
+
+      let fillerIndex = 1;
+      for(let i = 0; i < fillerHeads.length; i++){
+        for(let j = 0; j < fillerTails.length; j++){
+          const kana = normalizeKanaOnly(fillerHeads[i] + fillerTails[j]);
+          if(kana && !map.has(kana)){
+            map.set(kana, { jp:`ことわざ ${fillerIndex}`, kana });
+            fillerIndex++;
+          }
+          if(map.size >= 1000) break;
+        }
+        if(map.size >= 1000) break;
       }
 
-      const arr = Array.from(set).filter(Boolean);
-      return arr.slice(0,1000);
+      return Array.from(map.values()).slice(0,1000);
     }
 
     const questionBank = buildQuestionBank();
-
     document.getElementById("totalCount").textContent = questionBank.length;
 
-    function normalizeKanaOnly(str){
-      return (str || "")
-        .toLowerCase()
-        .replace(/[ー－―]/g, "")
-        .replace(/[ぁ-ん]/g, c => c)
-        .replace(/ゐ/g, "い")
-        .replace(/ゑ/g, "え")
-        .replace(/[^\u3041-\u3096]/g, "");
-    }
-
     const digraphMap = {
-      "きゃ":["kya"],
-      "きゅ":["kyu"],
-      "きょ":["kyo"],
-      "ぎゃ":["gya"],
-      "ぎゅ":["gyu"],
-      "ぎょ":["gyo"],
-      "しゃ":["sha","sya"],
-      "しゅ":["shu","syu"],
-      "しょ":["sho","syo"],
-      "じゃ":["ja","jya","zya"],
-      "じゅ":["ju","jyu","zyu"],
-      "じょ":["jo","jyo","zyo"],
-      "ちゃ":["cha","cya","tya"],
-      "ちゅ":["chu","cyu","tyu"],
-      "ちょ":["cho","cyo","tyo"],
-      "ぢゃ":["ja","jya","zya","dya"],
-      "ぢゅ":["ju","jyu","zyu","dyu"],
-      "ぢょ":["jo","jyo","zyo","dyo"],
-      "にゃ":["nya"],
-      "にゅ":["nyu"],
-      "にょ":["nyo"],
-      "ひゃ":["hya"],
-      "ひゅ":["hyu"],
-      "ひょ":["hyo"],
-      "びゃ":["bya"],
-      "びゅ":["byu"],
-      "びょ":["byo"],
-      "ぴゃ":["pya"],
-      "ぴゅ":["pyu"],
-      "ぴょ":["pyo"],
-      "みゃ":["mya"],
-      "みゅ":["myu"],
-      "みょ":["myo"],
-      "りゃ":["rya"],
-      "りゅ":["ryu"],
-      "りょ":["ryo"]
+      "きゃ":["kya"],"きゅ":["kyu"],"きょ":["kyo"],
+      "ぎゃ":["gya"],"ぎゅ":["gyu"],"ぎょ":["gyo"],
+      "しゃ":["sha","sya"],"しゅ":["shu","syu"],"しょ":["sho","syo"],
+      "じゃ":["ja","jya","zya"],"じゅ":["ju","jyu","zyu"],"じょ":["jo","jyo","zyo"],
+      "ちゃ":["cha","cya","tya"],"ちゅ":["chu","cyu","tyu"],"ちょ":["cho","cyo","tyo"],
+      "ぢゃ":["ja","jya","zya","dya"],"ぢゅ":["ju","jyu","zyu","dyu"],"ぢょ":["jo","jyo","zyo","dyo"],
+      "にゃ":["nya"],"にゅ":["nyu"],"にょ":["nyo"],
+      "ひゃ":["hya"],"ひゅ":["hyu"],"ひょ":["hyo"],
+      "びゃ":["bya"],"びゅ":["byu"],"びょ":["byo"],
+      "ぴゃ":["pya"],"ぴゅ":["pyu"],"ぴょ":["pyo"],
+      "みゃ":["mya"],"みゅ":["myu"],"みょ":["myo"],
+      "りゃ":["rya"],"りゅ":["ryu"],"りょ":["ryo"]
     };
 
     const singleMap = {
-      "あ":["a"], "い":["i","yi"], "う":["u","wu"], "え":["e"], "お":["o"],
-      "か":["ka"], "き":["ki"], "く":["ku"], "け":["ke"], "こ":["ko"],
-      "さ":["sa"], "し":["shi","si"], "す":["su"], "せ":["se"], "そ":["so"],
-      "た":["ta"], "ち":["chi","ti"], "つ":["tsu","tu"], "て":["te"], "と":["to"],
-      "な":["na"], "に":["ni"], "ぬ":["nu"], "ね":["ne"], "の":["no"],
-      "は":["ha"], "ひ":["hi"], "ふ":["fu","hu"], "へ":["he"], "ほ":["ho"],
-      "ま":["ma"], "み":["mi"], "む":["mu"], "め":["me"], "も":["mo"],
-      "や":["ya"], "ゆ":["yu"], "よ":["yo"],
-      "ら":["ra"], "り":["ri"], "る":["ru"], "れ":["re"], "ろ":["ro"],
-      "わ":["wa"], "ゐ":["wi","i"], "ゑ":["we","e"], "を":["wo","o"],
-      "が":["ga"], "ぎ":["gi"], "ぐ":["gu"], "げ":["ge"], "ご":["go"],
-      "ざ":["za"], "じ":["ji","zi"], "ず":["zu"], "ぜ":["ze"], "ぞ":["zo"],
-      "だ":["da"], "ぢ":["di","ji","zi"], "づ":["du","zu"], "で":["de"], "ど":["do"],
-      "ば":["ba"], "び":["bi"], "ぶ":["bu"], "べ":["be"], "ぼ":["bo"],
-      "ぱ":["pa"], "ぴ":["pi"], "ぷ":["pu"], "ぺ":["pe"], "ぽ":["po"],
-      "ぁ":["xa","la"], "ぃ":["xi","li"], "ぅ":["xu","lu"], "ぇ":["xe","le"], "ぉ":["xo","lo"],
-      "ゃ":["xya","lya","ya"], "ゅ":["xyu","lyu","yu"], "ょ":["xyo","lyo","yo"],
+      "あ":["a"],"い":["i","yi"],"う":["u","wu"],"え":["e"],"お":["o"],
+      "か":["ka"],"き":["ki"],"く":["ku"],"け":["ke"],"こ":["ko"],
+      "さ":["sa"],"し":["shi","si"],"す":["su"],"せ":["se"],"そ":["so"],
+      "た":["ta"],"ち":["chi","ti"],"つ":["tsu","tu"],"て":["te"],"と":["to"],
+      "な":["na"],"に":["ni"],"ぬ":["nu"],"ね":["ne"],"の":["no"],
+      "は":["ha"],"ひ":["hi"],"ふ":["fu","hu"],"へ":["he"],"ほ":["ho"],
+      "ま":["ma"],"み":["mi"],"む":["mu"],"め":["me"],"も":["mo"],
+      "や":["ya"],"ゆ":["yu"],"よ":["yo"],
+      "ら":["ra"],"り":["ri"],"る":["ru"],"れ":["re"],"ろ":["ro"],
+      "わ":["wa"],"ゐ":["wi","i"],"ゑ":["we","e"],"を":["wo","o"],
+      "が":["ga"],"ぎ":["gi"],"ぐ":["gu"],"げ":["ge"],"ご":["go"],
+      "ざ":["za"],"じ":["ji","zi"],"ず":["zu"],"ぜ":["ze"],"ぞ":["zo"],
+      "だ":["da"],"ぢ":["di","ji","zi"],"づ":["du","zu"],"で":["de"],"ど":["do"],
+      "ば":["ba"],"び":["bi"],"ぶ":["bu"],"べ":["be"],"ぼ":["bo"],
+      "ぱ":["pa"],"ぴ":["pi"],"ぷ":["pu"],"ぺ":["pe"],"ぽ":["po"],
+      "ぁ":["xa","la"],"ぃ":["xi","li"],"ぅ":["xu","lu"],"ぇ":["xe","le"],"ぉ":["xo","lo"],
+      "ゃ":["xya","lya","ya"],"ゅ":["xyu","lyu","yu"],"ょ":["xyo","lyo","yo"],
       "ゎ":["xwa","lwa","wa"],
       "ん":["n","nn"]
     };
@@ -1095,11 +879,12 @@
     const state = {
       allQuestions: questionBank,
       remaining: [],
-      currentKana: "",
+      currentQuestion: null,
       currentDisplayRomaji: "",
       validRomajiList: [],
       typed: "",
-      cleared: 0
+      cleared: 0,
+      currentSound: "dry"
     };
 
     function resetSetAndCounter(){
@@ -1116,9 +901,9 @@
         state.remaining = shuffle(state.allQuestions);
       }
 
-      state.currentKana = state.remaining.pop();
-      state.currentDisplayRomaji = kanaToNihon(state.currentKana);
-      state.validRomajiList = kanaToVariants(state.currentKana);
+      state.currentQuestion = state.remaining.pop();
+      state.currentDisplayRomaji = kanaToNihon(state.currentQuestion.kana);
+      state.validRomajiList = kanaToVariants(state.currentQuestion.kana);
       state.typed = "";
 
       renderQuestion();
@@ -1136,7 +921,7 @@
     }
 
     function renderQuestion(){
-      document.getElementById("japanese").textContent = state.currentKana;
+      document.getElementById("japanese").textContent = state.currentQuestion.jp;
       document.getElementById("romaji").textContent = state.currentDisplayRomaji;
     }
 
@@ -1151,7 +936,7 @@
 
     function getPreferredTarget(){
       const matched = state.validRomajiList.filter(v => v.startsWith(state.typed));
-      if(!matched.length) return state.currentDisplayRomaji;
+      if(!matched.length) return state.currentDisplayRomaji.toLowerCase();
       matched.sort((a,b) => a.length - b.length || a.localeCompare(b));
       return matched[0];
     }
@@ -1162,9 +947,7 @@
       const ok = state.typed.toUpperCase();
       const rest = preferred.slice(state.typed.length).toUpperCase();
 
-      line.innerHTML = `
-        <span class="typed-ok">${escapeHTML(ok)}</span><span class="typed-rest">${escapeHTML(rest)}</span>
-      `;
+      line.innerHTML = `<span class="typed-ok">${escapeHTML(ok)}</span><span class="typed-rest">${escapeHTML(rest)}</span>`;
 
       if(isMiss){
         line.classList.remove("typed-miss");
@@ -1201,31 +984,160 @@
       return audioCtx;
     }
 
+    function createEnvelope(gain, now, attack, peak, decay){
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(peak, now + attack);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + attack + decay);
+    }
+
     function playTypeSound(){
       const ctx = getAudio();
       const now = ctx.currentTime;
 
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const filter = ctx.createBiquadFilter();
+      if(state.currentSound === "dry"){
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
 
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(1200, now);
-      osc.frequency.exponentialRampToValueAtTime(900, now + 0.03);
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(1200, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.03);
 
-      filter.type = "lowpass";
-      filter.frequency.setValueAtTime(1800, now);
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(1800, now);
 
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.04, now + 0.005);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+        createEnvelope(gain, now, 0.004, 0.045, 0.05);
 
-      osc.connect(filter);
-      filter.connect(gain);
-      gain.connect(ctx.destination);
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
 
-      osc.start(now);
-      osc.stop(now + 0.06);
+        osc.start(now);
+        osc.stop(now + 0.065);
+        return;
+      }
+
+      if(state.currentSound === "deep"){
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc.type = "square";
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(105, now + 0.06);
+
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(700, now);
+
+        createEnvelope(gain, now, 0.003, 0.05, 0.09);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.10);
+        return;
+      }
+
+      if(state.currentSound === "bass"){
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc1.type = "sine";
+        osc2.type = "triangle";
+        osc1.frequency.setValueAtTime(90, now);
+        osc2.frequency.setValueAtTime(180, now);
+        osc1.frequency.exponentialRampToValueAtTime(70, now + 0.05);
+        osc2.frequency.exponentialRampToValueAtTime(130, now + 0.05);
+
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(500, now);
+
+        createEnvelope(gain, now, 0.003, 0.05, 0.08);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.09);
+        osc2.stop(now + 0.09);
+        return;
+      }
+
+      if(state.currentSound === "drum"){
+        const bufferSize = 0.06 * ctx.sampleRate;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for(let i = 0; i < bufferSize; i++){
+          data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+        }
+
+        const noise = ctx.createBufferSource();
+        const noiseFilter = ctx.createBiquadFilter();
+        const noiseGain = ctx.createGain();
+
+        const tone = ctx.createOscillator();
+        const toneGain = ctx.createGain();
+
+        noise.buffer = buffer;
+        noiseFilter.type = "bandpass";
+        noiseFilter.frequency.setValueAtTime(900, now);
+        createEnvelope(noiseGain, now, 0.002, 0.045, 0.05);
+
+        tone.type = "triangle";
+        tone.frequency.setValueAtTime(180, now);
+        tone.frequency.exponentialRampToValueAtTime(90, now + 0.05);
+        createEnvelope(toneGain, now, 0.002, 0.035, 0.05);
+
+        noise.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+
+        tone.connect(toneGain);
+        toneGain.connect(ctx.destination);
+
+        noise.start(now);
+        tone.start(now);
+        noise.stop(now + 0.06);
+        tone.stop(now + 0.06);
+        return;
+      }
+
+      if(state.currentSound === "metal"){
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc1.type = "square";
+        osc2.type = "triangle";
+        osc1.frequency.setValueAtTime(1800, now);
+        osc2.frequency.setValueAtTime(2400, now);
+        osc1.frequency.exponentialRampToValueAtTime(900, now + 0.03);
+        osc2.frequency.exponentialRampToValueAtTime(1200, now + 0.03);
+
+        filter.type = "highpass";
+        filter.frequency.setValueAtTime(700, now);
+
+        createEnvelope(gain, now, 0.002, 0.03, 0.045);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.05);
+        osc2.stop(now + 0.05);
+      }
     }
 
     function playMissSound(){
@@ -1243,9 +1155,7 @@
       filter.type = "lowpass";
       filter.frequency.setValueAtTime(600, now);
 
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.05, now + 0.004);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+      createEnvelope(gain, now, 0.003, 0.05, 0.08);
 
       osc.connect(filter);
       filter.connect(gain);
@@ -1288,6 +1198,7 @@
     }
 
     window.addEventListener("pointerdown", focusCapture);
+
     window.addEventListener("keydown", (e) => {
       const key = e.key;
 
@@ -1321,15 +1232,44 @@
       }
     });
 
+    let currentTheme = "black";
+    let currentFont = "gothic";
+
+    function applyBodyClasses(){
+      document.body.className = `theme-${currentTheme} font-${currentFont}`;
+    }
+
     document.querySelectorAll(".theme-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        document.body.className = "theme-" + btn.dataset.theme;
+        currentTheme = btn.dataset.theme;
+        applyBodyClasses();
         focusCapture();
       });
     });
 
+    document.querySelectorAll(".font-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".font-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFont = btn.dataset.font;
+        applyBodyClasses();
+        focusCapture();
+      });
+    });
+
+    document.querySelectorAll(".sound-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".sound-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.currentSound = btn.dataset.sound;
+        playTypeSound();
+        focusCapture();
+      });
+    });
+
+    applyBodyClasses();
     resetSetAndCounter();
     focusCapture();
   </script>
