@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ことわざタイピング練習</title>
+  <title>名詞タイピング練習</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -20,7 +20,7 @@
       --text: #f2f2f2;
       --sub: #bdbdbd;
       --accent: #e5e5e5;
-      --ok: #f2f2f2;
+      --ok: #d84a4a;
       --miss: #9f9f9f;
       background: var(--bg);
       color: var(--text);
@@ -36,7 +36,7 @@
       --text: #f5f5f5;
       --sub: #bababa;
       --accent: #ffffff;
-      --ok: #f1f1f1;
+      --ok: #d84a4a;
       --miss: #8e8e8e;
     }
     .theme-white {
@@ -47,7 +47,7 @@
       --text: #1b1b1b;
       --sub: #585858;
       --accent: #000000;
-      --ok: #111111;
+      --ok: #c93a3a;
       --miss: #8b8b8b;
     }
     .theme-gray {
@@ -58,7 +58,7 @@
       --text: #ffffff;
       --sub: #ededed;
       --accent: #ffffff;
-      --ok: #ffffff;
+      --ok: #ff8080;
       --miss: #dfdfdf;
     }
 
@@ -171,7 +171,7 @@
       font-size: clamp(17px, 2vw, 24px);
       text-align: center;
       color: var(--sub);
-      letter-spacing: 0.16em;
+      letter-spacing: 0.08em;
       word-break: break-all;
       min-height: 1.6em;
     }
@@ -179,7 +179,7 @@
     .typed {
       font-size: clamp(16px, 1.9vw, 22px);
       text-align: center;
-      color: var(--ok);
+      color: var(--text);
       min-height: 1.5em;
       word-break: break-all;
       letter-spacing: 0.12em;
@@ -187,9 +187,11 @@
 
     .typed .done {
       opacity: 1;
+      color: var(--ok);
     }
     .typed .rest {
       opacity: 0.35;
+      color: var(--text);
     }
 
     .guide {
@@ -335,12 +337,7 @@
       <div class="control">
         <label for="soundSelect">SOUND</label>
         <select id="soundSelect">
-          <option value="silent">SILENT</option>
-          <option value="dry">DRY</option>
-          <option value="deep">DEEP</option>
-          <option value="mechanical">MECHANICAL</option>
-          <option value="soft">SOFT</option>
-          <option value="sharp">SHARP</option>
+          <option value="calm">CALM</option>
         </select>
       </div>
     </div>
@@ -416,361 +413,122 @@
     </div>
 
     <div class="bottom-bar">
-      <div class="mini-panel">日本式ローマ字表示 / 入力はヘボン式・訓令式・日本式対応</div>
+      <div class="mini-panel">読み仮名表示 / 入力はヘボン式・訓令式・日本式対応</div>
       <div class="mini-panel warning" id="statusText">初回の打鍵で音声が有効になります</div>
     </div>
   </div>
 
   <script>
     /****************************************************************
-     * ことわざデータ
+     * 名詞データ
+     * 3文字以上の名詞を1000問、順番に出題
      * 形式: { jp: "日本語表記", kana: "かなよみ" }
      ****************************************************************/
-    const proverbSeeds = [
-      { jp: "石の上にも三年", kana: "いしのうえにもさんねん" },
-      { jp: "猿も木から落ちる", kana: "さるもきからおちる" },
-      { jp: "犬も歩けば棒に当たる", kana: "いぬもあるけばぼうにあたる" },
-      { jp: "塵も積もれば山となる", kana: "ちりもつもればやまとなる" },
-      { jp: "継続は力なり", kana: "けいぞくはちからなり" },
-      { jp: "急がば回れ", kana: "いそがばまわれ" },
-      { jp: "転ばぬ先の杖", kana: "ころばぬさきのつえ" },
-      { jp: "七転び八起き", kana: "ななころびやおき" },
-      { jp: "習うより慣れろ", kana: "ならうよりなれろ" },
-      { jp: "聞くは一時の恥聞かぬは一生の恥", kana: "きくはいっときのはじきかぬはいっしょうのはじ" },
-      { jp: "二兎を追う者は一兎をも得ず", kana: "にとをおうものはいっとをもえず" },
-      { jp: "花より団子", kana: "はなよりだんご" },
-      { jp: "目は口ほどに物を言う", kana: "めはくちほどにものをいう" },
-      { jp: "口は災いの元", kana: "くちはわざわいのもと" },
-      { jp: "能ある鷹は爪を隠す", kana: "のうあるたかはつめをかくす" },
-      { jp: "覆水盆に返らず", kana: "ふくすいぼんにかえらず" },
-      { jp: "時は金なり", kana: "ときはかねなり" },
-      { jp: "早起きは三文の徳", kana: "はやおきはさんもんのとく" },
-      { jp: "笑う門には福来る", kana: "わらうかどにはふくきたる" },
-      { jp: "出る杭は打たれる", kana: "でるくいはうたれる" },
-      { jp: "雨降って地固まる", kana: "あめふってじかたまる" },
-      { jp: "蒔かぬ種は生えぬ", kana: "まかぬたねははえぬ" },
-      { jp: "怪我の功名", kana: "けがのこうみょう" },
-      { jp: "情けは人の為ならず", kana: "なさけはひとのためならず" },
-      { jp: "案ずるより産むが易し", kana: "あんずるよりうむがやすし" },
-      { jp: "井の中の蛙大海を知らず", kana: "いのなかのかわずたいかいをしらず" },
-      { jp: "魚心あれば水心", kana: "うおごころあればみずごころ" },
-      { jp: "後悔先に立たず", kana: "こうかいさきにたたず" },
-      { jp: "善は急げ", kana: "ぜんはいそげ" },
-      { jp: "備えあれば憂いなし", kana: "そなえあればうれいなし" },
-      { jp: "灯台下暗し", kana: "とうだいもとくらし" },
-      { jp: "渡る世間に鬼はなし", kana: "わたるせけんにおにはなし" },
-      { jp: "百聞は一見に如かず", kana: "ひゃくぶんはいっけんにしかず" },
-      { jp: "百聞は一行に如かず", kana: "ひゃくぶんはいっこうにしかず" },
-      { jp: "老いては子に従え", kana: "おいてはこにしたがえ" },
-      { jp: "郷に入っては郷に従え", kana: "ごうにいってはごうにしたがえ" },
-      { jp: "月とすっぽん", kana: "つきとすっぽん" },
-      { jp: "天は自ら助くる者を助く", kana: "てんはみずからたすくるものをたすく" },
-      { jp: "好きこそ物の上手なれ", kana: "すきこそもののじょうずなれ" },
-      { jp: "可愛い子には旅をさせよ", kana: "かわいいこにはたびをさせよ" },
-      { jp: "鬼に金棒", kana: "おににかなぼう" },
-      { jp: "鬼の居ぬ間に洗濯", kana: "おにのいぬまにせんたく" },
-      { jp: "飼い犬に手を噛まれる", kana: "かいいぬにてをかまれる" },
-      { jp: "河童の川流れ", kana: "かっぱのかわながれ" },
-      { jp: "亀の甲より年の功", kana: "かめのこうよりとしのこう" },
-      { jp: "木を見て森を見ず", kana: "きをみてもりをみず" },
-      { jp: "果報は寝て待て", kana: "かほうはねてまて" },
-      { jp: "弘法にも筆の誤り", kana: "こうぼうにもふでのあやまり" },
-      { jp: "三人寄れば文殊の知恵", kana: "さんにんよればもんじゅのちえ" },
-      { jp: "失敗は成功のもと", kana: "しっぱいはせいこうのもと" },
-      { jp: "雀百まで踊り忘れず", kana: "すずめひゃくまでおどりわすれず" },
-      { jp: "背に腹は代えられぬ", kana: "せにははらはかえられぬ" },
-      { jp: "急いては事を仕損じる", kana: "せいてはことをしそんじる" },
-      { jp: "千里の道も一歩から", kana: "せんりのみちもいっぽから" },
-      { jp: "高嶺の花", kana: "たかねのはな" },
-      { jp: "立つ鳥跡を濁さず", kana: "たつとりあとをにごさず" },
-      { jp: "旅は道連れ世は情け", kana: "たびはみちづれよはなさけ" },
-      { jp: "忠言耳に逆らう", kana: "ちゅうげんみみにさからう" },
-      { jp: "爪の垢を煎じて飲む", kana: "つめのあかをせんじてのむ" },
-      { jp: "鶴の一声", kana: "つるのひとこえ" },
-      { jp: "敵に塩を送る", kana: "てきにしおをおくる" },
-      { jp: "飛んで火に入る夏の虫", kana: "とんでひにいるなつのむし" },
-      { jp: "無い袖は振れぬ", kana: "ないそではふれぬ" },
-      { jp: "長い物には巻かれろ", kana: "ながいものにはまかれろ" },
-      { jp: "情けは人の為ならず", kana: "なさけはひとのためならず" },
-      { jp: "泣きっ面に蜂", kana: "なきっつらにはち" },
-      { jp: "習うより慣れよ", kana: "ならうよりなれよ" },
-      { jp: "二階から目薬", kana: "にかいからめぐすり" },
-      { jp: "二度あることは三度ある", kana: "にどあることはさんどある" },
-      { jp: "念には念を入れよ", kana: "ねんにはねんをいれよ" },
-      { jp: "猫に小判", kana: "ねこにこばん" },
-      { jp: "猫の手も借りたい", kana: "ねこのてもかりたい" },
-      { jp: "寝耳に水", kana: "ねみみにみず" },
-      { jp: "残り物には福がある", kana: "のこりものにはふくがある" },
-      { jp: "喉元過ぎれば熱さを忘れる", kana: "のどもとすぎればあつさをわすれる" },
-      { jp: "暖簾に腕押し", kana: "のれんにうでおし" },
-      { jp: "馬の耳に念仏", kana: "うまのみみにねんぶつ" },
-      { jp: "腹が減っては戦はできぬ", kana: "はらがへってはいくさはできぬ" },
-      { jp: "人の噂も七十五日", kana: "ひとのうわさもしちじゅうごにち" },
-      { jp: "火のない所に煙は立たぬ", kana: "ひのないところにけむりはたたぬ" },
-      { jp: "瓢箪から駒", kana: "ひょうたんからこま" },
-      { jp: "仏の顔も三度まで", kana: "ほとけのかおもさんどまで" },
-      { jp: "骨折り損のくたびれ儲け", kana: "ほねおりぞんのくたびれもうけ" },
-      { jp: "負けるが勝ち", kana: "まけるがかち" },
-      { jp: "待てば海路の日和あり", kana: "まてばかいろのひよりあり" },
-      { jp: "身から出た錆", kana: "みからでたさび" },
-      { jp: "水に流す", kana: "みずにながす" },
-      { jp: "三つ子の魂百まで", kana: "みつごのたましいひゃくまで" },
-      { jp: "昔取った杵柄", kana: "むかしとったきねづか" },
-      { jp: "目から鱗が落ちる", kana: "めからうろこがおちる" },
-      { jp: "持つべきものは友", kana: "もつべきものはとも" },
-      { jp: "焼け石に水", kana: "やけいしにみず" },
-      { jp: "安物買いの銭失い", kana: "やすものがいのぜにうしない" },
-      { jp: "藪から棒", kana: "やぶからぼう" },
-      { jp: "病は気から", kana: "やまいはきから" },
-      { jp: "闇夜の鉄砲", kana: "やみよのてっぽう" },
-      { jp: "油断大敵", kana: "ゆだんたいてき" },
-      { jp: "良薬は口に苦し", kana: "りょうやくはくちににがし" },
-      { jp: "瑠璃も玻璃も照らせば光る", kana: "るりもはりもてらせばひかる" },
-      { jp: "類は友を呼ぶ", kana: "るいはともをよぶ" },
-      { jp: "蓼食う虫も好き好き", kana: "たでくうむしもすきずき" },
-      { jp: "論より証拠", kana: "ろんよりしょうこ" },
-      { jp: "笑いは百薬の長", kana: "わらいはひゃくやくのちょう" },
-      { jp: "渡りに船", kana: "わたりにふね" },
-      { jp: "隣の花は赤い", kana: "となりのはなはあかい" },
-      { jp: "遠くの親類より近くの他人", kana: "とおくのしんるいよりちかくのたにん" },
-      { jp: "海老で鯛を釣る", kana: "えびでたいをつる" },
-      { jp: "一石二鳥", kana: "いっせきにちょう" },
-      { jp: "一念岩をも通す", kana: "いちねんいわをもとおす" },
-      { jp: "一寸先は闇", kana: "いっすんさきはやみ" },
-      { jp: "一を聞いて十を知る", kana: "いちをきいてじゅうをしる" },
-      { jp: "一難去ってまた一難", kana: "いちなんさってまたいちなん" },
-      { jp: "馬子にも衣装", kana: "まごにもいしょう" },
-      { jp: "嘘から出た実", kana: "うそからでたまこと" },
-      { jp: "後の祭り", kana: "あとのまつり" },
-      { jp: "えびす顔", kana: "えびすがお" },
-      { jp: "縁の下の力持ち", kana: "えんのしたのちからもち" },
-      { jp: "大は小を兼ねる", kana: "だいはしょうをかねる" },
-      { jp: "帯に短したすきに長し", kana: "おびにみじかしたすきにながし" },
-      { jp: "鬼の目にも涙", kana: "おにのめにもなみだ" },
-      { jp: "親しき仲にも礼儀あり", kana: "したしきなかにもれいぎあり" },
-      { jp: "恩を仇で返す", kana: "おんをあだでかえす" },
-      { jp: "勝って兜の緒を締めよ", kana: "かってかぶとのおをしめよ" },
-      { jp: "金は天下の回り物", kana: "かねはてんかのまわりもの" },
-      { jp: "窮鼠猫を噛む", kana: "きゅうそねこをかむ" },
-      { jp: "口は禍の門", kana: "くちはわざわいのかど" },
-      { jp: "怪我の功名", kana: "けがのこうみょう" },
-      { jp: "芸は身を助ける", kana: "げいはみをたすける" },
-      { jp: "転んでもただでは起きぬ", kana: "ころんでもただではおきぬ" },
-      { jp: "猿も木から落ちる", kana: "さるもきからおちる" },
-      { jp: "鹿を追う者は山を見ず", kana: "しかをおうものはやまをみず" },
-      { jp: "死んで花実が咲くものか", kana: "しんではなみがさくものか" },
-      { jp: "知らぬが仏", kana: "しらぬがほとけ" },
-      { jp: "心頭滅却すれば火もまた涼し", kana: "しんとうめっきゃくすればひもまたすずし" },
-      { jp: "好きな道なら苦にならぬ", kana: "すきなみちならくにならぬ" },
-      { jp: "住めば都", kana: "すめばみやこ" },
-      { jp: "千里眼も井戸の中では使えぬ", kana: "せんりがんもいどのなかではつかえぬ" },
-      { jp: "袖振り合うも多生の縁", kana: "そでふりあうもたしょうのえん" },
-      { jp: "損して得取れ", kana: "そんしてとくとれ" },
-      { jp: "大山鳴動して鼠一匹", kana: "たいざんめいどうしてねずみいっぴき" },
-      { jp: "竹を割ったよう", kana: "たけをわったよう" },
-      { jp: "短気は損気", kana: "たんきはそんき" },
-      { jp: "断じて行えば鬼神もこれを避く", kana: "だんじておこなえばきしんもこれをさく" },
-      { jp: "近道は遠道", kana: "ちかみちはとおみち" },
-      { jp: "月夜に提灯", kana: "つきよにちょうちん" },
-      { jp: "手前味噌", kana: "てまえみそ" },
-      { jp: "出る釘は打たれる", kana: "でるくぎはうたれる" },
-      { jp: "遠水は近火を救わず", kana: "えんすいはきんかをすくわず" },
-      { jp: "灯火親しむべし", kana: "とうかしたしむべし" },
-      { jp: "徳は孤ならず必ず隣あり", kana: "とくはこならずかならずとなりあり" },
-      { jp: "どんぐりの背比べ", kana: "どんぐりのせいくらべ" },
-      { jp: "長い目で見る", kana: "ながいめでみる" },
-      { jp: "情けに刃向かう刃はない", kana: "なさけにはむかうやいばはない" },
-      { jp: "習い性となる", kana: "ならいせいとなる" },
-      { jp: "逃がした魚は大きい", kana: "にがしたさかなはおおきい" },
-      { jp: "糠に釘", kana: "ぬかにくぎ" },
-      { jp: "念には念を入れる", kana: "ねんにはねんをいれる" },
-      { jp: "濡れ手で粟", kana: "ぬれてであわ" },
-      { jp: "喉から手が出る", kana: "のどからてがでる" },
-      { jp: "乗りかかった船", kana: "のりかかったふね" },
-      { jp: "恥を知れ", kana: "はじをしれ" },
-      { jp: "花に嵐", kana: "はなにあらし" },
-      { jp: "早く行きたければ一人で行け遠くへ行きたければ皆で行け", kana: "はやくいきたければひとりでいけとおくへいきたければみなでいけ" },
-      { jp: "火に油を注ぐ", kana: "ひにあぶらをそそぐ" },
-      { jp: "人は見かけによらぬもの", kana: "ひとはみかけによらぬもの" },
-      { jp: "笛吹けども踊らず", kana: "ふえふけどもおどらず" },
-      { jp: "武士は食わねど高楊枝", kana: "ぶしはくわねどたかようじ" },
-      { jp: "蛇足", kana: "だそく" },
-      { jp: "仏作って魂入れず", kana: "ほとけつくってたましいいれず" },
-      { jp: "待てば甘露の日和あり", kana: "まてばかんろのひよりあり" },
-      { jp: "身を捨ててこそ浮かぶ瀬もあれ", kana: "みをすててこそうかぶせもあれ" },
-      { jp: "昔は昔今は今", kana: "むかしはむかしいまはいま" },
-      { jp: "目に入れても痛くない", kana: "めにいれてもいたくない" },
-      { jp: "目の上のたんこぶ", kana: "めのうえのたんこぶ" },
-      { jp: "餅は餅屋", kana: "もちはもちや" },
-      { jp: "元も子もない", kana: "もともこもない" },
-      { jp: "桃栗三年柿八年", kana: "ももくりさんねんかきはちねん" },
-      { jp: "焼け野の雉夜の鶴", kana: "やけののきぎすよるのつる" },
-      { jp: "安かろう悪かろう", kana: "やすかろうわるかろう" },
-      { jp: "藪をつついて蛇を出す", kana: "やぶをつついてへびをだす" },
-      { jp: "病は口より入る", kana: "やまいはくちよりいる" },
-      { jp: "雪に耐えて梅花麗し", kana: "ゆきにたえてばいかうるわし" },
-      { jp: "良いことは重なる", kana: "よいことはかさなる" },
-      { jp: "良い仲にも垣をせよ", kana: "よいなかにもかきをせよ" },
-      { jp: "楽あれば苦あり", kana: "らくあればくあり" },
-      { jp: "楽は苦の種苦は楽の種", kana: "らくはくのたねくはらくのたね" },
-      { jp: "礼も過ぎれば無礼になる", kana: "れいもすぎればぶれいになる" },
-      { jp: "老馬の智", kana: "ろうばのち" },
-      { jp: "若い時の苦労は買ってでもせよ", kana: "わかいときのくろうはかってでもせよ" },
-      { jp: "笑う門には福来たる", kana: "わらうかどにはふくきたる" },
-      { jp: "我が身をつねって人の痛さを知れ", kana: "わがみをつねってひとのいたさをしれ" },
-      { jp: "我田引水", kana: "がでんいんすい" },
-      { jp: "芸術は長く人生は短し", kana: "げいじゅつはながくじんせいはみじかし" },
-      { jp: "雀の涙", kana: "すずめのなみだ" },
-      { jp: "海千山千", kana: "うみせんやません" },
-      { jp: "一期一会", kana: "いちごいちえ" },
-      { jp: "以心伝心", kana: "いしんでんしん" },
-      { jp: "自業自得", kana: "じごうじとく" },
-      { jp: "十人十色", kana: "じゅうにんといろ" },
-      { jp: "温故知新", kana: "おんこちしん" },
-      { jp: "異口同音", kana: "いくどうおん" },
-      { jp: "因果応報", kana: "いんがおうほう" },
-      { jp: "疑心暗鬼", kana: "ぎしんあんき" },
-      { jp: "起死回生", kana: "きしかいせい" },
-      { jp: "玉石混交", kana: "ぎょくせきこんこう" },
-      { jp: "切磋琢磨", kana: "せっさたくま" },
-      { jp: "晴耕雨読", kana: "せいこううどく" },
-      { jp: "臨機応変", kana: "りんきおうへん" },
-      { jp: "言行一致", kana: "げんこういっち" },
-      { jp: "試行錯誤", kana: "しこうさくご" },
-      { jp: "勇往邁進", kana: "ゆうおうまいしん" },
-      { jp: "厚顔無恥", kana: "こうがんむち" },
-      { jp: "馬耳東風", kana: "ばじとうふう" },
-      { jp: "本末転倒", kana: "ほんまつてんとう" },
-      { jp: "一朝一夕", kana: "いっちょういっせき" },
-      { jp: "一長一短", kana: "いっちょういったん" },
-      { jp: "有言実行", kana: "ゆうげんじっこう" },
-      { jp: "前途洋々", kana: "ぜんとようよう" },
-      { jp: "電光石火", kana: "でんこうせっか" },
-      { jp: "一蓮托生", kana: "いちれんたくしょう" },
-      { jp: "付和雷同", kana: "ふわらいどう" },
-      { jp: "千差万別", kana: "せんさばんべつ" },
-      { jp: "森羅万象", kana: "しんらばんしょう" },
-      { jp: "泰然自若", kana: "たいぜんじじゃく" },
-      { jp: "大器晩成", kana: "たいきばんせい" },
-      { jp: "風林火山", kana: "ふうりんかざん" },
-      { jp: "明鏡止水", kana: "めいきょうしすい" },
-      { jp: "支離滅裂", kana: "しりめつれつ" },
-      { jp: "半信半疑", kana: "はんしんはんぎ" },
-      { jp: "百花繚乱", kana: "ひゃっかりょうらん" },
-      { jp: "百発百中", kana: "ひゃっぱつひゃくちゅう" },
-      { jp: "一喜一憂", kana: "いっきいちゆう" },
-      { jp: "一網打尽", kana: "いちもうだじん" },
-      { jp: "無我夢中", kana: "むがむちゅう" },
-      { jp: "優柔不断", kana: "ゆうじゅうふだん" },
-      { jp: "満身創痍", kana: "まんしんそうい" },
-      { jp: "危機一髪", kana: "ききいっぱつ" },
-      { jp: "一心不乱", kana: "いっしんふらん" },
-      { jp: "右往左往", kana: "うおうさおう" },
-      { jp: "和気藹々", kana: "わきあいあい" },
-      { jp: "悪因悪果", kana: "あくいんあっか" },
-      { jp: "自暴自棄", kana: "じぼうじき" },
-      { jp: "朝令暮改", kana: "ちょうれいぼかい" },
-      { jp: "傍若無人", kana: "ぼうじゃくぶじん" },
-      { jp: "一念発起", kana: "いちねんほっき" },
-      { jp: "豪放磊落", kana: "ごうほうらいらく" },
-      { jp: "完全無欠", kana: "かんぜんむけつ" },
-      { jp: "独立独歩", kana: "どくりつどっぽ" },
-      { jp: "先手必勝", kana: "せんてひっしょう" },
-      { jp: "一石を投じる", kana: "いっせきをとうじる" },
-      { jp: "当意即妙", kana: "とういそくみょう" },
-      { jp: "不言実行", kana: "ふげんじっこう" },
-      { jp: "無病息災", kana: "むびょうそくさい" },
-      { jp: "平身低頭", kana: "へいしんていとう" },
-      { jp: "自由自在", kana: "じゆうじざい" },
-      { jp: "大胆不敵", kana: "だいたんふてき" },
-      { jp: "起承転結", kana: "きしょうてんけつ" },
-      { jp: "有為転変", kana: "ういてんぺん" },
-      { jp: "表裏一体", kana: "ひょうりいったい" },
-      { jp: "不易流行", kana: "ふえきりゅうこう" },
-      { jp: "和魂洋才", kana: "わこんようさい" },
-      { jp: "東奔西走", kana: "とうほんせいそう" },
-      { jp: "正々堂々", kana: "せいせいどうどう" },
-      { jp: "暗中模索", kana: "あんちゅうもさく" },
-      { jp: "一進一退", kana: "いっしんいったい" },
-      { jp: "一騎当千", kana: "いっきとうせん" },
-      { jp: "一目瞭然", kana: "いちもくりょうぜん" },
-      { jp: "一味同心", kana: "いちみどうしん" },
-      { jp: "一心同体", kana: "いっしんどうたい" },
-      { jp: "虚心坦懐", kana: "きょしんたんかい" },
-      { jp: "空前絶後", kana: "くうぜんぜつご" },
-      { jp: "変幻自在", kana: "へんげんじざい" },
-      { jp: "千載一遇", kana: "せんざいいちぐう" },
-      { jp: "疾風迅雷", kana: "しっぷうじんらい" },
-      { jp: "初志貫徹", kana: "しょしかんてつ" },
-      { jp: "快刀乱麻", kana: "かいとうらんま" },
-      { jp: "百折不撓", kana: "ひゃくせつふとう" },
-      { jp: "用意周到", kana: "よういしゅうとう" },
-      { jp: "波乱万丈", kana: "はらんばんじょう" },
-      { jp: "威風堂々", kana: "いふうどうどう" },
-      { jp: "切歯扼腕", kana: "せっしやくわん" },
-      { jp: "以毒制毒", kana: "いどくせいどく" },
-      { jp: "海闊天空", kana: "かいかつてんくう" }
+    const nounPrefixes = [
+      { jp: "青空", kana: "あおぞら" },
+      { jp: "白銀", kana: "はくぎん" },
+      { jp: "黒曜", kana: "こくよう" },
+      { jp: "春風", kana: "しゅんぷう" },
+      { jp: "夏空", kana: "なつぞら" },
+      { jp: "秋雨", kana: "あきさめ" },
+      { jp: "冬灯", kana: "ふゆあかり" },
+      { jp: "流星", kana: "りゅうせい" },
+      { jp: "深海", kana: "しんかい" },
+      { jp: "朝霧", kana: "あさぎり" },
+      { jp: "夕凪", kana: "ゆうなぎ" },
+      { jp: "月光", kana: "げっこう" },
+      { jp: "星空", kana: "ほしぞら" },
+      { jp: "花園", kana: "はなぞの" },
+      { jp: "雪原", kana: "せつげん" },
+      { jp: "森影", kana: "しんえい" },
+      { jp: "海辺", kana: "うみべ" },
+      { jp: "雲間", kana: "くもま" },
+      { jp: "銀河", kana: "ぎんが" },
+      { jp: "光彩", kana: "こうさい" },
+      { jp: "音羽", kana: "おとは" },
+      { jp: "風花", kana: "かざはな" },
+      { jp: "水面", kana: "みなも" },
+      { jp: "霧島", kana: "きりしま" },
+      { jp: "空色", kana: "そらいろ" }
     ];
 
-    /****************************************************************
-     * 1000問以上になるように拡張
-     ****************************************************************/
-    function buildQuestionBankTo1000(seedList) {
+    const nounCores = [
+      { jp: "時計", kana: "とけい" },
+      { jp: "図書館", kana: "としょかん" },
+      { jp: "飛行機", kana: "ひこうき" },
+      { jp: "望遠鏡", kana: "ぼうえんきょう" },
+      { jp: "博物館", kana: "はくぶつかん" },
+      { jp: "美術館", kana: "びじゅつかん" },
+      { jp: "映画館", kana: "えいがかん" },
+      { jp: "遊園地", kana: "ゆうえんち" },
+      { jp: "観覧車", kana: "かんらんしゃ" },
+      { jp: "水族館", kana: "すいぞくかん" },
+      { jp: "植物園", kana: "しょくぶつえん" },
+      { jp: "動物園", kana: "どうぶつえん" },
+      { jp: "電車駅", kana: "でんしゃえき" },
+      { jp: "新幹線", kana: "しんかんせん" },
+      { jp: "研究所", kana: "けんきゅうじょ" },
+      { jp: "図工室", kana: "ずこうしつ" },
+      { jp: "音楽室", kana: "おんがくしつ" },
+      { jp: "理科室", kana: "りかしつ" },
+      { jp: "教室棟", kana: "きょうしつとう" },
+      { jp: "体育館", kana: "たいいくかん" },
+      { jp: "競技場", kana: "きょうぎじょう" },
+      { jp: "球場", kana: "きゅうじょう" },
+      { jp: "温泉街", kana: "おんせんがい" },
+      { jp: "商店街", kana: "しょうてんがい" },
+      { jp: "展望台", kana: "てんぼうだい" },
+      { jp: "放送局", kana: "ほうそうきょく" },
+      { jp: "発電所", kana: "はつでんしょ" },
+      { jp: "天文台", kana: "てんもんだい" },
+      { jp: "灯台跡", kana: "とうだいあと" },
+      { jp: "記念碑", kana: "きねんひ" },
+      { jp: "遊歩道", kana: "ゆうほどう" },
+      { jp: "交差点", kana: "こうさてん" },
+      { jp: "郵便局", kana: "ゆうびんきょく" },
+      { jp: "消防署", kana: "しょうぼうしょ" },
+      { jp: "警察署", kana: "けいさつしょ" },
+      { jp: "市場通", kana: "いちばどおり" },
+      { jp: "古書店", kana: "こしょてん" },
+      { jp: "喫茶店", kana: "きっさてん" },
+      { jp: "書店街", kana: "しょてんがい" },
+      { jp: "工房街", kana: "こうぼうがい" }
+    ];
+
+    function normalizeKana(text) {
+      return text
+        .replace(/\s+/g, "")
+        .replace(/　/g, "")
+        .replace(/ゔ/g, "ゔ");
+    }
+
+    function buildQuestionBankTo1000(prefixes, cores) {
       const bank = [];
       let id = 1;
-      while (bank.length < 1000) {
-        for (const item of seedList) {
+
+      for (const prefix of prefixes) {
+        for (const core of cores) {
           if (bank.length >= 1000) break;
           bank.push({
             id: id++,
-            jp: item.jp,
-            kana: normalizeKana(item.kana)
+            jp: prefix.jp + core.jp,
+            kana: normalizeKana(prefix.kana + core.kana)
           });
         }
+        if (bank.length >= 1000) break;
       }
+
       return bank;
     }
 
-    const proverbBank = buildQuestionBankTo1000(proverbSeeds);
+    const nounBank = buildQuestionBankTo1000(nounPrefixes, nounCores);
 
     /****************************************************************
-     * 日本式ローマ字表示用マップ
+     * 表示用かなはそのまま表示
      ****************************************************************/
-    const displayMap = {
-      "あ":"A","い":"I","う":"U","え":"E","お":"O",
-      "か":"KA","き":"KI","く":"KU","け":"KE","こ":"KO",
-      "さ":"SA","し":"SI","す":"SU","せ":"SE","そ":"SO",
-      "た":"TA","ち":"TI","つ":"TU","て":"TE","と":"TO",
-      "な":"NA","に":"NI","ぬ":"NU","ね":"NE","の":"NO",
-      "は":"HA","ひ":"HI","ふ":"HU","へ":"HE","ほ":"HO",
-      "ま":"MA","み":"MI","む":"MU","め":"ME","も":"MO",
-      "や":"YA","ゆ":"YU","よ":"YO",
-      "ら":"RA","り":"RI","る":"RU","れ":"RE","ろ":"RO",
-      "わ":"WA","を":"WO","ん":"N",
-      "が":"GA","ぎ":"GI","ぐ":"GU","げ":"GE","ご":"GO",
-      "ざ":"ZA","じ":"ZI","ず":"ZU","ぜ":"ZE","ぞ":"ZO",
-      "だ":"DA","ぢ":"DI","づ":"DU","で":"DE","ど":"DO",
-      "ば":"BA","び":"BI","ぶ":"BU","べ":"BE","ぼ":"BO",
-      "ぱ":"PA","ぴ":"PI","ぷ":"PU","ぺ":"PE","ぽ":"PO",
-      "ぁ":"A","ぃ":"I","ぅ":"U","ぇ":"E","ぉ":"O",
-      "ゃ":"YA","ゅ":"YU","ょ":"YO",
-      "ゔ":"VU","ゐ":"WI","ゑ":"WE","ー":"-"
-    };
-
-    const comboDisplayMap = {
-      "きゃ":"KYA","きゅ":"KYU","きょ":"KYO",
-      "しゃ":"SYA","しゅ":"SYU","しょ":"SYO",
-      "ちゃ":"TYA","ちゅ":"TYU","ちょ":"TYO",
-      "にゃ":"NYA","にゅ":"NYU","にょ":"NYO",
-      "ひゃ":"HYA","ひゅ":"HYU","ひょ":"HYO",
-      "みゃ":"MYA","みゅ":"MYU","みょ":"MYO",
-      "りゃ":"RYA","りゅ":"RYU","りょ":"RYO",
-      "ぎゃ":"GYA","ぎゅ":"GYU","ぎょ":"GYO",
-      "じゃ":"ZYA","じゅ":"ZYU","じょ":"ZYO",
-      "ぢゃ":"DYA","ぢゅ":"DYU","ぢょ":"DYO",
-      "びゃ":"BYA","びゅ":"BYU","びょ":"BYO",
-      "ぴゃ":"PYA","ぴゅ":"PYU","ぴょ":"PYO"
-    };
+    function getDisplayReading(kana) {
+      return kana;
+    }
 
     /****************************************************************
      * 入力受理用ローマ字候補
@@ -815,53 +573,18 @@
       "ふぁ":["fa","hua"], "ふぃ":["fi","hwi"], "ふぇ":["fe","hwe"], "ふぉ":["fo","hwo"]
     };
 
-    function normalizeKana(text) {
-      return text
-        .replace(/\s+/g, "")
-        .replace(/　/g, "")
-        .replace(/ゔ/g, "ゔ");
-    }
-
-    function getDisplayRoman(kana) {
-      let out = "";
-      for (let i = 0; i < kana.length; i++) {
-        const pair = kana.slice(i, i + 2);
-        if (comboDisplayMap[pair]) {
-          out += comboDisplayMap[pair];
-          i++;
-          continue;
-        }
-        const ch = kana[i];
-        if (ch === "っ") {
-          const nextPair = kana.slice(i + 1, i + 3);
-          let nextDisplay = "";
-          if (comboDisplayMap[nextPair]) {
-            nextDisplay = comboDisplayMap[nextPair];
-          } else {
-            nextDisplay = displayMap[kana[i + 1]] || "";
-          }
-          out += nextDisplay ? nextDisplay[0] : "";
-          continue;
-        }
-        out += displayMap[ch] || ch.toUpperCase();
-      }
-      return out;
-    }
-
     function unique(arr) {
       return [...new Set(arr)];
     }
 
     /****************************************************************
      * 逐次判定用ローマ字解析
-     * 以前の「全文候補を大量生成して件数制限する」方式をやめ、
-     * 各かな単位ごとに状態を分岐保持して逐次判定する
      ****************************************************************/
     function parseKanaUnits(kana) {
       const units = [];
       for (let i = 0; i < kana.length; i++) {
         const pair = kana.slice(i, i + 2);
-        if (comboRomaMap[pair] || comboDisplayMap[pair]) {
+        if (comboRomaMap[pair]) {
           units.push(pair);
           i++;
         } else {
@@ -1072,10 +795,10 @@
     const keyEls = [...document.querySelectorAll(".key")];
 
     let audioCtx = null;
-    let currentSound = "silent";
+    let currentSound = "calm";
 
-    let allQuestions = [...proverbBank];
-    let remainingQuestions = [];
+    let allQuestions = [...nounBank];
+    let currentQuestionIndex = 0;
     let currentQuestion = null;
     let currentUnits = [];
     let parserStates = createInitialStates();
@@ -1084,42 +807,33 @@
     let justLoaded = true;
     let solveTimer = null;
 
-    function shuffle(array) {
-      const arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
     function resetQuestionCycle(resetCounter = false) {
       if (solveTimer) {
         clearTimeout(solveTimer);
         solveTimer = null;
       }
-      remainingQuestions = shuffle([...allQuestions]);
+      currentQuestionIndex = 0;
       if (resetCounter) solvedCount = 0;
-      pickNextQuestion();
+      pickCurrentQuestion();
     }
 
-    function pickNextQuestion() {
+    function pickCurrentQuestion() {
       if (solveTimer) {
         clearTimeout(solveTimer);
         solveTimer = null;
       }
 
-      if (remainingQuestions.length === 0) {
-        remainingQuestions = shuffle([...allQuestions]);
+      if (currentQuestionIndex >= allQuestions.length) {
+        currentQuestionIndex = 0;
       }
 
-      currentQuestion = remainingQuestions.pop();
+      currentQuestion = allQuestions[currentQuestionIndex];
       currentUnits = parseKanaUnits(currentQuestion.kana);
       parserStates = createInitialStates();
       typed = "";
 
       jpText.textContent = currentQuestion.jp;
-      romaText.textContent = getDisplayRoman(currentQuestion.kana);
+      romaText.textContent = getDisplayReading(currentQuestion.kana);
       updateTypedView();
       updateCounter();
       updateKeyboardGuide();
@@ -1133,7 +847,7 @@
 
     function updateCounter() {
       counterEl.textContent = String(solvedCount);
-      remainingCountEl.textContent = String(remainingQuestions.length);
+      remainingCountEl.textContent = String(Math.max(0, allQuestions.length - currentQuestionIndex - 1));
     }
 
     function updateTypedView() {
@@ -1177,7 +891,6 @@
       const nextStates = advanceStates(parserStates, inputChar, currentUnits);
 
       if (nextStates.length === 0) {
-        playMiss();
         flashMiss();
         return;
       }
@@ -1187,20 +900,25 @@
       updateTypedView();
       updateKeyboardGuide();
 
+      playHit();
+
       if (isSolved(parserStates, currentUnits)) {
-        playHit();
         solveTimer = setTimeout(() => {
           solvedCount++;
-          pickNextQuestion();
+          currentQuestionIndex++;
+          if (currentQuestionIndex >= allQuestions.length) {
+            currentQuestionIndex = 0;
+          }
+          pickCurrentQuestion();
         }, 70);
       } else {
-        playHit();
         statusText.textContent = "入力受付中";
       }
     }
 
     /****************************************************************
      * サウンド
+     * 落ち着いたシンプルな1パターンのみ
      ****************************************************************/
     function ensureAudio() {
       if (!audioCtx) {
@@ -1211,53 +929,32 @@
       }
     }
 
-    function beep({ freq = 440, duration = 0.03, type = "square", gain = 0.03, attack = 0.002, release = 0.02 }) {
-      if (currentSound === "silent") return;
+    function playHit() {
       ensureAudio();
 
       const now = audioCtx.currentTime;
+
       const osc = audioCtx.createOscillator();
-      const amp = audioCtx.createGain();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
 
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, now);
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(780, now);
+      osc.frequency.exponentialRampToValueAtTime(620, now + 0.028);
 
-      amp.gain.setValueAtTime(0.0001, now);
-      amp.gain.exponentialRampToValueAtTime(Math.max(gain, 0.0002), now + attack);
-      amp.gain.exponentialRampToValueAtTime(0.0001, now + Math.max(duration, attack + 0.001) + release);
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(1400, now);
 
-      osc.connect(amp);
-      amp.connect(audioCtx.destination);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.018, now + 0.003);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
 
       osc.start(now);
-      osc.stop(now + duration + release + 0.01);
-    }
-
-    function playHit() {
-      switch (currentSound) {
-        case "dry":
-          beep({ freq: 1650, duration: 0.012, type: "square", gain: 0.02, attack: 0.001, release: 0.01 });
-          break;
-        case "deep":
-          beep({ freq: 190, duration: 0.028, type: "triangle", gain: 0.035, attack: 0.001, release: 0.03 });
-          break;
-        case "mechanical":
-          beep({ freq: 1200, duration: 0.008, type: "square", gain: 0.02, attack: 0.001, release: 0.008 });
-          setTimeout(() => beep({ freq: 780, duration: 0.01, type: "square", gain: 0.015, attack: 0.001, release: 0.01 }), 6);
-          break;
-        case "soft":
-          beep({ freq: 820, duration: 0.018, type: "sine", gain: 0.018, attack: 0.002, release: 0.02 });
-          break;
-        case "sharp":
-          beep({ freq: 2100, duration: 0.007, type: "sawtooth", gain: 0.017, attack: 0.001, release: 0.008 });
-          break;
-      }
-    }
-
-    function playMiss() {
-      if (currentSound === "silent") return;
-      ensureAudio();
-      beep({ freq: 180, duration: 0.04, type: "sawtooth", gain: 0.03, attack: 0.001, release: 0.03 });
+      osc.stop(now + 0.05);
     }
 
     /****************************************************************
@@ -1276,11 +973,10 @@
     }
 
     function applySound(sound) {
-      currentSound = sound;
-      localStorage.setItem("typing_sound", sound);
-      statusText.textContent = sound === "silent"
-        ? "音声はOFFです"
-        : "入力受付中";
+      currentSound = "calm";
+      soundSelect.value = "calm";
+      localStorage.setItem("typing_sound", "calm");
+      statusText.textContent = "入力受付中";
     }
 
     themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
@@ -1321,15 +1017,14 @@
     function init() {
       const savedTheme = localStorage.getItem("typing_theme") || "theme-black";
       const savedFont = localStorage.getItem("typing_font") || "font-gothic";
-      const savedSound = localStorage.getItem("typing_sound") || "silent";
 
       themeSelect.value = savedTheme;
       fontSelect.value = savedFont;
-      soundSelect.value = savedSound;
+      soundSelect.value = "calm";
 
       applyTheme(savedTheme);
       applyFont(savedFont);
-      applySound(savedSound);
+      applySound("calm");
 
       resetQuestionCycle(false);
     }
