@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ことわざタイピング練習</title>
+  <style>
+    :root{
+      --bg:#0f0f10;
+      --panel:#17181a;
+      --panel-2:#1e2023;
+      --line:#2d3136;
+      --text:#f3f4f6;
+      --sub:#a9afb8;
+      --accent:#d7dde6;
+      --ok:#8fd3a8;
+      --miss:#c78585;
+      --key:#202329;
+      --key-text:#f5f7fa;
+      --key-active:#f3f4f6;
+      --key-active-text:#0f1114;
+      --shadow:0 18px 48px rgba(0,0,0,.35);
+    }
+
+    body.theme-black{
+      --bg:#0f0f10;
+      --panel:#17181a;
+      --panel-2:#1e2023;
+      --line:#2d3136;
+      --text:#f3f4f6;
+      --sub:#a9afb8;
+      --accent:#d7dde6;
+      --ok:#8fd3a8;
+      --miss:#c78585;
+      --key:#202329;
+      --key-text:#f5f7fa;
+      --key-active:#f3f4f6;
+      --key-active-text:#0f1114;
+    }
+
+    body.theme-white{
+      --bg:#f6f7f9;
+      --panel:#ffffff;
+      --panel-2:#f0f2f5;
+      --line:#d9dee6;
+      --text:#16181c;
+      --sub:#5d6571;
+      --accent:#1d242d;
+      --ok:#1f7a46;
+      --miss:#a03d3d;
+      --key:#e6ebf2;
+      --key-text:#17191d;
+      --key-active:#16181c;
+      --key-active-text:#ffffff;
+    }
+
+    body.theme-gray{
+      --bg:#7d838c;
+      --panel:#8b919a;
+      --panel-2:#767d86;
+      --line:#aab0b8;
+      --text:#f8fafc;
+      --sub:#e4e7eb;
+      --accent:#ffffff;
+      --ok:#d9ffe5;
+      --miss:#ffe1e1;
+      --key:#686f78;
+      --key-text:#f8fafc;
+      --key-active:#ffffff;
+      --key-active-text:#2b3138;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html,body{
+      margin:0;
+      width:100%;
+      height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:
+        "Hiragino Sans","Yu Gothic UI","Yu Gothic","Meiryo",
+        system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+      overflow:hidden;
+    }
+
+    body{
+      transition:background .2s ease,color .2s ease;
+    }
+
+    .app{
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .board{
+      width:min(1100px,100%);
+      height:min(94vh,920px);
+      background:linear-gradient(180deg,var(--panel),var(--panel-2));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:18px 22px 22px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:14px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .title{
+      font-size:14px;
+      letter-spacing:.18em;
+      color:var(--sub);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .theme-group{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(255,255,255,.02);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px;
+    }
+
+    .theme-btn{
+      border:none;
+      background:transparent;
+      color:var(--sub);
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.05em;
+      transition:.15s ease;
+    }
+
+    .theme-btn.active{
+      background:var(--accent);
+      color:var(--key-active-text);
+    }
+
+    .mini-info{
+      font-size:12px;
+      color:var(--sub);
+      letter-spacing:.06em;
+      user-select:none;
+    }
+
+    .main{
+      display:grid;
+      grid-template-rows:auto auto auto auto 1fr;
+      gap:10px;
+      align-items:start;
+      justify-items:center;
+      min-height:0;
+    }
+
+    .counter{
+      margin-top:8px;
+      font-size:18px;
+      color:var(--sub);
+      letter-spacing:.12em;
+      user-select:none;
+    }
+
+    .japanese{
+      margin-top:8px;
+      text-align:center;
+      font-size:clamp(28px,4.2vw,50px);
+      font-weight:800;
+      letter-spacing:.04em;
+      line-height:1.35;
+      min-height:2.8em;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 16px;
+    }
+
+    .romaji{
+      text-align:center;
+      font-size:clamp(18px,2.3vw,28px);
+      letter-spacing:.14em;
+      color:var(--sub);
+      min-height:2em;
+      padding:0 12px;
+      word-break:break-word;
+    }
+
+    .typed-line{
+      width:min(860px,100%);
+      min-height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0;
+      text-align:center;
+      padding:0 12px;
+      word-break:break-word;
+      line-height:1.7;
+      font-size:clamp(16px,2vw,24px);
+      letter-spacing:.12em;
+      border-bottom:1px solid var(--line);
+    }
+
+    .typed-ok{ color:var(--ok); }
+    .typed-rest{ color:var(--text); opacity:.95; }
+    .typed-miss{
+      animation:flashMiss .18s linear 1;
+    }
+
+    @keyframes flashMiss{
+      0%{ transform:translateX(0); }
+      25%{ transform:translateX(-3px); }
+      50%{ transform:translateX(3px); }
+      75%{ transform:translateX(-2px); }
+      100%{ transform:translateX(0); }
+    }
+
+    .keyboard-wrap{
+      width:min(980px,100%);
+      display:grid;
+      gap:14px;
+      align-content:start;
+      justify-items:center;
+      margin-top:6px;
+      min-height:0;
+    }
+
+    .keyboard{
+      width:100%;
+      display:grid;
+      gap:8px;
+      justify-items:center;
+    }
+
+    .key-row{
+      display:flex;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:nowrap;
+    }
+
+    .key{
+      width:58px;
+      height:48px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--key);
+      color:var(--key-text);
+      border:1px solid var(--line);
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:.04em;
+      user-select:none;
+      transition:.08s ease;
+      box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);
+    }
+
+    .key.wide{ width:92px; }
+    .key.extra-wide{ width:120px; }
+    .key.active{
+      background:var(--key-active);
+      color:var(--key-active-text);
+      transform:translateY(-1px);
+      box-shadow:0 0 0 2px rgba(255,255,255,.06), 0 10px 22px rgba(0,0,0,.18);
+    }
+
+    .footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      border-top:1px solid var(--line);
+      padding-top:12px;
+    }
+
+    .footer-left,
+    .footer-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--sub);
+      font-size:13px;
+      letter-spacing:.04em;
+    }
+
+    .stat{
+      padding:8px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.02);
+    }
+
+    #captureInput{
+      position:fixed;
+      opacity:0;
+      pointer-events:none;
+      width:1px;
+      height:1px;
+      left:-9999px;
+      top:-9999px;
+    }
+
+    @media (max-width:900px){
+      .board{
+        padding:14px 14px 16px;
+        gap:10px;
+      }
+      .key{
+        width:42px;
+        height:40px;
+        font-size:15px;
+        border-radius:10px;
+      }
+      .key.wide{ width:68px; }
+      .key.extra-wide{ width:92px; }
+      .keyboard-wrap{ gap:12px; }
+    }
+
+    @media (max-width:640px){
+      .topbar,
+      .footer{
+        justify-content:center;
+      }
+      .counter{
+        font-size:16px;
+      }
+      .typed-line{
+        min-height:48px;
+        font-size:16px;
+      }
+      .key-row{ gap:5px; }
+      .key{
+        width:31px;
+        height:34px;
+        font-size:12px;
+        border-radius:8px;
+      }
+      .key.wide{ width:50px; }
+      .key.extra-wide{ width:70px; }
+    }
+  </style>
+</head>
+<body class="theme-black">
+  <div class="app" id="app">
+    <div class="board">
+      <div class="topbar">
+        <div class="title">KOTOWAZA TYPING</div>
+        <div class="controls">
+          <div class="theme-group" aria-label="theme switch">
+            <button class="theme-btn active" data-theme="black">BLACK</button>
+            <button class="theme-btn" data-theme="white">WHITE</button>
+            <button class="theme-btn" data-theme="gray">GRAY</button>
+          </div>
+          <div class="mini-info">ENTER: RESET COUNT / RELOAD SET</div>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="counter" id="counter">0</div>
+        <div class="japanese" id="japanese"></div>
+        <div class="romaji" id="romaji"></div>
+        <div class="typed-line" id="typedLine"></div>
+
+        <div class="keyboard-wrap">
+          <div class="keyboard" id="keyboard"></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-left">
+          <div class="stat">SET: <span id="totalCount">1000</span></div>
+          <div class="stat">LEFT: <span id="remainingCount">1000</span></div>
+        </div>
+        <div class="footer-right">
+          <div class="stat">INPUT: HEPBURN / KUNREI / NIHON-SHIKI / COMMON VARIANTS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input id="captureInput" type="text" autocapitalize="off" autocomplete="off" spellcheck="false" />
+
+  <script>
+    const keyboardLayout = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L"],
+      ["Z","X","C","V","B","N","M"]
+    ];
+
+    const keyboardEl = document.getElementById("keyboard");
+    const keyMap = new Map();
+
+    function buildKeyboard(){
+      keyboardLayout.forEach((row) => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "key-row";
+        row.forEach((char) => {
+          const keyEl = document.createElement("div");
+          keyEl.className = "key";
+          keyEl.textContent = char;
+          keyEl.dataset.key = char;
+          rowEl.appendChild(keyEl);
+          keyMap.set(char, keyEl);
+        });
+        keyboardEl.appendChild(rowEl);
+      });
+    }
+    buildKeyboard();
+
+    const actualProverbs = [
+      "あたまかくしてしりかくさず",
+      "あとのまつり",
+      "あぶはちとらず",
+      "あまいことばにゃうらがある",
+      "あめふってじかたまる",
+      "ありのあなからつつみもくずれる",
+      "あんずるよりうむがやすし",
+      "いしのうえにもさんねん",
+      "いそがばまわれ",
+      "いたいのいたいのとんでいけ",
+      "いぬもあるけばぼうにあたる",
+      "いのちながければはじおおし",
+      "いわぬがはな",
+      "うそからでたまこと",
+      "うそつきはどろぼうのはじまり",
+      "うりのつるになすびはならぬ",
+      "えにかいたもち",
+      "えびでたいをつる",
+      "おににかなぼう",
+      "おびにみじかしたすきにながし",
+      "おわりよければすべてよし",
+      "おやのこころこしらず",
+      "おぼれるものはわらをもつかむ",
+      "おんにきる",
+      "かえるのこはかえる",
+      "かえるのつらにみず",
+      "かえてそうじていをえず",
+      "かきねからつばき",
+      "かごにのるひともかつぐひともそのまたくつをはくひとも",
+      "かってかぶとのおをしめよ",
+      "かどをためてうしをころす",
+      "かなしいときのかみだのみ",
+      "かわいさあまってにくさひゃくばい",
+      "かわずのこはかわず",
+      "きいてごくらくみてじごく",
+      "きじもなかずばうたれまい",
+      "きゅうばをえる",
+      "くうねるところにすむところ",
+      "くさいものにふた",
+      "くちからでまかせ",
+      "くちはわざわいのもと",
+      "くまなくさがせばごみのなかにもたから",
+      "けんかするほどなかがよい",
+      "こういんやのごとし",
+      "こうべをたれるいなほかな",
+      "こおりみずよりなおつめたし",
+      "こけつにいらずんばこじをえず",
+      "こどもはかすがい",
+      "ころばぬさきのつえ",
+      "ころんでもただではおきぬ",
+      "さいげつひとをまたず",
+      "さかなごころあればみずごころ",
+      "さるもきからおちる",
+      "さんにんよればもんじゅのちえ",
+      "しかばねにくちなし",
+      "しぬきではたらく",
+      "しっぱいはせいこうのもと",
+      "しらぬがほとけ",
+      "しらぬはぬしばかりなり",
+      "しらぬがほとけきかぬがごくらく",
+      "じごうじとく",
+      "しりにほがい",
+      "すきこそもののじょうずなれ",
+      "すずめのなみだ",
+      "すてるかみあればひろうかみあり",
+      "すなをかむよう",
+      "せいてはことをしそんずる",
+      "せいてはことをしそんじる",
+      "せけんしらず",
+      "せんりのみちもいっぽから",
+      "そうだんあいてなくしてちえわかず",
+      "そなえあればうれいなし",
+      "たけうまのとも",
+      "たけにきず",
+      "たちつてと",
+      "たでくうむしもすきずき",
+      "たなからぼたもち",
+      "たびはみちづれよはなさけ",
+      "たましいをうる",
+      "たらればはなし",
+      "ちいさなことからこつこつと",
+      "ちりもつもればやまとなる",
+      "ついたちのうそ",
+      "つきとすっぽん",
+      "つのかくしてしりかくさず",
+      "つりおとしたさかなはおおきい",
+      "てまえみそ",
+      "てをかえしなをかえし",
+      "てをやく",
+      "てもあしもでない",
+      "とうだいもとくらし",
+      "とおくのしんるいよりちかくのたにん",
+      "ときはかねなり",
+      "としよりのひやみず",
+      "とどのつまり",
+      "とらぬたぬきのかわざんよう",
+      "とらのいをかるきつね",
+      "とんでひにいるなつのむし",
+      "なかぬならなくまでまとうほととぎす",
+      "なくこもだまる",
+      "なさけはひとのためならず",
+      "ななころびやおき",
+      "なにはともあれ",
+      "ならうよりなれよ",
+      "にがしおうおはおおきい",
+      "にがていしき",
+      "にくまれっこよにはばかる",
+      "にげるがかち",
+      "にどあることはさんどある",
+      "ぬかにくぎ",
+      "ぬれぬさきのつゆ",
+      "ねこのてもかりたい",
+      "ねこにこばん",
+      "ねみみにみず",
+      "のどもとすぎればあつさをわすれる",
+      "のれんにうでおし",
+      "はいしゃふっかつ",
+      "はじをしのぶ",
+      "はじもがいぶん",
+      "はなよりだんご",
+      "はらがへってはいくさはできぬ",
+      "はりのあなからてんをのぞく",
+      "ひとのうわさもしちじゅうごにち",
+      "ひとのふりみてわがふりなおせ",
+      "ひまをもてあます",
+      "ひょうたんからこま",
+      "ひるあんどん",
+      "ふくすいぼんにかえらず",
+      "ぶたにしんじゅ",
+      "ふねにのったつもり",
+      "へたのよこずき",
+      "へたなてっぽうもかずうてばあたる",
+      "へびににらまれたかえる",
+      "ほとけのかおもさんど",
+      "ほねおりぞんのくたびれもうけ",
+      "まけるがかち",
+      "まるたはういてもいしはしずむ",
+      "みからでたさび",
+      "みずにながす",
+      "みずもの",
+      "みぬがはな",
+      "みみにはいってこころにのこる",
+      "みみをうたがう",
+      "みをすててこそうかぶせもあれ",
+      "むかしとったきねづか",
+      "むしかえす",
+      "めくそはなくそをわらう",
+      "めからうろこ",
+      "めはくちほどにものをいう",
+      "もちつもたれつ",
+      "もちはもちや",
+      "もってけどろぼう",
+      "もんぜんのこぞうならわぬきょうをよむ",
+      "やけいしにみず",
+      "やけぼっくいにひがつく",
+      "やすものがいのぜにうしない",
+      "やなぎのしたにどじょうはいない",
+      "やぶへび",
+      "やまいはきから",
+      "ゆだんたいてき",
+      "よいくすりはにがい",
+      "よいはなしにはうらがある",
+      "よるのみみはひるのみみ",
+      "らくあればくあり",
+      "りょうやくはくちににがし",
+      "わがみをつねってひとのいたさをしれ",
+      "わざわいをてんじてふくとなす",
+      "わたるせけんにおにはない",
+      "わらうかどにはふくきたる",
+      "をんなごころとあきのそら",
+      "あきなわにかかる",
+      "あくじせんりをはしる",
+      "あさめしまえ",
+      "あしもとをみる",
+      "あたってくだけろ",
+      "あとあしでさげん",
+      "あとひく",
+      "あぶくぜに",
+      "あまくだり",
+      "あやふや",
+      "いがみあう",
+      "いきをのむ",
+      "いそいでまわる",
+      "いっすんさきはやみ",
+      "いっちがんとなる",
+      "いてもたってもいられない",
+      "いとをひく",
+      "いぬのとおぼえ",
+      "いばらのみち",
+      "いみしんちょう",
+      "いわしのあたまもなんとやら",
+      "うきしずみ",
+      "うしにひかれてぜんこうじまいり",
+      "うしのみみになんとか",
+      "うたたね",
+      "うりことばにかいことば",
+      "えりをただす",
+      "おうおうにして",
+      "おおふねにのったつもり",
+      "おかねはてんかのまわりもの",
+      "おくびにもださない",
+      "おごるへいけはひさしからず",
+      "おさきまっくら",
+      "おちゃをにごす",
+      "おにのいぬまにせんたく",
+      "おのれをしる",
+      "おもいたったがきちじつ",
+      "おもいこしをあげる",
+      "おやゆびをかくす",
+      "かいがいしい",
+      "かいこういちばん",
+      "かえすがえす",
+      "かくがちがう",
+      "かけがえのない",
+      "かごのとり",
+      "かぜがふけばおけやがもうかる",
+      "かたやぶり",
+      "かていえんまん",
+      "がまんくらべ",
+      "からてがた",
+      "かわるがわる",
+      "かんがえもの",
+      "きがきでない",
+      "きがすすまない",
+      "きがとがめる",
+      "きがひける",
+      "きがおけない",
+      "ききをいつにする",
+      "きじつがくる",
+      "きまじめ",
+      "きをもむ",
+      "きをよくする",
+      "くさってもたい",
+      "くちがうまい",
+      "くちさがない",
+      "くちはさむ",
+      "くびをながくする",
+      "けがのこうみょう",
+      "けっしてない",
+      "げたをあずける",
+      "こうえんあらたならず",
+      "こうえんにこたえる",
+      "こうかいさきにたたず",
+      "こけんにかかわる",
+      "こころをくだく",
+      "こころをひらく",
+      "こしがかるい",
+      "こしをおる",
+      "こっけいむけい",
+      "ことあるごとに",
+      "ことをこうする",
+      "ことわざはせいかつのちえ",
+      "このみこのまれ",
+      "こまったときのかみだのみ",
+      "ころんでただではおきない",
+      "さいごによわる",
+      "さばをよむ",
+      "さんしょうはこつぶでもぴりりとからい",
+      "しおどき",
+      "しかたがない",
+      "しきりなおし",
+      "しごのせかい",
+      "しこんたましい",
+      "したでにでる",
+      "したをまく",
+      "しったかぶり",
+      "しっぽをだす",
+      "しどろもどろ",
+      "しのごのいう",
+      "しのびあし",
+      "しらをきる",
+      "しわよせ",
+      "じきしょうそう",
+      "じごくのみやげ",
+      "じじつむこん",
+      "じしんかじおやじ",
+      "じたばたする",
+      "じつるいそうとう",
+      "しゃくしじょうぎ",
+      "しゅしゃせんたく",
+      "しょうじきものがばかをみる",
+      "しょうねんよたいしをいだけ",
+      "しりうまにのる",
+      "すいぎょのまじわり",
+      "すきにする",
+      "すこしずつ",
+      "すったもんだ",
+      "すべったころんだ",
+      "せっさたくま",
+      "せまいもん",
+      "せわをやく",
+      "そうはとんやがおろさない",
+      "そつなくこなす",
+      "そでふれあうもたしょうのえん",
+      "そのひぐらし",
+      "たいきばんせい",
+      "たいこもち",
+      "たいこばん",
+      "たいざんめいどうしてねずみいっぴき",
+      "たからのもちぐされ",
+      "たつとりあとをにごさず",
+      "だてじゃない",
+      "たにんのそらにねたみなし",
+      "たねもしかけもない",
+      "たべもののうらみはおそろしい",
+      "たまのこし",
+      "ためつすがめつ",
+      "だんどりはちぶ",
+      "ちょうしにのる",
+      "ちりあくたもやくにたつ",
+      "ちりつも",
+      "ついてる",
+      "つくづくと",
+      "つじつまあわせ",
+      "つまるところ",
+      "つめがあまい",
+      "つるかめさんねん",
+      "ていたらく",
+      "てきざいてきしょ",
+      "てにあまる",
+      "てもとなれる",
+      "てんてこまい",
+      "とうぼえ",
+      "ときをうつす",
+      "ときすでにおそし",
+      "としよりのちえぶくろ",
+      "とっておき",
+      "とどめをさす",
+      "となりのしばふはあおい",
+      "とほうにくれる",
+      "とぼける",
+      "とらのこ",
+      "とんびにあぶらあげをさらわれる",
+      "ないないづくし",
+      "ないものねだり",
+      "なきっつらにはち",
+      "なきめをみる",
+      "なみだぐましい",
+      "ならぬものはならぬ",
+      "なんとかはかぜをひかない",
+      "にえきらない",
+      "にのまいをえんじる",
+      "にもつになる",
+      "にらみをきかす",
+      "ぬけめがない",
+      "ねつぞうする",
+      "ねぼけまなこ",
+      "のうあるたかはつめをかくす",
+      "のってくる",
+      "はきだめにつる",
+      "はちのいっさし",
+      "はなくそほど",
+      "はなもじつもある",
+      "はらにすえかねる",
+      "ひざをまじえる",
+      "ひとあしさきに",
+      "ひとくろう",
+      "ひとごとではない",
+      "ひとすじなわではいかない",
+      "ひとりがち",
+      "ひびがはいる",
+      "ひゃくぶんはいっけんにしかず",
+      "びりけつ",
+      "ふでまめ",
+      "ふりあげたこぶしのおろしどころがない",
+      "ふるいたつ",
+      "へそでちゃをわかす",
+      "べんてんさまでもしらぬ",
+      "ほうたいみたい",
+      "ほおかむり",
+      "ほぞをかむ",
+      "ほねがある",
+      "ほんねをいう",
+      "まがさす",
+      "まくらことば",
+      "まずい",
+      "まつりのあと",
+      "まねる",
+      "みからでたことば",
+      "みずくさい",
+      "みずのあわ",
+      "みにつまされる",
+      "みぶるいする",
+      "みみがいたい",
+      "みをけずる",
+      "むきになる",
+      "むこうみず",
+      "むしのいどころがわるい",
+      "むねをはる",
+      "めいあん",
+      "めくじらをたてる",
+      "めしのたね",
+      "めにものみせる",
+      "もうけもの",
+      "もはやこれまで",
+      "もやもやする",
+      "もんくなし",
+      "やくにたつ",
+      "やまっけがある",
+      "やりくり",
+      "やるせない",
+      "ゆくえしれず",
+      "ゆだんもすきもない",
+      "ようすみ",
+      "よだれがでる",
+      "よくばりはそん",
+      "よらばたいじゅのかげ",
+      "らちがあかない",
+      "りきさく",
+      "るすをあずかる",
+      "れいによって",
+      "ろうしてこうなし",
+      "わたりにふね",
+      "わなにかかる",
+      "わびさび",
+      "わるあがき"
+    ];
+
+    const fillerHeads = [
+      "いしのうえにも","あめふって","せいてはことを","わらうかどには","はなより","ちりもつもれば","みからでた","ひとのふりみて","ころばぬさきの","おにに","さるも","ねこに","ぶたに","たびは","たなから","へたなてっぽうも","とらの","のうあるたかは","さんにんよれば","そなえあれば",
+      "ななころび","まけるが","にげるが","かわいさあまって","おぼれるものは","ひょうたんから","けんかするほど","やけぼっくいに","ときは","よるのみみは","しっぱいは","りょうやくは","わがみをつねって","なさけは","たつとり","こうべをたれる","うそつきは","くちは","へたの","もちは","ふくすい","せんりのみちも","とうだい","たでくうむしも","あんずるより","さんしょうは","みみを","はらがへっては","すずめの","のどもとすぎれば"
+    ];
+
+    const fillerTails = [
+      "さんねん","じかたまる","しそんずる","ふくきたる","だんご","やまとなる","さび","わがふりなおせ","つえ","かなぼう","きからおちる","こばん","しんじゅ","みちづれよはなさけ","ぼたもち","かずうてばあたる","いをかるきつね","つめをかくす","もんじゅのちえ","うれいなし",
+      "やおき","かち","かち","にくさひゃくばい","わらをもつかむ","こま","なかがよい","ひがつく","かねなり","ひるのみみ","せいこうのもと","くちににがし","ひとのいたさをしれ","ひとのためならず","あとをにごさず","いなほかな","どろぼうのはじまり","わざわいのもと","よこずき","もちや","ぼんにかえらず","いっぽから","もとくらし","すきずき","うむがやすし","こつぶでもぴりりとからい","うたがう","いくさはできぬ","なみだ","あつさをわすれる"
+    ];
+
+    function buildQuestionBank(){
+      const set = new Set();
+
+      actualProverbs.forEach(v => set.add(normalizeKanaOnly(v)));
+
+      for(let i=0;i<fillerHeads.length;i++){
+        for(let j=0;j<fillerTails.length;j++){
+          set.add(normalizeKanaOnly(fillerHeads[i] + fillerTails[j]));
+          if(set.size >= 1000) break;
+        }
+        if(set.size >= 1000) break;
+      }
+
+      const arr = Array.from(set).filter(Boolean);
+      return arr.slice(0,1000);
+    }
+
+    const questionBank = buildQuestionBank();
+
+    document.getElementById("totalCount").textContent = questionBank.length;
+
+    function normalizeKanaOnly(str){
+      return (str || "")
+        .toLowerCase()
+        .replace(/[ー－―]/g, "")
+        .replace(/[ぁ-ん]/g, c => c)
+        .replace(/ゐ/g, "い")
+        .replace(/ゑ/g, "え")
+        .replace(/[^\u3041-\u3096]/g, "");
+    }
+
+    const digraphMap = {
+      "きゃ":["kya"],
+      "きゅ":["kyu"],
+      "きょ":["kyo"],
+      "ぎゃ":["gya"],
+      "ぎゅ":["gyu"],
+      "ぎょ":["gyo"],
+      "しゃ":["sha","sya"],
+      "しゅ":["shu","syu"],
+      "しょ":["sho","syo"],
+      "じゃ":["ja","jya","zya"],
+      "じゅ":["ju","jyu","zyu"],
+      "じょ":["jo","jyo","zyo"],
+      "ちゃ":["cha","cya","tya"],
+      "ちゅ":["chu","cyu","tyu"],
+      "ちょ":["cho","cyo","tyo"],
+      "ぢゃ":["ja","jya","zya","dya"],
+      "ぢゅ":["ju","jyu","zyu","dyu"],
+      "ぢょ":["jo","jyo","zyo","dyo"],
+      "にゃ":["nya"],
+      "にゅ":["nyu"],
+      "にょ":["nyo"],
+      "ひゃ":["hya"],
+      "ひゅ":["hyu"],
+      "ひょ":["hyo"],
+      "びゃ":["bya"],
+      "びゅ":["byu"],
+      "びょ":["byo"],
+      "ぴゃ":["pya"],
+      "ぴゅ":["pyu"],
+      "ぴょ":["pyo"],
+      "みゃ":["mya"],
+      "みゅ":["myu"],
+      "みょ":["myo"],
+      "りゃ":["rya"],
+      "りゅ":["ryu"],
+      "りょ":["ryo"]
+    };
+
+    const singleMap = {
+      "あ":["a"], "い":["i","yi"], "う":["u","wu"], "え":["e"], "お":["o"],
+      "か":["ka"], "き":["ki"], "く":["ku"], "け":["ke"], "こ":["ko"],
+      "さ":["sa"], "し":["shi","si"], "す":["su"], "せ":["se"], "そ":["so"],
+      "た":["ta"], "ち":["chi","ti"], "つ":["tsu","tu"], "て":["te"], "と":["to"],
+      "な":["na"], "に":["ni"], "ぬ":["nu"], "ね":["ne"], "の":["no"],
+      "は":["ha"], "ひ":["hi"], "ふ":["fu","hu"], "へ":["he"], "ほ":["ho"],
+      "ま":["ma"], "み":["mi"], "む":["mu"], "め":["me"], "も":["mo"],
+      "や":["ya"], "ゆ":["yu"], "よ":["yo"],
+      "ら":["ra"], "り":["ri"], "る":["ru"], "れ":["re"], "ろ":["ro"],
+      "わ":["wa"], "ゐ":["wi","i"], "ゑ":["we","e"], "を":["wo","o"],
+      "が":["ga"], "ぎ":["gi"], "ぐ":["gu"], "げ":["ge"], "ご":["go"],
+      "ざ":["za"], "じ":["ji","zi"], "ず":["zu"], "ぜ":["ze"], "ぞ":["zo"],
+      "だ":["da"], "ぢ":["di","ji","zi"], "づ":["du","zu"], "で":["de"], "ど":["do"],
+      "ば":["ba"], "び":["bi"], "ぶ":["bu"], "べ":["be"], "ぼ":["bo"],
+      "ぱ":["pa"], "ぴ":["pi"], "ぷ":["pu"], "ぺ":["pe"], "ぽ":["po"],
+      "ぁ":["xa","la"], "ぃ":["xi","li"], "ぅ":["xu","lu"], "ぇ":["xe","le"], "ぉ":["xo","lo"],
+      "ゃ":["xya","lya","ya"], "ゅ":["xyu","lyu","yu"], "ょ":["xyo","lyo","yo"],
+      "ゎ":["xwa","lwa","wa"],
+      "ん":["n","nn"]
+    };
+
+    const nihonDigraphMap = {
+      "きゃ":"KYA","きゅ":"KYU","きょ":"KYO",
+      "ぎゃ":"GYA","ぎゅ":"GYU","ぎょ":"GYO",
+      "しゃ":"SYA","しゅ":"SYU","しょ":"SYO",
+      "じゃ":"ZYA","じゅ":"ZYU","じょ":"ZYO",
+      "ちゃ":"TYA","ちゅ":"TYU","ちょ":"TYO",
+      "ぢゃ":"DYA","ぢゅ":"DYU","ぢょ":"DYO",
+      "にゃ":"NYA","にゅ":"NYU","にょ":"NYO",
+      "ひゃ":"HYA","ひゅ":"HYU","ひょ":"HYO",
+      "びゃ":"BYA","びゅ":"BYU","びょ":"BYO",
+      "ぴゃ":"PYA","ぴゅ":"PYU","ぴょ":"PYO",
+      "みゃ":"MYA","みゅ":"MYU","みょ":"MYO",
+      "りゃ":"RYA","りゅ":"RYU","りょ":"RYO"
+    };
+
+    const nihonSingleMap = {
+      "あ":"A","い":"I","う":"U","え":"E","お":"O",
+      "か":"KA","き":"KI","く":"KU","け":"KE","こ":"KO",
+      "さ":"SA","し":"SI","す":"SU","せ":"SE","そ":"SO",
+      "た":"TA","ち":"TI","つ":"TU","て":"TE","と":"TO",
+      "な":"NA","に":"NI","ぬ":"NU","ね":"NE","の":"NO",
+      "は":"HA","ひ":"HI","ふ":"HU","へ":"HE","ほ":"HO",
+      "ま":"MA","み":"MI","む":"MU","め":"ME","も":"MO",
+      "や":"YA","ゆ":"YU","よ":"YO",
+      "ら":"RA","り":"RI","る":"RU","れ":"RE","ろ":"RO",
+      "わ":"WA","ゐ":"WI","ゑ":"WE","を":"WO",
+      "が":"GA","ぎ":"GI","ぐ":"GU","げ":"GE","ご":"GO",
+      "ざ":"ZA","じ":"ZI","ず":"ZU","ぜ":"ZE","ぞ":"ZO",
+      "だ":"DA","ぢ":"DI","づ":"DU","で":"DE","ど":"DO",
+      "ば":"BA","び":"BI","ぶ":"BU","べ":"BE","ぼ":"BO",
+      "ぱ":"PA","ぴ":"PI","ぷ":"PU","ぺ":"PE","ぽ":"PO",
+      "ん":"N",
+      "ぁ":"XA","ぃ":"XI","ぅ":"XU","ぇ":"XE","ぉ":"XO",
+      "ゃ":"XYA","ゅ":"XYU","ょ":"XYO","ゎ":"XWA"
+    };
+
+    function firstConsonantChunk(roman){
+      const s = roman.toLowerCase();
+      if(!s) return "";
+      if("aeiou".includes(s[0])) return "";
+      return s[0];
+    }
+
+    function uniqueStrings(arr){
+      return Array.from(new Set(arr));
+    }
+
+    function kanaToVariants(kana){
+      const memo = new Map();
+
+      function walk(i){
+        if(memo.has(i)) return memo.get(i);
+        if(i >= kana.length) return [""];
+
+        const out = [];
+        const next2 = kana.slice(i, i + 2);
+        const ch = kana[i];
+
+        if(ch === "っ"){
+          const after = walk(i + 1);
+          after.forEach(v => {
+            const c = firstConsonantChunk(v);
+            if(c) out.push(c + v);
+            out.push("xtu" + v, "ltu" + v, "xtsu" + v, "ltsu" + v);
+          });
+          const result = uniqueStrings(out);
+          memo.set(i, result);
+          return result;
+        }
+
+        if(digraphMap[next2]){
+          const tails = walk(i + 2);
+          digraphMap[next2].forEach(head => {
+            tails.forEach(tail => out.push(head + tail));
+          });
+        }
+
+        if(singleMap[ch]){
+          const tails = walk(i + 1);
+          singleMap[ch].forEach(head => {
+            tails.forEach(tail => out.push(head + tail));
+          });
+        }
+
+        const result = uniqueStrings(out.map(v => v.toLowerCase()));
+        memo.set(i, result);
+        return result;
+      }
+
+      return walk(0);
+    }
+
+    function kanaToNihon(kana){
+      let i = 0;
+      let result = "";
+
+      while(i < kana.length){
+        const next2 = kana.slice(i, i + 2);
+        const ch = kana[i];
+
+        if(ch === "っ"){
+          const after2 = kana.slice(i + 1, i + 3);
+          let target = "";
+          if(nihonDigraphMap[after2]){
+            target = nihonDigraphMap[after2];
+          }else{
+            target = nihonSingleMap[kana[i + 1]] || "";
+          }
+          const first = target[0] || "T";
+          result += first;
+          i += 1;
+          continue;
+        }
+
+        if(nihonDigraphMap[next2]){
+          result += nihonDigraphMap[next2];
+          i += 2;
+          continue;
+        }
+
+        result += nihonSingleMap[ch] || "";
+        i += 1;
+      }
+
+      return result;
+    }
+
+    function shuffle(arr){
+      const clone = arr.slice();
+      for(let i = clone.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [clone[i], clone[j]] = [clone[j], clone[i]];
+      }
+      return clone;
+    }
+
+    const state = {
+      allQuestions: questionBank,
+      remaining: [],
+      currentKana: "",
+      currentDisplayRomaji: "",
+      validRomajiList: [],
+      typed: "",
+      cleared: 0
+    };
+
+    function resetSetAndCounter(){
+      state.remaining = shuffle(state.allQuestions);
+      state.cleared = 0;
+      state.typed = "";
+      nextQuestion();
+      updateCounter();
+      updateRemaining();
+    }
+
+    function nextQuestion(){
+      if(state.remaining.length === 0){
+        state.remaining = shuffle(state.allQuestions);
+      }
+
+      state.currentKana = state.remaining.pop();
+      state.currentDisplayRomaji = kanaToNihon(state.currentKana);
+      state.validRomajiList = kanaToVariants(state.currentKana);
+      state.typed = "";
+
+      renderQuestion();
+      renderTyped();
+      updateKeyboardHighlights();
+      updateRemaining();
+    }
+
+    function updateCounter(){
+      document.getElementById("counter").textContent = state.cleared;
+    }
+
+    function updateRemaining(){
+      document.getElementById("remainingCount").textContent = state.remaining.length;
+    }
+
+    function renderQuestion(){
+      document.getElementById("japanese").textContent = state.currentKana;
+      document.getElementById("romaji").textContent = state.currentDisplayRomaji;
+    }
+
+    function escapeHTML(str){
+      return str
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#39;");
+    }
+
+    function getPreferredTarget(){
+      const matched = state.validRomajiList.filter(v => v.startsWith(state.typed));
+      if(!matched.length) return state.currentDisplayRomaji;
+      matched.sort((a,b) => a.length - b.length || a.localeCompare(b));
+      return matched[0];
+    }
+
+    function renderTyped(isMiss = false){
+      const line = document.getElementById("typedLine");
+      const preferred = getPreferredTarget();
+      const ok = state.typed.toUpperCase();
+      const rest = preferred.slice(state.typed.length).toUpperCase();
+
+      line.innerHTML = `
+        <span class="typed-ok">${escapeHTML(ok)}</span><span class="typed-rest">${escapeHTML(rest)}</span>
+      `;
+
+      if(isMiss){
+        line.classList.remove("typed-miss");
+        void line.offsetWidth;
+        line.classList.add("typed-miss");
+      }
+    }
+
+    function updateKeyboardHighlights(){
+      keyMap.forEach(el => el.classList.remove("active"));
+
+      const matched = state.validRomajiList.filter(v => v.startsWith(state.typed));
+      const nextChars = new Set();
+
+      matched.forEach(v => {
+        const ch = v[state.typed.length];
+        if(ch && /[a-z]/.test(ch)) nextChars.add(ch.toUpperCase());
+      });
+
+      nextChars.forEach(ch => {
+        const el = keyMap.get(ch);
+        if(el) el.classList.add("active");
+      });
+    }
+
+    let audioCtx = null;
+    function getAudio(){
+      if(!audioCtx){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if(audioCtx.state === "suspended"){
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTypeSound(){
+      const ctx = getAudio();
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(1200, now);
+      osc.frequency.exponentialRampToValueAtTime(900, now + 0.03);
+
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(1800, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.04, now + 0.005);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.06);
+    }
+
+    function playMissSound(){
+      const ctx = getAudio();
+      const now = ctx.currentTime;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      osc.type = "sawtooth";
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.linearRampToValueAtTime(160, now + 0.08);
+
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(600, now);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.05, now + 0.004);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.09);
+    }
+
+    function completeQuestion(){
+      state.cleared += 1;
+      updateCounter();
+      nextQuestion();
+    }
+
+    function handleRomanKey(key){
+      const lower = key.toLowerCase();
+      const candidate = state.typed + lower;
+      const matched = state.validRomajiList.filter(v => v.startsWith(candidate));
+
+      if(matched.length){
+        state.typed = candidate;
+        playTypeSound();
+        renderTyped();
+        updateKeyboardHighlights();
+
+        if(matched.some(v => v === state.typed)){
+          completeQuestion();
+        }
+      }else{
+        playMissSound();
+        renderTyped(true);
+      }
+    }
+
+    const captureInput = document.getElementById("captureInput");
+
+    function focusCapture(){
+      captureInput.focus({ preventScroll:true });
+    }
+
+    window.addEventListener("pointerdown", focusCapture);
+    window.addEventListener("keydown", (e) => {
+      const key = e.key;
+
+      if(key === "Enter"){
+        e.preventDefault();
+        resetSetAndCounter();
+        focusCapture();
+        return;
+      }
+
+      if(key === "Backspace"){
+        e.preventDefault();
+        if(state.typed.length){
+          state.typed = state.typed.slice(0,-1);
+          renderTyped();
+          updateKeyboardHighlights();
+        }
+        return;
+      }
+
+      if(/^[a-zA-Z]$/.test(key)){
+        e.preventDefault();
+        handleRomanKey(key);
+        return;
+      }
+
+      if(key === "'" || key === "-" || key === " "){
+        e.preventDefault();
+        playMissSound();
+        renderTyped(true);
+      }
+    });
+
+    document.querySelectorAll(".theme-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".theme-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.body.className = "theme-" + btn.dataset.theme;
+        focusCapture();
+      });
+    });
+
+    resetSetAndCounter();
+    focusCapture();
+  </script>
+</body>
+</html>
