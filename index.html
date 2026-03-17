@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>名詞タイピング練習</title>
+  <title>英単語タイピング練習</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
@@ -164,15 +164,15 @@
       line-height: 1.3;
       text-align: center;
       letter-spacing: 0.03em;
-      word-break: keep-all;
+      word-break: break-word;
     }
 
     .roma {
       font-size: clamp(17px, 2vw, 24px);
       text-align: center;
       color: var(--sub);
-      letter-spacing: 0.08em;
-      word-break: break-all;
+      letter-spacing: 0.04em;
+      word-break: break-word;
       min-height: 1.6em;
     }
 
@@ -413,363 +413,540 @@
     </div>
 
     <div class="bottom-bar">
-      <div class="mini-panel">読み仮名表示 / 入力はヘボン式・訓令式・日本式対応</div>
+      <div class="mini-panel">英単語表示 / 日本語訳表示 / 出題時に自動読み上げ</div>
       <div class="mini-panel warning" id="statusText">初回の打鍵で音声が有効になります</div>
     </div>
   </div>
 
   <script>
     /****************************************************************
-     * 名詞データ
-     * 3文字以上の名詞を1000問、順番に出題
-     * 形式: { jp: "日本語表記", kana: "かなよみ" }
+     * 英単語データ
+     * seedを500問まで拡張し、出題順はランダム
+     * 形式: { en: "english", ja: "日本語訳" }
      ****************************************************************/
-    const nounPrefixes = [
-      { jp: "青空", kana: "あおぞら" },
-      { jp: "白銀", kana: "はくぎん" },
-      { jp: "黒曜", kana: "こくよう" },
-      { jp: "春風", kana: "しゅんぷう" },
-      { jp: "夏空", kana: "なつぞら" },
-      { jp: "秋雨", kana: "あきさめ" },
-      { jp: "冬灯", kana: "ふゆあかり" },
-      { jp: "流星", kana: "りゅうせい" },
-      { jp: "深海", kana: "しんかい" },
-      { jp: "朝霧", kana: "あさぎり" },
-      { jp: "夕凪", kana: "ゆうなぎ" },
-      { jp: "月光", kana: "げっこう" },
-      { jp: "星空", kana: "ほしぞら" },
-      { jp: "花園", kana: "はなぞの" },
-      { jp: "雪原", kana: "せつげん" },
-      { jp: "森影", kana: "しんえい" },
-      { jp: "海辺", kana: "うみべ" },
-      { jp: "雲間", kana: "くもま" },
-      { jp: "銀河", kana: "ぎんが" },
-      { jp: "光彩", kana: "こうさい" },
-      { jp: "音羽", kana: "おとは" },
-      { jp: "風花", kana: "かざはな" },
-      { jp: "水面", kana: "みなも" },
-      { jp: "霧島", kana: "きりしま" },
-      { jp: "空色", kana: "そらいろ" }
+    const wordSeeds = [
+      { en: "apple", ja: "りんご" },
+      { en: "orange", ja: "みかん" },
+      { en: "banana", ja: "バナナ" },
+      { en: "grape", ja: "ぶどう" },
+      { en: "peach", ja: "もも" },
+      { en: "lemon", ja: "レモン" },
+      { en: "melon", ja: "メロン" },
+      { en: "coffee", ja: "コーヒー" },
+      { en: "tea", ja: "お茶" },
+      { en: "water", ja: "水" },
+      { en: "juice", ja: "ジュース" },
+      { en: "bread", ja: "パン" },
+      { en: "butter", ja: "バター" },
+      { en: "cheese", ja: "チーズ" },
+      { en: "sugar", ja: "砂糖" },
+      { en: "salt", ja: "塩" },
+      { en: "rice", ja: "米" },
+      { en: "soup", ja: "スープ" },
+      { en: "salad", ja: "サラダ" },
+      { en: "cake", ja: "ケーキ" },
+      { en: "cookie", ja: "クッキー" },
+      { en: "candy", ja: "キャンディ" },
+      { en: "chocolate", ja: "チョコレート" },
+      { en: "breakfast", ja: "朝食" },
+      { en: "lunch", ja: "昼食" },
+      { en: "dinner", ja: "夕食" },
+      { en: "kitchen", ja: "台所" },
+      { en: "window", ja: "窓" },
+      { en: "garden", ja: "庭" },
+      { en: "flower", ja: "花" },
+      { en: "forest", ja: "森" },
+      { en: "river", ja: "川" },
+      { en: "mountain", ja: "山" },
+      { en: "island", ja: "島" },
+      { en: "ocean", ja: "海" },
+      { en: "beach", ja: "浜辺" },
+      { en: "desert", ja: "砂漠" },
+      { en: "planet", ja: "惑星" },
+      { en: "star", ja: "星" },
+      { en: "moon", ja: "月" },
+      { en: "sun", ja: "太陽" },
+      { en: "cloud", ja: "雲" },
+      { en: "rain", ja: "雨" },
+      { en: "snow", ja: "雪" },
+      { en: "storm", ja: "嵐" },
+      { en: "wind", ja: "風" },
+      { en: "thunder", ja: "雷" },
+      { en: "light", ja: "光" },
+      { en: "shadow", ja: "影" },
+      { en: "music", ja: "音楽" },
+      { en: "piano", ja: "ピアノ" },
+      { en: "guitar", ja: "ギター" },
+      { en: "violin", ja: "バイオリン" },
+      { en: "drum", ja: "ドラム" },
+      { en: "song", ja: "歌" },
+      { en: "dance", ja: "踊り" },
+      { en: "movie", ja: "映画" },
+      { en: "photo", ja: "写真" },
+      { en: "picture", ja: "絵" },
+      { en: "camera", ja: "カメラ" },
+      { en: "book", ja: "本" },
+      { en: "page", ja: "ページ" },
+      { en: "story", ja: "物語" },
+      { en: "poem", ja: "詩" },
+      { en: "letter", ja: "手紙" },
+      { en: "paper", ja: "紙" },
+      { en: "pencil", ja: "鉛筆" },
+      { en: "eraser", ja: "消しゴム" },
+      { en: "school", ja: "学校" },
+      { en: "classroom", ja: "教室" },
+      { en: "teacher", ja: "先生" },
+      { en: "student", ja: "生徒" },
+      { en: "lesson", ja: "授業" },
+      { en: "question", ja: "質問" },
+      { en: "answer", ja: "答え" },
+      { en: "language", ja: "言語" },
+      { en: "number", ja: "数字" },
+      { en: "history", ja: "歴史" },
+      { en: "science", ja: "科学" },
+      { en: "memory", ja: "記憶" },
+      { en: "dream", ja: "夢" },
+      { en: "idea", ja: "考え" },
+      { en: "thought", ja: "思考" },
+      { en: "future", ja: "未来" },
+      { en: "past", ja: "過去" },
+      { en: "present", ja: "現在" },
+      { en: "morning", ja: "朝" },
+      { en: "evening", ja: "夕方" },
+      { en: "night", ja: "夜" },
+      { en: "today", ja: "今日" },
+      { en: "tomorrow", ja: "明日" },
+      { en: "yesterday", ja: "昨日" },
+      { en: "minute", ja: "分" },
+      { en: "second", ja: "秒" },
+      { en: "hour", ja: "時間" },
+      { en: "week", ja: "週" },
+      { en: "month", ja: "月" },
+      { en: "year", ja: "年" },
+      { en: "family", ja: "家族" },
+      { en: "father", ja: "父" },
+      { en: "mother", ja: "母" },
+      { en: "brother", ja: "兄弟" },
+      { en: "sister", ja: "姉妹" },
+      { en: "friend", ja: "友達" },
+      { en: "child", ja: "子ども" },
+      { en: "people", ja: "人々" },
+      { en: "person", ja: "人" },
+      { en: "baby", ja: "赤ちゃん" },
+      { en: "woman", ja: "女性" },
+      { en: "man", ja: "男性" },
+      { en: "artist", ja: "芸術家" },
+      { en: "writer", ja: "作家" },
+      { en: "doctor", ja: "医者" },
+      { en: "nurse", ja: "看護師" },
+      { en: "driver", ja: "運転手" },
+      { en: "farmer", ja: "農家" },
+      { en: "worker", ja: "労働者" },
+      { en: "chef", ja: "料理人" },
+      { en: "player", ja: "選手" },
+      { en: "leader", ja: "指導者" },
+      { en: "animal", ja: "動物" },
+      { en: "bird", ja: "鳥" },
+      { en: "cat", ja: "猫" },
+      { en: "dog", ja: "犬" },
+      { en: "horse", ja: "馬" },
+      { en: "sheep", ja: "羊" },
+      { en: "tiger", ja: "トラ" },
+      { en: "lion", ja: "ライオン" },
+      { en: "rabbit", ja: "うさぎ" },
+      { en: "monkey", ja: "猿" },
+      { en: "panda", ja: "パンダ" },
+      { en: "whale", ja: "くじら" },
+      { en: "dolphin", ja: "イルカ" },
+      { en: "shark", ja: "サメ" },
+      { en: "fish", ja: "魚" },
+      { en: "insect", ja: "昆虫" },
+      { en: "butterfly", ja: "蝶" },
+      { en: "spider", ja: "くも" },
+      { en: "dragon", ja: "竜" },
+      { en: "robot", ja: "ロボット" },
+      { en: "machine", ja: "機械" },
+      { en: "engine", ja: "エンジン" },
+      { en: "button", ja: "ボタン" },
+      { en: "screen", ja: "画面" },
+      { en: "keyboard", ja: "キーボード" },
+      { en: "mouse", ja: "マウス" },
+      { en: "laptop", ja: "ノートパソコン" },
+      { en: "phone", ja: "電話" },
+      { en: "tablet", ja: "タブレット" },
+      { en: "signal", ja: "信号" },
+      { en: "system", ja: "システム" },
+      { en: "network", ja: "ネットワーク" },
+      { en: "server", ja: "サーバー" },
+      { en: "program", ja: "プログラム" },
+      { en: "window", ja: "窓" },
+      { en: "mirror", ja: "鏡" },
+      { en: "table", ja: "机" },
+      { en: "chair", ja: "いす" },
+      { en: "bed", ja: "ベッド" },
+      { en: "pillow", ja: "まくら" },
+      { en: "blanket", ja: "毛布" },
+      { en: "door", ja: "ドア" },
+      { en: "floor", ja: "床" },
+      { en: "ceiling", ja: "天井" },
+      { en: "wall", ja: "壁" },
+      { en: "room", ja: "部屋" },
+      { en: "house", ja: "家" },
+      { en: "village", ja: "村" },
+      { en: "town", ja: "町" },
+      { en: "city", ja: "都市" },
+      { en: "country", ja: "国" },
+      { en: "world", ja: "世界" },
+      { en: "station", ja: "駅" },
+      { en: "airport", ja: "空港" },
+      { en: "harbor", ja: "港" },
+      { en: "bridge", ja: "橋" },
+      { en: "street", ja: "通り" },
+      { en: "corner", ja: "角" },
+      { en: "market", ja: "市場" },
+      { en: "store", ja: "店" },
+      { en: "office", ja: "事務所" },
+      { en: "factory", ja: "工場" },
+      { en: "museum", ja: "博物館" },
+      { en: "library", ja: "図書館" },
+      { en: "hospital", ja: "病院" },
+      { en: "garden", ja: "庭園" },
+      { en: "castle", ja: "城" },
+      { en: "temple", ja: "寺" },
+      { en: "church", ja: "教会" },
+      { en: "hotel", ja: "ホテル" },
+      { en: "ticket", ja: "切符" },
+      { en: "travel", ja: "旅行" },
+      { en: "journey", ja: "旅" },
+      { en: "bicycle", ja: "自転車" },
+      { en: "motorcycle", ja: "オートバイ" },
+      { en: "car", ja: "車" },
+      { en: "train", ja: "電車" },
+      { en: "subway", ja: "地下鉄" },
+      { en: "rocket", ja: "ロケット" },
+      { en: "planet", ja: "惑星" },
+      { en: "galaxy", ja: "銀河" },
+      { en: "energy", ja: "エネルギー" },
+      { en: "power", ja: "力" },
+      { en: "speed", ja: "速さ" },
+      { en: "sound", ja: "音" },
+      { en: "voice", ja: "声" },
+      { en: "noise", ja: "雑音" },
+      { en: "silence", ja: "静けさ" },
+      { en: "color", ja: "色" },
+      { en: "shape", ja: "形" },
+      { en: "circle", ja: "円" },
+      { en: "square", ja: "四角" },
+      { en: "line", ja: "線" },
+      { en: "point", ja: "点" },
+      { en: "image", ja: "画像" },
+      { en: "design", ja: "デザイン" },
+      { en: "style", ja: "様式" },
+      { en: "beauty", ja: "美しさ" },
+      { en: "pattern", ja: "模様" },
+      { en: "symbol", ja: "記号" },
+      { en: "chance", ja: "機会" },
+      { en: "choice", ja: "選択" },
+      { en: "reason", ja: "理由" },
+      { en: "result", ja: "結果" },
+      { en: "effect", ja: "効果" },
+      { en: "value", ja: "価値" },
+      { en: "truth", ja: "真実" },
+      { en: "fact", ja: "事実" },
+      { en: "plan", ja: "計画" },
+      { en: "goal", ja: "目標" },
+      { en: "method", ja: "方法" },
+      { en: "skill", ja: "技能" },
+      { en: "habit", ja: "習慣" },
+      { en: "custom", ja: "慣習" },
+      { en: "event", ja: "出来事" },
+      { en: "festival", ja: "祭り" },
+      { en: "season", ja: "季節" },
+      { en: "spring", ja: "春" },
+      { en: "summer", ja: "夏" },
+      { en: "autumn", ja: "秋" },
+      { en: "winter", ja: "冬" },
+      { en: "temperature", ja: "気温" },
+      { en: "weather", ja: "天気" },
+      { en: "nature", ja: "自然" },
+      { en: "ground", ja: "地面" },
+      { en: "stone", ja: "石" },
+      { en: "metal", ja: "金属" },
+      { en: "wood", ja: "木材" },
+      { en: "glass", ja: "ガラス" },
+      { en: "cloth", ja: "布" },
+      { en: "gold", ja: "金" },
+      { en: "silver", ja: "銀" },
+      { en: "money", ja: "お金" },
+      { en: "price", ja: "価格" },
+      { en: "shop", ja: "店" },
+      { en: "order", ja: "注文" },
+      { en: "service", ja: "サービス" },
+      { en: "package", ja: "荷物" },
+      { en: "box", ja: "箱" },
+      { en: "bag", ja: "かばん" },
+      { en: "wallet", ja: "財布" },
+      { en: "pocket", ja: "ポケット" },
+      { en: "shirt", ja: "シャツ" },
+      { en: "jacket", ja: "上着" },
+      { en: "coat", ja: "コート" },
+      { en: "dress", ja: "ドレス" },
+      { en: "shoes", ja: "靴" },
+      { en: "socks", ja: "靴下" },
+      { en: "watch", ja: "腕時計" },
+      { en: "ring", ja: "指輪" },
+      { en: "crown", ja: "王冠" },
+      { en: "heart", ja: "心" },
+      { en: "mind", ja: "心・精神" },
+      { en: "brain", ja: "脳" },
+      { en: "hand", ja: "手" },
+      { en: "finger", ja: "指" },
+      { en: "arm", ja: "腕" },
+      { en: "leg", ja: "脚" },
+      { en: "face", ja: "顔" },
+      { en: "eye", ja: "目" },
+      { en: "ear", ja: "耳" },
+      { en: "nose", ja: "鼻" },
+      { en: "mouth", ja: "口" },
+      { en: "hair", ja: "髪" },
+      { en: "voice", ja: "声" },
+      { en: "smile", ja: "笑顔" },
+      { en: "laugh", ja: "笑い" },
+      { en: "tear", ja: "涙" },
+      { en: "love", ja: "愛" },
+      { en: "peace", ja: "平和" },
+      { en: "hope", ja: "希望" },
+      { en: "joy", ja: "喜び" },
+      { en: "fear", ja: "恐れ" },
+      { en: "anger", ja: "怒り" },
+      { en: "kindness", ja: "親切" },
+      { en: "courage", ja: "勇気" },
+      { en: "honor", ja: "名誉" },
+      { en: "wisdom", ja: "知恵" },
+      { en: "knowledge", ja: "知識" },
+      { en: "freedom", ja: "自由" },
+      { en: "justice", ja: "正義" },
+      { en: "culture", ja: "文化" },
+      { en: "art", ja: "芸術" },
+      { en: "game", ja: "試合・ゲーム" },
+      { en: "sport", ja: "スポーツ" },
+      { en: "team", ja: "チーム" },
+      { en: "score", ja: "得点" },
+      { en: "victory", ja: "勝利" },
+      { en: "defeat", ja: "敗北" },
+      { en: "battle", ja: "戦い" },
+      { en: "peaceful", ja: "平和な" },
+      { en: "simple", ja: "単純な" },
+      { en: "silent", ja: "静かな" },
+      { en: "gentle", ja: "やさしい" },
+      { en: "modern", ja: "現代的な" },
+      { en: "ancient", ja: "古代の" },
+      { en: "bright", ja: "明るい" },
+      { en: "dark", ja: "暗い" },
+      { en: "happy", ja: "幸せな" },
+      { en: "quiet", ja: "静かな" },
+      { en: "quick", ja: "素早い" },
+      { en: "slow", ja: "遅い" },
+      { en: "strong", ja: "強い" },
+      { en: "weak", ja: "弱い" },
+      { en: "clear", ja: "明確な" },
+      { en: "clean", ja: "清潔な" },
+      { en: "brave", ja: "勇敢な" },
+      { en: "calm", ja: "落ち着いた" },
+      { en: "smart", ja: "賢い" },
+      { en: "kind", ja: "親切な" },
+      { en: "green", ja: "緑" },
+      { en: "blue", ja: "青" },
+      { en: "red", ja: "赤" },
+      { en: "white", ja: "白" },
+      { en: "black", ja: "黒" },
+      { en: "yellow", ja: "黄" },
+      { en: "purple", ja: "紫" },
+      { en: "orange", ja: "オレンジ色" },
+      { en: "silver", ja: "銀色" },
+      { en: "golden", ja: "金色の" },
+      { en: "happy", ja: "うれしい" },
+      { en: "sudden", ja: "突然の" },
+      { en: "gentleman", ja: "紳士" },
+      { en: "lady", ja: "淑女" },
+      { en: "captain", ja: "主将" },
+      { en: "sailor", ja: "船乗り" },
+      { en: "pirate", ja: "海賊" },
+      { en: "soldier", ja: "兵士" },
+      { en: "king", ja: "王" },
+      { en: "queen", ja: "女王" },
+      { en: "prince", ja: "王子" },
+      { en: "princess", ja: "王女" },
+      { en: "magic", ja: "魔法" },
+      { en: "puzzle", ja: "パズル" },
+      { en: "secret", ja: "秘密" },
+      { en: "signal", ja: "合図" },
+      { en: "battlefield", ja: "戦場" },
+      { en: "diamond", ja: "ダイヤモンド" },
+      { en: "emerald", ja: "エメラルド" },
+      { en: "crystal", ja: "結晶" },
+      { en: "wintertime", ja: "冬の時期" },
+      { en: "sunlight", ja: "日光" },
+      { en: "moonlight", ja: "月明かり" },
+      { en: "rainbow", ja: "虹" },
+      { en: "sunrise", ja: "日の出" },
+      { en: "sunset", ja: "日没" },
+      { en: "notebook", ja: "ノート" },
+      { en: "backpack", ja: "リュック" },
+      { en: "calendar", ja: "カレンダー" },
+      { en: "holiday", ja: "休日" },
+      { en: "weekend", ja: "週末" },
+      { en: "message", ja: "メッセージ" },
+      { en: "comment", ja: "コメント" },
+      { en: "article", ja: "記事" },
+      { en: "caption", ja: "見出し" },
+      { en: "channel", ja: "チャンネル" },
+      { en: "stream", ja: "配信" },
+      { en: "button", ja: "押しボタン" },
+      { en: "folder", ja: "フォルダ" },
+      { en: "file", ja: "ファイル" },
+      { en: "screening", ja: "上映" },
+      { en: "painting", ja: "絵画" },
+      { en: "drawing", ja: "素描" },
+      { en: "statue", ja: "像" },
+      { en: "gardenia", ja: "くちなし" },
+      { en: "lavender", ja: "ラベンダー" },
+      { en: "jasmine", ja: "ジャスミン" },
+      { en: "morningstar", ja: "明けの明星" },
+      { en: "daylight", ja: "昼の光" },
+      { en: "eveningstar", ja: "宵の明星" },
+      { en: "horizon", ja: "地平線" },
+      { en: "meadow", ja: "草原" },
+      { en: "valley", ja: "谷" },
+      { en: "cliff", ja: "崖" },
+      { en: "harvest", ja: "収穫" },
+      { en: "lantern", ja: "ランタン" },
+      { en: "candle", ja: "ろうそく" },
+      { en: "fireplace", ja: "暖炉" },
+      { en: "chimney", ja: "煙突" },
+      { en: "vessel", ja: "船舶" },
+      { en: "captaincy", ja: "主将の地位" },
+      { en: "airplane", ja: "飛行機" },
+      { en: "helicopter", ja: "ヘリコプター" },
+      { en: "tram", ja: "路面電車" },
+      { en: "highway", ja: "高速道路" },
+      { en: "railway", ja: "鉄道" },
+      { en: "platform", ja: "プラットフォーム" },
+      { en: "harvest", ja: "収穫物" },
+      { en: "builder", ja: "建築者" },
+      { en: "painter", ja: "画家" },
+      { en: "singer", ja: "歌手" },
+      { en: "speaker", ja: "話し手" },
+      { en: "listener", ja: "聞き手" },
+      { en: "partner", ja: "相手" },
+      { en: "neighbor", ja: "隣人" },
+      { en: "stranger", ja: "見知らぬ人" },
+      { en: "visitor", ja: "訪問者" },
+      { en: "traveler", ja: "旅行者" },
+      { en: "adventure", ja: "冒険" },
+      { en: "treasure", ja: "宝物" },
+      { en: "kingdom", ja: "王国" },
+      { en: "empire", ja: "帝国" },
+      { en: "village", ja: "集落" },
+      { en: "capital", ja: "首都" },
+      { en: "nation", ja: "国家" },
+      { en: "border", ja: "国境" },
+      { en: "signal", ja: "信号・兆候" },
+      { en: "chapter", ja: "章" },
+      { en: "section", ja: "節" },
+      { en: "sentence", ja: "文" },
+      { en: "grammar", ja: "文法" },
+      { en: "example", ja: "例" },
+      { en: "meaning", ja: "意味" },
+      { en: "accent", ja: "アクセント" },
+      { en: "rhythm", ja: "リズム" },
+      { en: "melody", ja: "旋律" },
+      { en: "harmony", ja: "調和" },
+      { en: "motion", ja: "動き" },
+      { en: "balance", ja: "均衡" },
+      { en: "center", ja: "中心" },
+      { en: "border", ja: "境界" },
+      { en: "surface", ja: "表面" },
+      { en: "bottom", ja: "底" },
+      { en: "middle", ja: "中央" },
+      { en: "spirit", ja: "精神" },
+      { en: "vision", ja: "視界・構想" },
+      { en: "focus", ja: "集中" },
+      { en: "moment", ja: "瞬間" },
+      { en: "signal", ja: "合図・信号" },
+      { en: "seasonal", ja: "季節の" },
+      { en: "natural", ja: "自然の" },
+      { en: "digital", ja: "デジタルの" },
+      { en: "virtual", ja: "仮想の" },
+      { en: "creative", ja: "創造的な" },
+      { en: "logical", ja: "論理的な" },
+      { en: "special", ja: "特別な" },
+      { en: "general", ja: "一般的な" },
+      { en: "normal", ja: "普通の" },
+      { en: "formal", ja: "正式な" },
+      { en: "casual", ja: "気軽な" },
+      { en: "silent", ja: "無言の" },
+      { en: "golden", ja: "黄金の" },
+      { en: "wooden", ja: "木製の" },
+      { en: "silver", ja: "銀" },
+      { en: "crimson", ja: "深紅" },
+      { en: "scarlet", ja: "緋色" },
+      { en: "ivory", ja: "象牙色" },
+      { en: "violet", ja: "すみれ色" },
+      { en: "indigo", ja: "藍色" },
+      { en: "amber", ja: "琥珀色" },
+      { en: "coral", ja: "珊瑚" },
+      { en: "pearl", ja: "真珠" },
+      { en: "bronze", ja: "青銅" },
+      { en: "iron", ja: "鉄" },
+      { en: "copper", ja: "銅" },
+      { en: "engineer", ja: "技術者" },
+      { en: "manager", ja: "管理者" },
+      { en: "designer", ja: "設計者" },
+      { en: "creator", ja: "制作者" },
+      { en: "builder", ja: "建設者" },
+      { en: "planner", ja: "企画者" },
+      { en: "editor", ja: "編集者" },
+      { en: "reader", ja: "読者" },
+      { en: "viewer", ja: "視聴者" },
+      { en: "owner", ja: "所有者" },
+      { en: "member", ja: "メンバー" },
+      { en: "captain", ja: "キャプテン" },
+      { en: "winner", ja: "勝者" },
+      { en: "loser", ja: "敗者" },
+      { en: "artist", ja: "アーティスト" },
+      { en: "author", ja: "著者" },
+      { en: "reader", ja: "読み手" },
+      { en: "speaker", ja: "話者" },
+      { en: "listener", ja: "聞き手" },
+      { en: "teacher", ja: "教員" }
     ];
 
-    const nounCores = [
-      { jp: "時計", kana: "とけい" },
-      { jp: "図書館", kana: "としょかん" },
-      { jp: "飛行機", kana: "ひこうき" },
-      { jp: "望遠鏡", kana: "ぼうえんきょう" },
-      { jp: "博物館", kana: "はくぶつかん" },
-      { jp: "美術館", kana: "びじゅつかん" },
-      { jp: "映画館", kana: "えいがかん" },
-      { jp: "遊園地", kana: "ゆうえんち" },
-      { jp: "観覧車", kana: "かんらんしゃ" },
-      { jp: "水族館", kana: "すいぞくかん" },
-      { jp: "植物園", kana: "しょくぶつえん" },
-      { jp: "動物園", kana: "どうぶつえん" },
-      { jp: "電車駅", kana: "でんしゃえき" },
-      { jp: "新幹線", kana: "しんかんせん" },
-      { jp: "研究所", kana: "けんきゅうじょ" },
-      { jp: "図工室", kana: "ずこうしつ" },
-      { jp: "音楽室", kana: "おんがくしつ" },
-      { jp: "理科室", kana: "りかしつ" },
-      { jp: "教室棟", kana: "きょうしつとう" },
-      { jp: "体育館", kana: "たいいくかん" },
-      { jp: "競技場", kana: "きょうぎじょう" },
-      { jp: "球場", kana: "きゅうじょう" },
-      { jp: "温泉街", kana: "おんせんがい" },
-      { jp: "商店街", kana: "しょうてんがい" },
-      { jp: "展望台", kana: "てんぼうだい" },
-      { jp: "放送局", kana: "ほうそうきょく" },
-      { jp: "発電所", kana: "はつでんしょ" },
-      { jp: "天文台", kana: "てんもんだい" },
-      { jp: "灯台跡", kana: "とうだいあと" },
-      { jp: "記念碑", kana: "きねんひ" },
-      { jp: "遊歩道", kana: "ゆうほどう" },
-      { jp: "交差点", kana: "こうさてん" },
-      { jp: "郵便局", kana: "ゆうびんきょく" },
-      { jp: "消防署", kana: "しょうぼうしょ" },
-      { jp: "警察署", kana: "けいさつしょ" },
-      { jp: "市場通", kana: "いちばどおり" },
-      { jp: "古書店", kana: "こしょてん" },
-      { jp: "喫茶店", kana: "きっさてん" },
-      { jp: "書店街", kana: "しょてんがい" },
-      { jp: "工房街", kana: "こうぼうがい" }
-    ];
-
-    function normalizeKana(text) {
-      return text
-        .replace(/\s+/g, "")
-        .replace(/　/g, "")
-        .replace(/ゔ/g, "ゔ");
-    }
-
-    function buildQuestionBankTo1000(prefixes, cores) {
+    function buildQuestionBankTo500(seedList) {
       const bank = [];
       let id = 1;
-
-      for (const prefix of prefixes) {
-        for (const core of cores) {
-          if (bank.length >= 1000) break;
+      while (bank.length < 500) {
+        for (const item of seedList) {
+          if (bank.length >= 500) break;
           bank.push({
             id: id++,
-            jp: prefix.jp + core.jp,
-            kana: normalizeKana(prefix.kana + core.kana)
+            en: item.en.toLowerCase(),
+            ja: item.ja
           });
         }
-        if (bank.length >= 1000) break;
       }
-
       return bank;
     }
 
-    const nounBank = buildQuestionBankTo1000(nounPrefixes, nounCores);
+    const wordBank = buildQuestionBankTo500(wordSeeds);
 
-    /****************************************************************
-     * 表示用かなはそのまま表示
-     ****************************************************************/
-    function getDisplayReading(kana) {
-      return kana;
-    }
-
-    /****************************************************************
-     * 入力受理用ローマ字候補
-     * ヘボン式 / 訓令式 / 日本式 対応
-     ****************************************************************/
-    const romaMap = {
-      "あ":["a"], "い":["i","yi"], "う":["u","wu"], "え":["e"], "お":["o"],
-      "か":["ka","ca"], "き":["ki"], "く":["ku","cu","qu"], "け":["ke"], "こ":["ko","co"],
-      "さ":["sa"], "し":["shi","si","ci"], "す":["su"], "せ":["se","ce"], "そ":["so"],
-      "た":["ta"], "ち":["chi","ti"], "つ":["tsu","tu"], "て":["te"], "と":["to"],
-      "な":["na"], "に":["ni"], "ぬ":["nu"], "ね":["ne"], "の":["no"],
-      "は":["ha"], "ひ":["hi"], "ふ":["fu","hu"], "へ":["he"], "ほ":["ho"],
-      "ま":["ma"], "み":["mi"], "む":["mu"], "め":["me"], "も":["mo"],
-      "や":["ya"], "ゆ":["yu"], "よ":["yo"],
-      "ら":["ra"], "り":["ri"], "る":["ru"], "れ":["re"], "ろ":["ro"],
-      "わ":["wa"], "を":["wo","o"], "ん":["n","nn"],
-      "が":["ga"], "ぎ":["gi"], "ぐ":["gu"], "げ":["ge"], "ご":["go"],
-      "ざ":["za"], "じ":["ji","zi"], "ず":["zu"], "ぜ":["ze"], "ぞ":["zo"],
-      "だ":["da"], "ぢ":["di","ji","zi"], "づ":["du","zu"], "で":["de"], "ど":["do"],
-      "ば":["ba"], "び":["bi"], "ぶ":["bu"], "べ":["be"], "ぼ":["bo"],
-      "ぱ":["pa"], "ぴ":["pi"], "ぷ":["pu"], "ぺ":["pe"], "ぽ":["po"],
-      "ぁ":["la","xa"], "ぃ":["li","xi"], "ぅ":["lu","xu"], "ぇ":["le","xe"], "ぉ":["lo","xo"],
-      "ゃ":["lya","xya"], "ゅ":["lyu","xyu"], "ょ":["lyo","xyo"],
-      "ゎ":["lwa","xwa"], "ゔ":["vu"], "ー":["-"]
-    };
-
-    const comboRomaMap = {
-      "きゃ":["kya"], "きゅ":["kyu"], "きょ":["kyo"],
-      "しゃ":["sha","sya"], "しゅ":["shu","syu"], "しょ":["sho","syo"],
-      "ちゃ":["cha","cya","tya"], "ちゅ":["chu","cyu","tyu"], "ちょ":["cho","cyo","tyo"],
-      "にゃ":["nya"], "にゅ":["nyu"], "にょ":["nyo"],
-      "ひゃ":["hya"], "ひゅ":["hyu"], "ひょ":["hyo"],
-      "みゃ":["mya"], "みゅ":["myu"], "みょ":["myo"],
-      "りゃ":["rya"], "りゅ":["ryu"], "りょ":["ryo"],
-      "ぎゃ":["gya"], "ぎゅ":["gyu"], "ぎょ":["gyo"],
-      "じゃ":["ja","jya","zya"], "じゅ":["ju","jyu","zyu"], "じょ":["jo","jyo","zyo"],
-      "ぢゃ":["dya","ja","jya"], "ぢゅ":["dyu","ju","jyu"], "ぢょ":["dyo","jo","jyo"],
-      "びゃ":["bya"], "びゅ":["byu"], "びょ":["byo"],
-      "ぴゃ":["pya"], "ぴゅ":["pyu"], "ぴょ":["pyo"],
-      "てぃ":["thi","ti"], "でぃ":["dhi","di"],
-      "とぅ":["twu","tu"], "どぅ":["dwu","du"],
-      "ふぁ":["fa","hua"], "ふぃ":["fi","hwi"], "ふぇ":["fe","hwe"], "ふぉ":["fo","hwo"]
-    };
-
-    function unique(arr) {
-      return [...new Set(arr)];
-    }
-
-    /****************************************************************
-     * 逐次判定用ローマ字解析
-     ****************************************************************/
-    function parseKanaUnits(kana) {
-      const units = [];
-      for (let i = 0; i < kana.length; i++) {
-        const pair = kana.slice(i, i + 2);
-        if (comboRomaMap[pair]) {
-          units.push(pair);
-          i++;
-        } else {
-          units.push(kana[i]);
-        }
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      return units;
-    }
-
-    function getBaseRomaOptions(unit) {
-      if (comboRomaMap[unit]) return comboRomaMap[unit];
-      if (romaMap[unit]) return romaMap[unit];
-      return [unit];
-    }
-
-    function getUnitHeadChars(unit, units, index) {
-      const options = getUnitRomaOptions(units, index);
-      return unique(
-        options
-          .map(v => v[0] || "")
-          .filter(Boolean)
-      );
-    }
-
-    function getSokuonHeadFromRoma(roma) {
-      if (!roma) return "";
-      const ch = roma[0];
-      if (!/[a-z]/.test(ch)) return "";
-      if ("aiueon".includes(ch)) return "";
-      return ch;
-    }
-
-    function getUnitRomaOptions(units, index) {
-      if (index >= units.length) return [""];
-
-      const unit = units[index];
-
-      if (unit === "っ") {
-        if (index + 1 >= units.length) return [""];
-        const nextOptions = getBaseRomaOptions(units[index + 1]);
-        const heads = unique(
-          nextOptions
-            .map(getSokuonHeadFromRoma)
-            .filter(Boolean)
-        );
-        return heads.length ? heads : [""];
-      }
-
-      if (unit === "ん") {
-        if (index + 1 >= units.length) return ["n", "nn"];
-        const nextHeads = getUnitHeadChars(units[index + 1], units, index + 1);
-        const vowelOrYOrN = nextHeads.some(ch => "aiueoyn".includes(ch));
-        if (vowelOrYOrN) {
-          return ["nn", "n'"];
-        }
-        return ["n", "nn", "n'"];
-      }
-
-      return getBaseRomaOptions(unit);
-    }
-
-    function stateKey(state) {
-      return `${state.unitIndex}|${state.typedInUnit}`;
-    }
-
-    function dedupeStates(states) {
-      const map = new Map();
-      for (const state of states) {
-        map.set(stateKey(state), state);
-      }
-      return [...map.values()];
-    }
-
-    function createInitialStates() {
-      return [{ unitIndex: 0, typedInUnit: "" }];
-    }
-
-    function advanceStates(states, inputChar, units) {
-      const nextStates = [];
-
-      for (const state of states) {
-        if (state.unitIndex >= units.length) continue;
-
-        const options = getUnitRomaOptions(units, state.unitIndex);
-
-        for (const option of options) {
-          if (!option.startsWith(state.typedInUnit)) continue;
-
-          const nextTypedInUnit = state.typedInUnit + inputChar;
-
-          if (!option.startsWith(nextTypedInUnit)) continue;
-
-          nextStates.push({
-            unitIndex: state.unitIndex,
-            typedInUnit: nextTypedInUnit
-          });
-
-          if (option === nextTypedInUnit) {
-            nextStates.push({
-              unitIndex: state.unitIndex + 1,
-              typedInUnit: ""
-            });
-          }
-        }
-      }
-
-      return dedupeStates(nextStates);
-    }
-
-    function isSolved(states, units) {
-      return states.some(state => state.unitIndex >= units.length);
-    }
-
-    function getNextPossibleChars(states, units) {
-      const chars = [];
-
-      for (const state of states) {
-        if (state.unitIndex >= units.length) continue;
-
-        const options = getUnitRomaOptions(units, state.unitIndex);
-        for (const option of options) {
-          if (!option.startsWith(state.typedInUnit)) continue;
-          if (option.length > state.typedInUnit.length) {
-            chars.push(option[state.typedInUnit.length]);
-          }
-        }
-      }
-
-      return unique(chars);
-    }
-
-    function shortestRemainingFromState(state, units, memo) {
-      const key = `${state.unitIndex}|${state.typedInUnit}`;
-      if (memo.has(key)) return memo.get(key);
-
-      if (state.unitIndex >= units.length) {
-        memo.set(key, "");
-        return "";
-      }
-
-      const options = getUnitRomaOptions(units, state.unitIndex).filter(option => option.startsWith(state.typedInUnit));
-      let best = null;
-
-      for (const option of options) {
-        let candidate = null;
-
-        if (option === state.typedInUnit) {
-          candidate = shortestRemainingFromState(
-            { unitIndex: state.unitIndex + 1, typedInUnit: "" },
-            units,
-            memo
-          );
-        } else {
-          candidate =
-            option.slice(state.typedInUnit.length) +
-            shortestRemainingFromState(
-              { unitIndex: state.unitIndex + 1, typedInUnit: "" },
-              units,
-              memo
-            );
-        }
-
-        if (best === null || candidate.length < best.length) {
-          best = candidate;
-        }
-      }
-
-      if (best === null) best = "";
-      memo.set(key, best);
-      return best;
-    }
-
-    function getBestDisplayTarget(typed, states, units) {
-      const memo = new Map();
-      let best = null;
-
-      for (const state of states) {
-        const rest = shortestRemainingFromState(state, units, memo);
-        const candidate = typed + rest;
-        if (best === null || candidate.length < best.length) {
-          best = candidate;
-        }
-      }
-
-      return best || typed;
+      return arr;
     }
 
     function escapeHtml(str) {
@@ -780,7 +957,7 @@
     }
 
     /****************************************************************
-     * キー入力関連
+     * 要素取得
      ****************************************************************/
     const jpText = document.getElementById("jpText");
     const romaText = document.getElementById("romaText");
@@ -791,49 +968,48 @@
     const themeSelect = document.getElementById("themeSelect");
     const fontSelect = document.getElementById("fontSelect");
     const soundSelect = document.getElementById("soundSelect");
-
     const keyEls = [...document.querySelectorAll(".key")];
 
     let audioCtx = null;
     let currentSound = "calm";
-
-    let allQuestions = [...nounBank];
-    let currentQuestionIndex = 0;
+    let remainingQuestions = [];
     let currentQuestion = null;
-    let currentUnits = [];
-    let parserStates = createInitialStates();
+    let currentTarget = "";
     let typed = "";
     let solvedCount = 1;
     let justLoaded = true;
     let solveTimer = null;
+    let speechEnabled = true;
 
+    /****************************************************************
+     * 出題管理
+     ****************************************************************/
     function resetQuestionCycle(resetCounter = false) {
       if (solveTimer) {
         clearTimeout(solveTimer);
         solveTimer = null;
       }
-      currentQuestionIndex = 0;
+      remainingQuestions = shuffle([...wordBank]);
       if (resetCounter) solvedCount = 0;
-      pickCurrentQuestion();
+      pickNextQuestion();
     }
 
-    function pickCurrentQuestion() {
+    function pickNextQuestion() {
       if (solveTimer) {
         clearTimeout(solveTimer);
         solveTimer = null;
       }
 
-      if (currentQuestionIndex >= allQuestions.length) {
-        currentQuestionIndex = 0;
+      if (remainingQuestions.length === 0) {
+        remainingQuestions = shuffle([...wordBank]);
       }
 
-      currentQuestion = allQuestions[currentQuestionIndex];
-      currentUnits = parseKanaUnits(currentQuestion.kana);
-      parserStates = createInitialStates();
+      currentQuestion = remainingQuestions.pop();
+      currentTarget = currentQuestion.en.toLowerCase();
       typed = "";
 
-      jpText.textContent = currentQuestion.jp;
-      romaText.textContent = getDisplayReading(currentQuestion.kana);
+      jpText.textContent = currentQuestion.en.toUpperCase();
+      romaText.textContent = currentQuestion.ja;
       updateTypedView();
       updateCounter();
       updateKeyboardGuide();
@@ -842,36 +1018,27 @@
         ? "初回の打鍵で音声が有効になります"
         : "入力受付中";
 
+      speakCurrentWord();
       justLoaded = false;
     }
 
     function updateCounter() {
       counterEl.textContent = String(solvedCount);
-      remainingCountEl.textContent = String(Math.max(0, allQuestions.length - currentQuestionIndex - 1));
+      remainingCountEl.textContent = String(remainingQuestions.length);
     }
 
     function updateTypedView() {
-      const display = getBestDisplayTarget(typed, parserStates, currentUnits);
       const done = escapeHtml(typed.toUpperCase());
-      const rest = escapeHtml(display.slice(typed.length).toUpperCase());
+      const rest = escapeHtml(currentTarget.slice(typed.length).toUpperCase());
       typedText.innerHTML = `<span class="done">${done}</span><span class="rest">${rest}</span>`;
     }
 
     function updateKeyboardGuide() {
       keyEls.forEach(el => el.classList.remove("active"));
-
-      const nextChars = getNextPossibleChars(parserStates, currentUnits);
-
-      nextChars.forEach(ch => {
-        if (ch === "'") return;
-        if (ch === " ") {
-          const el = document.querySelector('[data-key="space"]');
-          if (el) el.classList.add("active");
-          return;
-        }
-        const el = document.querySelector(`[data-key="${cssEscape(ch)}"]`);
-        if (el) el.classList.add("active");
-      });
+      const nextChar = currentTarget[typed.length];
+      if (!nextChar) return;
+      const el = document.querySelector(`[data-key="${cssEscape(nextChar)}"]`);
+      if (el) el.classList.add("active");
     }
 
     function cssEscape(ch) {
@@ -888,31 +1055,56 @@
     }
 
     function handleTyping(inputChar) {
-      const nextStates = advanceStates(parserStates, inputChar, currentUnits);
+      const expected = currentTarget[typed.length];
+      if (!expected) return;
 
-      if (nextStates.length === 0) {
+      if (inputChar !== expected) {
         flashMiss();
         return;
       }
 
       typed += inputChar;
-      parserStates = nextStates;
       updateTypedView();
       updateKeyboardGuide();
-
       playHit();
 
-      if (isSolved(parserStates, currentUnits)) {
+      if (typed === currentTarget) {
         solveTimer = setTimeout(() => {
           solvedCount++;
-          currentQuestionIndex++;
-          if (currentQuestionIndex >= allQuestions.length) {
-            currentQuestionIndex = 0;
-          }
-          pickCurrentQuestion();
+          pickNextQuestion();
         }, 70);
       } else {
         statusText.textContent = "入力受付中";
+      }
+    }
+
+    /****************************************************************
+     * 読み上げ
+     ****************************************************************/
+    function speakCurrentWord() {
+      if (!speechEnabled || !("speechSynthesis" in window)) return;
+
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(currentQuestion.en);
+        utterance.lang = "en-US";
+        utterance.rate = 0.92;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.9;
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        // 読み上げ不可環境では何もしない
+      }
+    }
+
+    function unlockSpeech() {
+      if (!("speechSynthesis" in window)) return;
+      try {
+        const utterance = new SpeechSynthesisUtterance("");
+        utterance.volume = 0;
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        // 何もしない
       }
     }
 
@@ -991,6 +1183,8 @@
 
       if (["Tab", "Alt", "Control", "Meta", "Shift", "CapsLock"].includes(key)) return;
 
+      unlockSpeech();
+
       if (key === "Enter") {
         e.preventDefault();
         resetQuestionCycle(true);
@@ -999,17 +1193,18 @@
 
       if (key === " ") {
         e.preventDefault();
-        handleTyping(" ");
         return;
       }
 
       const lower = key.toLowerCase();
 
-      if (/^[a-z\-']$/.test(lower)) {
+      if (/^[a-z]$/.test(lower)) {
         e.preventDefault();
         handleTyping(lower);
       }
     });
+
+    window.addEventListener("pointerdown", unlockSpeech, { once: true });
 
     /****************************************************************
      * 初期化
